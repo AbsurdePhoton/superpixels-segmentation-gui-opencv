@@ -55,7 +55,7 @@ This software should also work under Microsoft Windows: if you tried it successf
 * Now you can colorize !
   * left mouse button to colorize cells with the the current color (found on the right, change it with the big colored buttons)
   * right mouse button to unset a cell
-  * <ALT> + click to fill a closed area
+  * ALT + click to fill a closed area
 * Change the view:
   * you can choose the transparency of the image and mask with the sliders on the right
   * you can hide / view the 3 layers: image, mask and grid
