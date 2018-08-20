@@ -64,11 +64,11 @@ This software should also work under Microsoft Windows: if you tried it successf
   * click on the thumbnail to change the view position
 * Undo: use this button to cancel the last action
 * Load and save:
-  * you can save and retrieve the segmentation parameters (XML file)
+  * you can save and retrieve the segmentation parameters (XML openCV format)
   * you can save the current session : no need to recompute when you retrieve it!
   * what is saved in the session:
     * processed image (PNG image)
-    * mask(PNG image)
+    * mask (PNG image)
     * grid (PNG image)
     * cells / labels (XML openCV format) 
 <br/>
