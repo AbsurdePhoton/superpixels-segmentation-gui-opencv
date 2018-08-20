@@ -1,0 +1,30 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+  <file>./icons/absurdephoton.png</file>
+  <file>./icons/blur.png</file>
+  <file>./icons/color.png</file>
+  <file>./icons/compute.png</file>
+  <file>./icons/config.png</file>
+  <file>./icons/contours.png</file>
+  <file>./icons/double-step.png</file>
+  <file>./icons/edit.png</file>
+  <file>./icons/equalize.png</file>
+  <file>./icons/grid.png</file>
+  <file>./icons/grid-off.png</file>
+  <file>./icons/image.png</file>
+  <file>./icons/image-off.png</file>
+  <file>./icons/load.png</file>
+  <file>./icons/mask.png</file>
+  <file>./icons/mask-off.png</file>
+  <file>./icons/normalize.png</file>
+  <file>./icons/save.png</file>
+  <file>./icons/session-load.png</file>
+  <file>./icons/session-save.png</file>
+  <file>./icons/thick.png</file>
+  <file>./icons/undo.png</file>
+  <file>./icons/zoom.png</file>
+  <file>./icons/zoom-100.png</file>
+  <file>./icons/zoom-minus.png</file>
+  <file>./icons/zoom-plus.png</file>
+</qresource>
+</RCC>
