@@ -58,6 +58,7 @@ This software should also work under Microsoft Windows: if you tried it successf
   * ALT + click to fill a closed area
 * Change the view:
   * you can choose the transparency of the image and mask with the sliders on the right
+  * you can change the grid color with the control just under the grid layer button
   * you can hide / view the 3 layers: image, mask and grid
   * use the zoom controls to zoom in / out - you can also use the mouse wheel over the viewport
   * hold the middle mouse button on the viewport to move the view position - you can also use the scrollbars
