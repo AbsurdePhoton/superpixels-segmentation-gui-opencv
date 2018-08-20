@@ -44,8 +44,15 @@ This software should also work under Microsoft Windows: if you tried it successf
 
 ## HOW?
 
+* help is available in the GUI, just wait with your mouse over the controls: the tooltip soon appears
 * Load an image first, nothing is possible without it
-* Select the algorithm, tune its parameters
+* Select the algorithm, tune the parameters
+* Available superpixels alogrithms:
+  * SLIC (Simple Linear Iterative Clustering) clusters pixels using pixel channels and image plane space to efficiently generate compact, nearly uniform superpixels
+  * SLICO (Zero parameter SLIC) optimizes SLIC, using adaptive compactness factor
+  * MSLIC (Manifold SLIC) optimizes SLIC using manifold methods resulting in more content-sensitive superpixels
+  * LSC (Linear Spectral Clustering) produces compact and uniform superpixels with low computational costs, and keeps global images properties
+  * SEEDS (Superpixels Extracted via Energy-Driven Sampling) uses an efficient hill-climbing algorithm to optimize the superpixels' energy function that is based on color histograms and a boundary term, producing smooth boundaries
 * Select the pre-processing operations on the image: gaussian blur, contours, etc
 * Push the COMPUTE button, wait a little
 * The result is displayed. You have 3 layers that you can activate / deactivate / blend :
