@@ -62,6 +62,7 @@ This software should also work under Microsoft Windows: if you tried it successf
   * use the zoom controls to zoom in / out - you can also use the mouse wheel over the viewport
   * hold the middle mouse button on the viewport to move the view position - you can also use the scrollbars
   * click on the thumbnail to change the view position
+* Undo: use this button to cancel the last action
 * Load and save:
   * you can save and retrieve the segmentation parameters (XML file)
   * you can save the current session : no need to recompute when you retrieve it!
