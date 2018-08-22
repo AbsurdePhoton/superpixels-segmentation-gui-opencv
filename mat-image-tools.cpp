@@ -2,14 +2,14 @@
  * OpenCV image tools library
  * Author: AbsurdePhoton
  *
- * v1.3 - 2018/08/20
+ * v1.4 - 2018/08/22
  *
  * Convert mat images to QPixmap or QImage
  * Set brightness and contrast
  * Equalize color image histograms
  * Erosion / dilation of pixels
  * Copy part of image
- * Contours using Canny algorithm
+ * Contours using Canny algorithm with auto min and max threshold
  *
  */
 
@@ -176,20 +176,32 @@ Mat CopyFromImage (cv::Mat source, cv::Rect frame) // copy part of an image
     return source(frame);
 }
 
-Mat DrawColoredContours(cv::Mat source, int threshold_min, int ratio, int apertureSize) // Canny edge detection
+double medianMat(cv::Mat input)
+{
+    input = input.reshape(0,1);// spread input to single row
+    std::vector<double> vecFromMat;
+    input.copyTo(vecFromMat); // copy input to vector vecFromMat
+    std::nth_element(vecFromMat.begin(), vecFromMat.begin() + vecFromMat.size() / 2, vecFromMat.end());
+    return vecFromMat[vecFromMat.size() / 2];
+}
+
+Mat DrawColoredContours(cv::Mat source, double sigma, int apertureSize, int thickness) // Canny edge detection
 {
     RNG rng(123); // controled randomization
     Mat canny_output, gray, blur;
     GaussianBlur(source, blur, Size(3,3), 0, 0); // better with a gaussian blur first
     cvtColor(blur, gray, COLOR_BGR2GRAY ); // convert to gray
+    double v = medianMat(gray); // get median value of matrix
+    int lower = (int)std::max(0.0,(1.0-sigma)*v); // generate thresholds
+    int upper = (int)std::min(255.0,(1.0+sigma)*v);
     vector<vector<Point> > contours; // create structure to compute
     vector<Vec4i> hierarchy;
-    Canny(gray, canny_output, threshold_min, threshold_min*ratio, apertureSize, true ); // apply Canny
+    Canny(gray, canny_output, lower, upper, apertureSize, true ); // apply Canny
     findContours(canny_output, contours, hierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE, Point(0, 0)); // find the edges
     Mat drawing = Mat::zeros(canny_output.size(), CV_8UC3);
     for(size_t i = 0; i< contours.size(); i++) { // scan the image
         Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255)); // apply colors
-        drawContours( drawing, contours, (int)i, color, 2, 8, hierarchy, 0, Point() ); // draw the lines
+        drawContours( drawing, contours, (int)i, color, thickness, 8, hierarchy, 0, Point() ); // draw the lines
     }
     return drawing;
 }

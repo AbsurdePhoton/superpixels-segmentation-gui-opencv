@@ -4,7 +4,7 @@
 #
 #    by AbsurdePhoton - www.absurdephoton.fr
 #
-#                v0 - 2018/08/11
+#                v1 - 2018/08/22
 #
 #-------------------------------------------------*/
 
@@ -14,6 +14,7 @@
 #include <QMessageBox>
 #include <QMouseEvent>
 #include <QScrollBar>
+#include <QCursor>
 
 #include "mat-image-tools.h"
 
@@ -44,8 +45,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->lcd_cells->setPalette(Qt::red);
 
     // Contours
-    ui->spinBox_contours_threshold->setVisible(false);
-    ui->spinBox_contours_ratio->setVisible(false);
+    ui->spinBox_contours_sigma->setVisible(false);
+    ui->spinBox_contours_thickness->setVisible(false);
     ui->comboBox_contours_aperture->setVisible(false);
 
     // Global variables init
@@ -53,6 +54,7 @@ MainWindow::MainWindow(QWidget *parent) :
     color = Vec3b(0,0,255); // pen color
     zoom = 1; // init zoom
     oldZoom = 1; // to detect a zoom change
+    zoom_type = "";
 }
 
 MainWindow::~MainWindow()
@@ -64,7 +66,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_button_image_clicked() // Load main image
 {
-    QString filename = QFileDialog::getOpenFileName(this, "Select picture file", "/home", "Images (*.jpg *.JPG *.jpeg *.JPEG *.jp2 *.JP2 *.png *.PNG *.tif *.TIF *.tiff *.TIFF *.bmp *.BMP)");
+    QString filename = QFileDialog::getOpenFileName(this, "Select picture file", "/media/DataI5/Photos/Sabine", "Images (*.jpg *.JPG *.jpeg *.JPEG *.jp2 *.JP2 *.png *.PNG *.tif *.TIF *.tiff *.TIFF *.bmp *.BMP)");
     if (filename.isNull() || filename.isEmpty())
         return;
 
@@ -186,8 +188,8 @@ void MainWindow::on_button_save_conf_clicked() // save configuration
     bool normalize = ui->checkBox_normalize->isChecked();
     bool equalize = ui->checkBox_equalize->isChecked();
     bool contours = ui->checkBox_contours->isChecked();
-    int contours_threshold = ui->spinBox_contours_threshold->value();
-    int contours_ratio = ui->spinBox_contours_ratio->value();
+    int contours_sigma = ui->spinBox_contours_sigma->value();
+    int contours_thickness = ui->spinBox_contours_thickness->value();
     int contours_aperture = ui->comboBox_contours_aperture->currentIndex() * 2 + 3;
 
     FileStorage fs(filename_s, FileStorage::WRITE); // save to openCV XML file type
@@ -209,8 +211,8 @@ void MainWindow::on_button_save_conf_clicked() // save configuration
     fs << "Normalize" << normalize;
     fs << "Equalize" << equalize;
     fs << "Contours" << contours;
-    fs << "ContoursThreshold" << contours_threshold;
-    fs << "ContoursRatio" << contours_ratio;
+    fs << "ContoursSigma" << contours_sigma;
+    fs << "ContoursThickness" << contours_thickness;
     fs << "ContoursAperture" << contours_aperture;
 
     QMessageBox::information(this, "Save configuration", "Configuration saved to:\n" + filename);
@@ -226,7 +228,7 @@ void MainWindow::on_button_load_conf_clicked() // load configuration
 
     // Initialize variables to save
     int algorithm, region_size, ruler, min_element_size, num_iterations, line_color,
-        num_superpixels, num_levels, prior, num_histogram_bins, contours_threshold, contours_ratio, contours_aperture;
+        num_superpixels, num_levels, prior, num_histogram_bins, contours_sigma, contours_thickness, contours_aperture;
     double ratio;
     bool thick_lines, double_step, lab, gaussian_blur, equalize, normalize, contours;
 
@@ -249,8 +251,8 @@ void MainWindow::on_button_load_conf_clicked() // load configuration
     fs["Normalize"] >> normalize;
     fs["Equalize"] >> equalize;
     fs["Contours"] >> contours;
-    fs["ContoursThreshold"] >> contours_threshold;
-    fs["ContoursRatio"] >> contours_ratio;
+    fs["ContoursSigma"] >> contours_sigma;
+    fs["ContoursThickness"] >> contours_thickness;
     fs["ContoursAperture"] >> contours_aperture;
 
     ui->comboBox_algorithm->setCurrentIndex(algorithm); // update GUI values
@@ -271,8 +273,8 @@ void MainWindow::on_button_load_conf_clicked() // load configuration
     ui->checkBox_normalize->setChecked(normalize);
     ui->checkBox_equalize->setChecked(equalize);
     ui->checkBox_contours->setChecked(contours);
-    ui->spinBox_contours_threshold->setValue(contours_threshold);
-    ui->spinBox_contours_ratio->setValue(contours_ratio);
+    ui->spinBox_contours_sigma->setValue(contours_sigma);
+    ui->spinBox_contours_thickness->setValue(contours_thickness);
     ui->comboBox_contours_aperture->setCurrentIndex((contours_aperture - 3) / 2);
 
     QMessageBox::information(this, "Load configuration", "Configuration loaded from:\n" + filename);
@@ -370,16 +372,19 @@ void MainWindow::ZoomMinus()
 
 void MainWindow::on_pushButton_zoom_minus_clicked() // zoom -
 {
+    zoom_type = "button";
     ZoomMinus();
 }
 
 void MainWindow::on_pushButton_zoom_plus_clicked() // zoom +
 {
+    zoom_type = "button";
     ZoomPlus();
 }
 
 void MainWindow::on_pushButton_zoom_fit_clicked() // zoom fit
 {
+    zoom_type = "button";
     oldZoom = zoom;
     double zoomX = double(ui->label_segmentation->width()) / image.cols; // find the best value of zoom
     double zoomY = double(ui->label_segmentation->height()) / image.rows;
@@ -393,6 +398,7 @@ void MainWindow::on_pushButton_zoom_fit_clicked() // zoom fit
 
 void MainWindow::on_pushButton_zoom_100_clicked() // zoom 100%
 {
+    zoom_type = "button";
     oldZoom = zoom;
     zoom = 1; // new zoom value
     QApplication::setOverrideCursor(Qt::SizeVerCursor); // zoom cursor
@@ -418,8 +424,8 @@ void MainWindow::on_button_undo_clicked() // Undo last action
 void MainWindow::on_checkBox_contours_clicked() // zoom 100%
 {
     bool checked = ui->checkBox_contours->isChecked(); // checkbox state
-    ui->spinBox_contours_threshold->setVisible(checked); // hide or reveal parameters
-    ui->spinBox_contours_ratio->setVisible(checked);
+    ui->spinBox_contours_sigma->setVisible(checked); // hide or reveal parameters
+    ui->spinBox_contours_thickness->setVisible(checked);
     ui->comboBox_contours_aperture->setVisible(checked);
 }
 
@@ -697,11 +703,18 @@ void MainWindow::wheelEvent(QWheelEvent *wheelEvent) // mouse wheel turned
         return;
 
     if (ui->label_segmentation->underMouse()) { // if the mouse is over the viewport
+        mouse_origin = ui->label_segmentation->mapFromGlobal(QCursor::pos()); // mouse position
+        Point pos = Viewport2Image(Point(mouse_origin.x(), mouse_origin.y())); // convert from viewport to image coordinates
+        mouse_origin = QPoint(pos.x, pos.y);
         int n = wheelEvent->delta(); // amount of wheel turn
-        if (n < 0) // positive = zoom out
+        if (n < 0) { // positive = zoom out
+            zoom_type = "wheel";
             ZoomMinus();
-        if (n > 0) // negative = zoom in
+        }
+        if (n > 0) { // negative = zoom in
+            zoom_type = "wheel";
             ZoomPlus();
+        }
         wheelEvent->accept(); // event accepted
     }
 }
@@ -796,6 +809,14 @@ void MainWindow::ShowSegmentation() // show image + mask + grid
     if (oldZoom != zoom) { // zoom has changed ?
         oldMiddleX = viewport.x + viewport.width / 2; // current middle of viewport for zooming to the center of image
         oldMiddleY = viewport.y + viewport.height / 2;
+        if (zoom_type == "wheel") {
+            oldMiddleX = mouse_origin.x();
+            oldMiddleY = mouse_origin.y();
+            QCursor cursor;
+            cursor.setPos(ui->label_segmentation->mapToGlobal(ui->label_segmentation->rect().center()));
+            setCursor(cursor);
+            zoom_type = "";
+        }
         UpdateViewportDimensions(); // recompute viewport width and height
         double newPosX = oldMiddleX - viewport.width / 2; // compute new middle of viewport
         double newPosY = oldMiddleY - viewport.height / 2;
@@ -817,7 +838,7 @@ void MainWindow::ShowSegmentation() // show image + mask + grid
         if (zoom <= 1) { // dilate grid lines only if zoom out so they won't disappear when we zoom out
             Mat dilate_grid;
             grid.copyTo(dilate_grid);
-            dilate_grid = DilatePixels(dilate_grid, int(1/zoom)-1); // dilation
+            dilate_grid = DilatePixels(dilate_grid, int(1/zoom)-2); // dilation
             disp_color += CopyFromImage(dilate_grid, viewport); // update view
         }
         else disp_color += CopyFromImage(grid, viewport); // update image displayed
@@ -855,8 +876,8 @@ void MainWindow::on_button_compute_clicked() // compute segmentation
     bool equalize = ui->checkBox_equalize->isChecked(); // Equalize image before computing
     bool normalize = ui->checkBox_normalize->isChecked(); // Normalize image before computing
     bool contours = ui->checkBox_contours->isChecked(); // Find image edges before computing
-    int contours_threshold = ui->spinBox_contours_threshold->value(); // contours threshold
-    int contours_ratio = ui->spinBox_contours_ratio->value(); // contours ratio
+    int contours_sigma = ui->spinBox_contours_sigma->value(); // contours threshold
+    int contours_thickness = ui->spinBox_contours_thickness->value(); // contours ratio
     int contours_aperture = ui->comboBox_contours_aperture->currentIndex() * 2 + 3; // contours aperture
     cv::Vec3b maskColor; // BGR
     switch (ui->comboBox_grid_color->currentIndex()) { // color to set the grid to
@@ -878,8 +899,7 @@ void MainWindow::on_button_compute_clicked() // compute segmentation
     if (gaussian_blur) cv::GaussianBlur(image, image, Size(3,3), 0, 0); // gaussian blue ?
     if (contours) { // contours ?
         Mat contours_mask;
-        contours_mask = DrawColoredContours(image, contours_threshold, contours_ratio, contours_aperture); //compute contours
-        //contours_mask = DilatePixels(contours_mask, 3); // dilation - not a good idea after all
+        contours_mask = DrawColoredContours(image, double(contours_sigma) / 100, contours_aperture, contours_thickness); //compute contours
         contours_mask.copyTo(image, contours_mask); // copy contours to image view
     }
 

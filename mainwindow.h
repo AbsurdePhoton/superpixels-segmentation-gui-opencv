@@ -4,7 +4,7 @@
 #
 #    by AbsurdePhoton - www.absurdephoton.fr
 #
-#                v0 - 2018/08/11
+#                v1 - 2018/08/22
 #
 #-------------------------------------------------*/
 
@@ -114,6 +114,7 @@ private:
     int num_zooms = 20; // number of zoom values
     double zooms[21] = {0, 0.05, 0.0625, 0.0833, 0.125, 0.1667, 0.25, 0.3333, 0.5, 0.6667, 1, 1.25, 1.5, 2, 3, 4, 5, 6, 7, 8, 1000};
     double zoom, oldZoom; // zoom factor for image display
+    QString zoom_type;
 
     bool computed; // true when segmentation computed
 

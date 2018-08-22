@@ -1,13 +1,14 @@
 # superpixels-segmentation-gui-opencv
 ## Superpixels segmentation algorithms with QT and OpenCV, with a nice GUI to colorize the cells
-### v0 - 2018-08-20 - first version
+### v1 - 2018-08-22
 
 ![Screenshot](screenshot.jpg)
 <br/>
 
 ## HISTORY
 
-* v0: first try
+* v0: launch
+* v1: added contours + several improvements
 <br/>
 <br/>
 

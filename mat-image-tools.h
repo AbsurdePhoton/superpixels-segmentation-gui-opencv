@@ -2,14 +2,14 @@
  * OpenCV image tools library
  * Author: AbsurdePhoton
  *
- * v1.3 - 2018/08/20
+ * v1.4 - 2018/08/22
  *
  * Convert mat images to QPixmap or QImage
  * Set brightness and contrast
  * Equalize color image histograms
  * Erosion / dilation of pixels
  * Copy part of image
- * Contours using Canny algorithm
+ * Contours using Canny algorithm with auto min and max threshold
  *
  */
 
@@ -38,6 +38,6 @@ Mat ShiftFrame(cv::Mat frame, int pixels, Direction direction); // shift frame i
 
 Mat CopyFromImage (cv::Mat source, cv::Rect frame); // copy a part of an image
 
-Mat DrawColoredContours(cv::Mat source, int threshold_min, int ratio, int apertureSize); // Canny edges detection
+Mat DrawColoredContours(cv::Mat source, double sigma, int apertureSize, int thickness);
 
 #endif // MAT2IMAGE_H
