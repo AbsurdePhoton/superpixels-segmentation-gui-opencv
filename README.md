@@ -53,7 +53,7 @@ This software should also work under Microsoft Windows: if you tried it successf
 
 ### IMAGE TAB
 
-![Screenshot2](screenshot-image.jpg)
+![Screenshot](screenshot-image.jpg)
 
 * To begin, load an image, nothing is possible without it! The image appears in the main viewport and its thumbnail is shown on the left side
 
@@ -70,7 +70,7 @@ This software should also work under Microsoft Windows: if you tried it successf
   
 ### SEGMENTATION TAB
 
-[Screenshot3](screenshot-segmentation.jpg)
+[Screenshot](screenshot-segmentation.jpg)
 
 * First, select the algorithm you want to use, and tune the parameters
 
@@ -94,7 +94,7 @@ This software should also work under Microsoft Windows: if you tried it successf
 
 ### LABELS TAB
 
-[Screenshot4](screenshot-labels.jpg)
+[Screenshot](screenshot-labels.jpg)
 
 This tab has two functions: colorize the cells and manage the labels
 
