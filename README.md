@@ -26,7 +26,9 @@ I used bits of code from several sources, mainly from the openCV examples
 
 I didn't find any simple tool (understand: GUI) to produce depth maps from my stereo pictures.
 
-One solution to semi-automatically produce depth maps is image segmentation: coloring zones with superpixel cells is so easy! In photoshop, it is then child play to apply gray gradients to colored areas...
+One solution to help produce depth maps is image segmentation: coloring zones with superpixel cells is so easy! In photoshop, it is then child play to apply gray gradients to colored areas...
+
+This tool can also help separating an object or person from the background, for photomanipulation purposes.
 
 I'm not an ace of C++ and QT, in fact I only started using them some month ago. So, if you don't find my code pretty never mind, because it WORKS, and that's all I'm asking of it :)
 <br/>
@@ -50,6 +52,7 @@ This software should also work under Microsoft Windows: if you tried it successf
 
 * Help is available in the GUI, with each element's tooltip
 * This tool is composed of 3 tabs
+* A pen tablet is higly recommended
 
 ### IMAGE TAB
 
