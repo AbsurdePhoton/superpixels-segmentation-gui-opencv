@@ -4,7 +4,7 @@
 #
 #    by AbsurdePhoton - www.absurdephoton.fr
 #
-#                v1 - 2018/08/22
+#                v2 - 2018/09/02
 #
 #-------------------------------------------------*/
 
@@ -15,6 +15,7 @@
 #include <QMouseEvent>
 #include <QScrollBar>
 #include <QCursor>
+#include <QColorDialog>
 
 #include "mat-image-tools.h"
 
@@ -40,21 +41,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->comboBox_grid_color->addItem(tr("Magenta"));
     ui->comboBox_grid_color->addItem(tr("Yellow"));
     ui->comboBox_grid_color->addItem(tr("White"));
+    ui->comboBox_grid_color->setCurrentIndex(0);
+    gridColor = Vec3b(0, 0, 255); // current grid color
 
-    // LCD
-    ui->lcd_cells->setPalette(Qt::red);
-
-    // Contours
-    ui->spinBox_contours_sigma->setVisible(false);
-    ui->spinBox_contours_thickness->setVisible(false);
-    ui->comboBox_contours_aperture->setVisible(false);
-
-    // Global variables init
-    computed = false; // segmentation not yet computed
-    color = Vec3b(0,0,255); // pen color
-    zoom = 1; // init zoom
-    oldZoom = 1; // to detect a zoom change
-    zoom_type = "";
+    InitializeValues();
 }
 
 MainWindow::~MainWindow()
@@ -62,29 +52,376 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+///////////////////      UI       //////////////////////
+
+void MainWindow::on_Tabs_currentChanged(int) // when a tab is clicked
+{
+    if(ui->Tabs->currentIndex()==2) ui->label_segmentation->setCursor(Qt::PointingHandCursor); // labels tab ? => labels view cursor
+        else ui->label_segmentation->setCursor(Qt::ArrowCursor); // default cursor
+}
+
+void MainWindow::InitializeValues()
+{
+    // Hide tabs
+    ui->Tabs->setTabEnabled(1, false);
+    ui->Tabs->setTabEnabled(2, false);
+
+    // LCD
+    ui->lcd_cells->setPalette(Qt::red);
+
+    // Global variables init
+    loaded = false; // main image loaded ?
+    computed = false; // segmentation not yet computed
+    color = Vec3b(0,0,255); // pen color
+    zoom = 1; // init zoom
+    oldZoom = 1; // to detect a zoom change
+    zoom_type = ""; // "button" or (mouse) "wheel"
+
+    // labels list
+    maxLabels = 0; // for new labels
+}
+
+///////////////////    Labels     //////////////////////
+
+int MainWindow::GetCurrentLabelNumber() // label number for use with labels_mask
+{
+    return ui->listWidget_labels->currentItem()->data(Qt::UserRole).toInt(); // label number stored in the special field
+}
+
+void MainWindow::DeleteAllLabels(bool newLabel) // add a label to the list
+{
+    maxLabels = 0; // reset labels
+    ui->listWidget_labels->blockSignals(true); // the labels list must not trigger an action
+    ui->listWidget_labels->clear(); // delete all labels
+    ui->listWidget_labels->blockSignals(false); // return to normal
+    if (newLabel) AddNewLabel(""); // add one new default label or not
+}
+
+QListWidgetItem* MainWindow::AddNewLabel(QString newLabel) // add a label to the list
+{
+    QListWidgetItem *item = new QListWidgetItem ();
+    if (newLabel == "") item->setText("Rename me!"); // default text of the label
+        else item->setText(newLabel); // or custom text
+    maxLabels++; // increase total number of labels
+    item->setData(Qt::UserRole, maxLabels); // custom field = label number
+    item->setFlags(Qt::ItemIsEditable | Qt::ItemIsSelectable | Qt::ItemIsEnabled); // item enabled, editable and selectable
+    item->setBackground(QColor(0, 0, 255)); // label color
+    if (IsColorDark(0, 0, 255)) // is the label color dark ?
+        item->setForeground(QColor(255, 255, 255)); // if so light text color
+        else item->setForeground(QColor(0, 0, 0)); // if not dark text color
+    ui->listWidget_labels->addItem(item); // add the item to the list
+    ui->listWidget_labels->setCurrentItem(item); // select the new label
+
+    return item; // pointer to new item
+}
+
+void MainWindow::on_listWidget_labels_currentItemChanged(QListWidgetItem *currentItem) // show current label color
+{
+    QBrush brush = currentItem->background();
+    ShowCurrentColor(brush.color().red(), brush.color().green(), brush.color().blue());
+}
+
+void MainWindow::on_listWidget_labels_itemChanged(QListWidgetItem *currentItem) // show current label text
+{
+    ui->label_color->setText(currentItem->text());
+}
+
+void MainWindow::on_pushButton_label_add_clicked() // add a new default label
+{
+    if (!computed) { // if image not computed yet get out
+        QMessageBox::warning(this, "No cells found",
+                                 "Not now!\n\nBefore anything else, compute the segmentation or load a previous session");
+        return;
+    }
+
+    AddNewLabel("");
+}
+
+void MainWindow::on_pushButton_label_hide_clicked() // hide label = set its color to 0
+{
+    if (!computed) { // if image not computed yet get out
+        QMessageBox::warning(this, "No cells found",
+                                 "Not now!\n\nBefore anything else, compute the segmentation or load a previous session");
+        return;
+    }
+
+    color = Vec3b(0,0,0); // black = transparent
+    ShowCurrentColor(color[2], color[1], color[0]); // set black color to label
+}
+
+void MainWindow::on_pushButton_label_delete_clicked() // delete the current label
+{
+    if (!computed) { // if image not computed yet get out
+        QMessageBox::warning(this, "No cells found",
+                                 "Not now!\n\nBefore anything else, compute the segmentation or load a previous session");
+        return;
+    }
+
+    if (ui->listWidget_labels->count() == 1) { // last label ?
+        QMessageBox::warning(this, "Delete label", "You can't delete the last label in the list");
+        return;
+    }
+
+    QListWidgetItem *item = ui->listWidget_labels->currentItem();
+
+    int deletion = QMessageBox::question(this, "Delete label", "Are you sure?\n''" + item->text() + "'' label will be deleted", QMessageBox::Yes|QMessageBox::No); // sure ?
+    if (deletion == QMessageBox::No) // don't delete it !
+        return;
+
+    Mat1b superpixel_mask = labels_mask == GetCurrentLabelNumber(); // extract label to delete from labels mask
+    mask.setTo(0, superpixel_mask); // set 0 (= unclaimed) to labels mask
+
+    ShowSegmentation(); // display mask
+
+    int row = ui->listWidget_labels->currentRow(); // current label to delete
+    ui->listWidget_labels->removeItemWidget(item); // delete item object
+    ui->listWidget_labels->takeItem(row); // delete label from list
+}
+
+void MainWindow::on_pushButton_label_join_clicked() // join 2 or more labels, result to one selected label
+{
+    int join = QMessageBox::question(this, "Join labels", "Are you sure?\n\nSelected labels in the list will be joined", QMessageBox::Yes|QMessageBox::No); // sure ?
+    if (join == QMessageBox::No) // join the mask !
+        return;
+
+    QList<QListWidgetItem *> items = ui->listWidget_labels->selectedItems(); // get selected items
+
+    if (items.count() < 2) // only one label selected ?
+    {
+        QMessageBox::warning(this, "Join labels",
+                                 "You have to select more than one label to join");
+        return;
+    }
+
+    QBrush brush = items[0]->background(); // color of first label encountered: this label will contain the result
+    Vec3b col = Vec3b(brush.color().red(), brush.color().green(), brush.color().blue()); // get its color
+    int id = items[0]->data(Qt::UserRole).toInt(); // and get its label number for labels mask
+
+    for (int i = 1; i < items.count(); i++) { // each item of the list minus the first
+        Mat1b superpixel_mask = labels_mask == items[i]->data(Qt::UserRole).toInt(); // label number for labels mask
+        labels_mask.setTo(id, superpixel_mask); // claim cells for the first label
+        mask.setTo(col, superpixel_mask); // and set its color to the mask
+
+        ui->listWidget_labels->setCurrentItem(items[i]); // select the item
+        int row = ui->listWidget_labels->currentRow(); // find its row number in the list
+        ui->listWidget_labels->removeItemWidget(items[i]); // delete this item
+        ui->listWidget_labels->takeItem(row); // and delete the label from the list
+    }
+    items[0]->setText(items[0]->text() + " (joined)"); // add "join" to the first label name containing the result
+
+    ShowSegmentation(); // show the result
+}
+
+void MainWindow::on_pushButton_label_create_clicked() // special mode to modify the cells (superpixels)
+{
+    if (!computed) { // if image not computed yet get out
+        QMessageBox::warning(this, "No cells found",
+                                 "Not now!\n\nBefore anything else, compute the segmentation or load a previous session");
+        ui->pushButton_label_create->setChecked(false); // get out of the special mode
+        return;
+    }
+
+    if (ui->pushButton_label_create->isChecked()) { // initialize cell creation
+        QListWidgetItem *item = AddNewLabel("New cell"); // add a new label to contain the result
+
+        ui->listWidget_labels->setCurrentItem(item); // select this new label
+        ShowCurrentColor(255, 255, 255); // set its color to white, the drawing color for a new cell
+
+        ui->label_segmentation->setCursor(Qt::CrossCursor); // cursor change to show this is a special mode
+
+        ui->frame_pick_colors->setVisible(false); // disable all the tabs/elements to keep the user in the special mode
+        ui->pushButton_label_add->setVisible(false);
+        ui->pushButton_label_delete->setVisible(false);
+        ui->pushButton_label_hide->setVisible(false);
+        ui->pushButton_label_join->setVisible(false);
+        ui->button_load_session->setVisible(false);
+        ui->button_save_session->setVisible(false);
+        ui->pushButton_psd->setVisible(false);
+        ui->pushButton_tif->setVisible(false);
+        ui->Tabs->setTabEnabled(0, false);
+        ui->Tabs->setTabEnabled(1, false);
+        ui->listWidget_labels->setEnabled(false);
+        ui->checkBox_mask->setChecked(true);
+
+        labels_mask.copyTo(create_cell_labels_save); // save the labels mask for the special mode
+        mask.copyTo(create_cell_mask_save); // as well as the mask
+        pos_save = cv::Point(-1, -1); // no first line point defined
+    }
+    else { // special mode ended by clicking again the button
+        int create = QMessageBox::question(this, "Create new cell", "Are you sure you want to create this cell from the white mask?\nIf not, the mask will be deleted", QMessageBox::Yes|QMessageBox::No); // really create the cell ?
+
+        double min, max;
+        minMaxIdx(labels, &min, &max); // find the highest superpixel number
+        int maxLabel = max + 1; // superpixel value of new cell
+
+        Mat1b white_mask;
+        inRange(mask, Vec3b(255, 255, 255), Vec3b(255, 255, 255), white_mask); // extract white color from mask
+
+        if ((cv::sum(white_mask) != Scalar(0,0,0)) & (create == QMessageBox::Yes)) { // create the cell
+            vector<vector<cv::Point>> contours;
+            vector<Vec4i> hierarchy;
+
+            findContours(white_mask, contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE); // fond new cell contours
+
+            grid.setTo(0, white_mask); // erase cell in grid mask
+            drawContours(grid, contours, -1, gridColor, 1, 8, hierarchy ); // draw contour of new cell in grid
+
+            labels.setTo(maxLabel, white_mask); // set new superpixel value in labels
+
+            ShowSegmentation(); // show the result
+            ShowCurrentColor(192, 0, 192); // set new label color to purple (I like purple)
+        }
+        else // don't create the cell !
+        {
+            QListWidgetItem *item = ui->listWidget_labels->currentItem(); // find new label
+            int row = ui->listWidget_labels->currentRow(); // get its row in the list
+            ui->listWidget_labels->removeItemWidget(item); // delete the item
+            ui->listWidget_labels->takeItem(row); // delete label form list
+
+            create_cell_labels_save.copyTo(labels_mask); // no more undo masks
+            create_cell_mask_save.copyTo(mask);
+
+            ShowSegmentation(); // show view back to previous state
+        }
+
+        SaveUndo(); // no undo possible
+
+        ui->label_segmentation->setCursor(Qt::PointingHandCursor); // cursor back to normal
+
+        ui->frame_pick_colors->setVisible(true); // show again the elements hidden for the special mode
+        ui->pushButton_label_add->setVisible(true);
+        ui->pushButton_label_delete->setVisible(true);
+        ui->pushButton_label_hide->setVisible(true);
+        ui->pushButton_label_join->setVisible(true);
+        ui->button_load_session->setVisible(true);
+        ui->button_save_session->setVisible(true);
+        ui->pushButton_psd->setVisible(true);
+        ui->pushButton_tif->setVisible(true);
+        ui->Tabs->setTabEnabled(0, true);
+        ui->Tabs->setTabEnabled(1, true);
+        ui->listWidget_labels->setEnabled(true);
+    }
+}
+
 /////////////////// Save and load //////////////////////
+
+void MainWindow::on_pushButton_psd_clicked() // save image (background) + layers (labels) to PSD Photoshop image
+{
+    SavePSDorTIF("psd");
+}
+
+void MainWindow::on_pushButton_tif_clicked() // save image + layers as pages to multipage TIFF image
+{
+    SavePSDorTIF("tif");
+}
+
+Image Mat2Magick(Mat src) // image conversion from Mat to Magick (only for RGB images)
+{
+    Magick::Image mgk(Geometry(src.cols, src.rows), "black"); // result image
+    mgk.read(src.cols, src.rows, "BGR", Magick::CharPixel, (char*)src.data); // transfer image data from Mat
+
+    return mgk;
+}
+
+void MainWindow::SavePSDorTIF(std::string type) // save image + layers to PSD or TIFF image
+{
+    if (!loaded) { // if image not loaded yet get out
+        QMessageBox::warning(this, "Image not loaded",
+                                 "Not now!\n\nBefore anything else, load an image");
+        return;
+    }
+
+    std::string ext = type; // file type
+    std::transform(type.begin(), type.end(), type.begin(), ::toupper); // file type uppercase
+
+    QString filename = QFileDialog::getSaveFileName(this, "Save labels to multi-layers image file...", // choose filename
+                                                    "./" + QString::fromStdString(basedir + basefile + "-segmentation-labels." + ext),
+                                                    QString::fromStdString("*." + ext + " *." + type));
+
+    if (filename.isNull() || filename.isEmpty()) // cancel ?
+        return;
+
+    QApplication::setOverrideCursor(Qt::WaitCursor); // wait cursor
+
+    std::string fileImage = filename.toUtf8().constData(); // convert filename to std::string
+    if (type == "TIF") type = "TIFF"; // add a F to TIF
+
+    vector<Image> imageList; // layers (labels) list
+    Magick::Image bkg; // result
+
+    bkg = Mat2Magick(image); // convert image
+    bkg.magick(type); // set layer type to PSD or TIFF
+    if (type == "PSD") bkg.compressType(RLECompression); // RLE compression for PSD
+        else bkg.compressType(LZWCompression); // and LZW for TIFF
+    bkg.density(300); // dpi
+    bkg.resolutionUnits(PixelsPerInchResolution); // dpi unit
+    bkg.label("Background"); // for Photoshop image is the "background"
+    imageList.push_back(bkg); // add image to the list
+    if (type == "PSD") imageList.push_back(bkg); // for PSD the first image is the preview, the second is the background
+
+    int nb_count = ui->listWidget_labels->count(); // how many layerss (labels) to save ?
+    for (int i = 0; i < nb_count; i++) { // for each label
+        QListWidgetItem *item = ui->listWidget_labels->item(i); // this label from the list
+        int id = item->data(Qt::UserRole).toInt(); // get its label id for labels mask
+        //std::string name = std::to_string(i) + "-" + item->text().toUtf8().constData(); // unique label name
+        std::string name = item->text().toUtf8().constData(); // convert label name to std::string
+        QBrush brush = item->background(); // label color
+        Vec3b col = Vec3b(brush.color().red(), brush.color().green(), brush.color().blue());
+
+        Mat1b superpixel_mask = labels_mask == id; // extract label
+        Mat save; // current layer image
+        image.copyTo(save); // copy image structure
+        save = 0; // set it to 0 (transparent)
+        save.setTo(Vec3b(col[2], col[1], col[0]), superpixel_mask); // copy cells to layer
+
+        Magick::Image img(Geometry(image.cols, image.rows), "black"); // Magick current layer
+        img = Mat2Magick(save); // convert Mat layer to Magick layer
+        if (type == "TIFF") bkg.depth(8); // 8-bit TIFF
+        img.transparent(Magick::Color(0,0,0)); // set the transparent color
+        if (type == "PSD") img.compressType(RLECompression); // RLE compression for PSD
+            else img.compressType(LZWCompression); // and LZW for TIFF
+        img.label(name); // set the name (doesn't work for TIFF pages)
+        img.density(300); // dpi
+        img.resolutionUnits(PixelsPerInchResolution); // dpi unit
+        img.magick(type); // set PSD or TIFF type
+
+        imageList.push_back(img); // save the image to the list
+    }
+
+    Magick::writeImages(imageList.begin(), imageList.end(), fileImage, true); // Write result to disk
+
+    QApplication::restoreOverrideCursor(); // Restore cursor
+}
 
 void MainWindow::on_button_image_clicked() // Load main image
 {
-    QString filename = QFileDialog::getOpenFileName(this, "Select picture file", "/home", "Images (*.jpg *.JPG *.jpeg *.JPEG *.jp2 *.JP2 *.png *.PNG *.tif *.TIF *.tiff *.TIFF *.bmp *.BMP)");
-    if (filename.isNull() || filename.isEmpty())
+    QString filename = QFileDialog::getOpenFileName(this, "Select picture file", "/media/DataI5/Photos/", "Images (*.jpg *.JPG *.jpeg *.JPEG *.jp2 *.JP2 *.png *.PNG *.tif *.TIF *.tiff *.TIFF *.bmp *.BMP)"); // image filename
+    if (filename.isNull() || filename.isEmpty()) // cancel ?
         return;
 
     basefile = filename.toUtf8().constData(); // base file name and dir are used after to save other files
-    basefile = basefile.substr(0, basefile.size()-4);
+    basefile = basefile.substr(0, basefile.size()-4); // strip the file extension
     basedir = basefile;
-    size_t found = basefile.find_last_of("/");
-    basedir = basedir.substr(0,found) + "/";
-    basefile = basefile.substr(found+1);
-    ui->label_filename->setText(filename); // display file name
+    size_t found = basefile.find_last_of("/"); // find last directory
+    basedir = basedir.substr(0,found) + "/"; // extract file location
+    basefile = basefile.substr(found+1); // delete ending slash
+    ui->label_filename->setText(filename); // display file name in ui
 
     std::string filename_s = filename.toUtf8().constData(); // convert filename from QString
 
     cv::Mat mat = cv::imread(filename_s, CV_LOAD_IMAGE_COLOR); // Load image
-    ui->label_thumbnail->setPixmap(Mat2QPixmapResized(mat, ui->label_thumbnail->width(), ui->label_thumbnail->height())); // Display image
+    if (mat.empty()) { // problem ?
+        QMessageBox::critical(this, "File error",
+                              "There was a problem reading the image file");
+        return;
+    }
 
-    image = mat; // stores the image for further use
-    mat.copyTo(backup);
+    ui->label_thumbnail->setPixmap(QPixmap());
+    ui->label_segmentation->setPixmap(QPixmap());
+    ui->label_thumbnail->setPixmap(Mat2QPixmapResized(mat, ui->label_thumbnail->width(), ui->label_thumbnail->height(), true)); // Show thumbnail
+
+    image = mat; // store the image for further use
+    mat.copyTo(image_backup); // for undo
 
     computed = false; // depthmap not yet computed
 
@@ -101,9 +438,11 @@ void MainWindow::on_button_image_clicked() // Load main image
     ui->label_image_width->setText(QString::number(image.cols)); // display image dimensions
     ui->label_image_height->setText(QString::number(image.rows));
 
+    InitializeValues();
+
     double zoomX = double(ui->label_segmentation->width()) / image.cols; // try vertical and horizontal ratios
     double zoomY = double(ui->label_segmentation->height()) / image.rows;
-    if (zoomX < zoomY) zoom = zoomX; // the lowest fut the view
+    if (zoomX < zoomY) zoom = zoomX; // the lowest fit the view
         else zoom = zoomY;
     oldZoom = zoom; // for center view
     ShowZoomValue(); // display current zoom
@@ -111,28 +450,103 @@ void MainWindow::on_button_image_clicked() // Load main image
 
     cv::resize(image, thumbnail, Size(ui->label_thumbnail->pixmap()->width(),ui->label_thumbnail->pixmap()->height()),
                0, 0, INTER_AREA); // create thumbnail
+
+    loaded = true; // image loaded successfuly
+    mask.release(); // reinit mask
+    grid.release(); // reinit grid
+    undo_mask.release(); // reinit undo masks
+    undo_labels.release();
+    computed = false; // segmentation not performed
+    DeleteAllLabels(true); // empty a previous labels list
+    SaveUndo(); // for undo
+
+    CopyFromImage(image, viewport).copyTo(disp_color); // copy only the viewport part of image
+    QPixmap D;
+    D = Mat2QPixmapResized(disp_color, int(viewport.width*zoom), int(viewport.height*zoom), true); // zoomed image
+    ui->label_segmentation->setPixmap(D); // Set new image content to viewport
+    DisplayThumbnail(); // update thumbnail view
+
+    ShowSegmentation(); // show the result
+
+    ui->Tabs->setTabEnabled(1, true); // enable Segmentation and Labels tabs
+    ui->Tabs->setTabEnabled(2, true);
 }
 
 void MainWindow::on_button_save_session_clicked() // save session files
 {
-    if (mask.empty()) // no mask = nothing to save
-            return;
+    if (!computed) { // if image not computed yet get out
+        QMessageBox::warning(this, "No cells found",
+                                 "Not now!\n\nBefore anything else, compute the segmentation or load a previous session");
+        return;
+    }
 
-    QString dirname = QFileDialog::getExistingDirectory(this, "Save segmentation session to directory...", "./" + QString::fromStdString(basedir), 0);
+    QString filename = QFileDialog::getSaveFileName(this, "Save session to XML file...", "./" + QString::fromStdString(basedir + basefile + "-segmentation-data.xml"), "*.xml *.XML"); // filename
 
-    if (dirname.isNull() || dirname.isEmpty()) // cancel ?
+    if (filename.isNull() || filename.isEmpty()) // cancel ?
         return;
 
-    dirname += "/";
-    std::string dirname_s = dirname.toUtf8().constData(); // convert from QString
+    std::string filesession = filename.toUtf8().constData(); // base file name
+    size_t pos = filesession.find("-segmentation-data.xml");
+    if (pos != std::string::npos) filesession.erase(pos, filesession.length());
 
-    cv::imwrite(dirname_s + basefile + "-segmentation-mask.png", mask); // save mask
-    cv::imwrite(dirname_s + basefile + "-segmentation-grid.png", grid); // save grid
-    cv::imwrite(dirname_s + basefile + "-segmentation-image.png", image); // save processed image
-    cv::FileStorage fs(dirname_s + basefile + "-segmentation-labels.xml", cv::FileStorage::WRITE); // save labels
-    fs << "Labels" << labels;
+    bool write;
+    write = cv::imwrite(filesession + "-segmentation-mask.png", mask); // save mask
+    if (!write) {
+        QMessageBox::critical(this, "File error",
+                              "There was a problem saving the segmentation mask image file");
+        return;
+    }
 
-    QMessageBox::information(this, "Save segmentation session", "Session saved with base name:\n" + dirname + QString::fromStdString(basefile));
+    write = cv::imwrite(filesession + "-segmentation-grid.png", grid); // save grid
+    if (!write) {
+        QMessageBox::critical(this, "File error",
+                              "There was a problem saving the segmentation grid image file");
+        return;
+    }
+
+    write = cv::imwrite(filesession + "-segmentation-image.png", image); // save processed image
+    if (!write) {
+        QMessageBox::critical(this, "File error",
+                              "There was a problem saving the segmentation image file");
+        return;
+    }
+
+    cv::FileStorage fs(filesession + "-segmentation-data.xml", cv::FileStorage::WRITE); // open labels file for writing
+    if (!fs.isOpened()) {
+        QMessageBox::critical(this, "File error",
+                              "There was a problem writing the segmentation data file");
+        return;
+    }
+
+    int gridValue = ui->comboBox_grid_color->currentIndex(); // save grid color
+    fs << "GridColor" << gridValue; // write labels count
+    int nb_count = ui->listWidget_labels->count(); // how many labels to save ?
+    fs << "LabelsCount" << nb_count; // write labels count
+
+    for (int i = 0; i < nb_count; i++) { // for each label
+        std::string field;
+
+        QListWidgetItem *item = ui->listWidget_labels->item(i); // label id
+
+        field = "LabelId" + std::to_string(i);
+        fs << field << item->data(Qt::UserRole).toInt(); // write label id
+
+        std::string name = item->text().toUtf8().constData(); // write label name
+        field = "LabelName" + std::to_string(i);
+        fs << field << name;
+
+        QBrush brush = item->background(); // write label color
+        Vec3b col = Vec3b(brush.color().red(), brush.color().green(), brush.color().blue());
+        field = "LabelColor" + std::to_string(i);
+        fs << field << col;
+    }
+
+    fs << "Labels" << labels; // write labels Mat
+    fs << "LabelsMask" << labels_mask; // write labels mask Mat
+
+    fs.release(); // close file
+
+    QMessageBox::information(this, "Save segmentation session", "Session saved with base name:\n" + QString::fromStdString(filesession));
 }
 
 void MainWindow::on_button_load_session_clicked() // load previous session
@@ -140,26 +554,96 @@ void MainWindow::on_button_load_session_clicked() // load previous session
     if (image.empty()) // image mandatory
             return;
 
-    QString dirname = QFileDialog::getExistingDirectory(this, "Load session from directory...", "./" + QString::fromStdString(basedir), 0);
+    QString filename = QFileDialog::getOpenFileName(this, "Load session from XML file...", "./" + QString::fromStdString(basedir + basefile + "-segmentation-data.xml"), "*.xml *.XML");
 
-    if (dirname.isNull() || dirname.isEmpty()) // cancel ?
+    if (filename.isNull() || filename.isEmpty()) // cancel ?
         return;
 
-    dirname += "/";
-    std::string dirname_s = dirname.toUtf8().constData(); // convert from QString
+    std::string filesession = filename.toUtf8().constData(); // base file name
+    size_t pos = filesession.find("-segmentation-data.xml");
+    if (pos != std::string::npos) filesession.erase(pos, filesession.length());
 
-    mask = cv::imread(dirname_s + basefile + "-segmentation-mask.png", CV_LOAD_IMAGE_COLOR); // load mask
-    grid = cv::imread(dirname_s + basefile + "-segmentation-grid.png"); // load grid
-    image = cv::imread(dirname_s + basefile + "-segmentation-image.png"); // load processed image
+    mask = cv::imread(filesession + "-segmentation-mask.png", CV_LOAD_IMAGE_COLOR); // load mask
+    if (mask.empty()) {
+        QMessageBox::critical(this, "File error",
+                              "There was a problem reading the segmentation mask file:\nit must end with ''-segmentation-mask.png''");
+        return;
+    }
+
+    grid = cv::imread(filesession + "-segmentation-grid.png"); // load grid
+    if (grid.empty()) {
+        QMessageBox::critical(this, "File error",
+                              "There was a problem reading the segmentation grid file:\nit must end with ''-segmentation-grid.png''");
+        return;
+    }
+
+    image = cv::imread(filesession + "-segmentation-image.png"); // load processed image
+    if (image.empty()) {
+        QMessageBox::critical(this, "File error",
+                              "There was a problem reading the segmentation image file:\nit must end with ''-segmentation-image.png''");
+        return;
+    }
+
+    DeleteAllLabels(false); // delete all labels but do not create a new one
+
+    cv::FileStorage fs(filesession + "-segmentation-data.xml", FileStorage::READ); // open labels file
+
+    if (!fs.isOpened()) {
+        QMessageBox::critical(this, "File error",
+                              "There was a problem reading the segmentation data file:\nit must end with ''-segmentation-data.xml''");
+        return;
+    }
+
     Mat labels_temp(image.rows, image.cols, CV_32SC1); // labels on 1 channel
-    cv::FileStorage fs2(dirname_s + basefile + "-segmentation-labels.xml", FileStorage::READ); // load labels
-    fs2["Labels"] >> labels_temp;
+    fs["Labels"] >> labels_temp; // load labels
     labels_temp.copyTo(labels);
+    fs["LabelsMask"] >> labels_temp; // load labels mask
+    labels_temp.copyTo(labels_mask);
 
+    maxLabels = 0; // reset label count
+    int nb_count, gridValue;
+
+    fs["GridColor"] >> gridValue; // grid color
+    fs["LabelsCount"] >> nb_count; // read how many labels to load ?
+
+    for (int i = 0; i < nb_count; i++) { // for each label to load
+        QListWidgetItem *item = new QListWidgetItem (); // create new label
+        std::string field;
+
+        int num;
+        field = "LabelId" + std::to_string(i); // read label id
+        fs [field] >> num;
+        item->setData(Qt::UserRole, num); // set it to current label
+        if (num > maxLabels) maxLabels = num; // numLabels must be equal to the max label value
+
+        std::string name;
+        field = "LabelName" + std::to_string(i); // read label name
+        fs [field] >> name;
+        item->setText(QString::fromStdString(name)); // set name to current label
+
+        Vec3b col;
+        field = "LabelColor" + std::to_string(i); // read label color
+        fs [field] >> col;
+        item->setBackground(QColor(col[0], col[1], col[2])); // set color to current label
+        if (IsColorDark(col[0], col[1], col[2])) // set text color relative to background darkness
+            item->setForeground(QColor(255, 255, 255));
+            else item->setForeground(QColor(0, 0, 0));
+
+        item->setFlags(Qt::ItemIsEditable | Qt::ItemIsSelectable | Qt::ItemIsEnabled); // item enabled, editable and selectable
+
+        ui->listWidget_labels->addItem(item); // add the new item to the list
+        ui->listWidget_labels->setCurrentItem(item); // select the new label
+        item->setSelected(false); // don't select it !
+    }
+
+    fs.release(); // close file
+
+    SaveUndo(); // for undo
     computed = true; // not really computed but necessary
     ShowSegmentation(); // update display
+    ui->comboBox_grid_color->setCurrentIndex(gridValue); // update grid color in ui
 
-    QMessageBox::information(this, "Load segmentation session", "Session loaded with base name:\n" + dirname + QString::fromStdString(basefile));
+    QMessageBox::information(this, "Load segmentation session", "Session loaded with base name:\n" + QString::fromStdString(filesession));
 }
 
 void MainWindow::on_button_save_conf_clicked() // save configuration
@@ -187,26 +671,42 @@ void MainWindow::on_button_save_conf_clicked() // save configuration
     bool gaussian_blur = ui->checkBox_gaussian_blur->isChecked();
     bool normalize = ui->checkBox_normalize->isChecked();
     bool equalize = ui->checkBox_equalize->isChecked();
+    bool color_balance = ui->checkBox_color_balance->isChecked();
+    int color_balance_percent = ui->spinBox_color_balance_percent->value();
     bool contours = ui->checkBox_contours->isChecked();
     int contours_sigma = ui->spinBox_contours_sigma->value();
     int contours_thickness = ui->spinBox_contours_thickness->value();
     int contours_aperture = ui->comboBox_contours_aperture->currentIndex() * 2 + 3;
+    bool denoise = ui->checkBox_denoise->isChecked();
+    int luminance = ui->horizontalSlider_luminance->value();
+    int chrominance = ui->horizontalSlider_chrominance->value();
 
     FileStorage fs(filename_s, FileStorage::WRITE); // save to openCV XML file type
+
+    if (!fs.isOpened()) {
+        QMessageBox::critical(this, "File error",
+                              "There was a problem writing the configuration file");
+        return;
+    }
+
+    //// Segmentation parameters
     fs << "Algorithm" << algorithm;
     fs << "RegionSize" << region_size;
     fs << "Ruler" << ruler;
     fs << "Connectivity" << min_element_size;
     fs << "NumIterations" << num_iterations;
-    fs << "Color" << line_color;
-    fs << "ThickLines" << thick_lines;
     fs << "Superpixels" << num_superpixels;
     fs << "Levels" << num_levels;
     fs << "Prior" << prior;
     fs << "Histograms" << num_histogram_bins;
     fs << "DoubleStep" << double_step;
     fs << "Ratio" << ratio;
+    fs << "ThickLines" << thick_lines;
     fs << "LabColors" << lab;
+    fs << "Color" << line_color;
+    //// image pre-production parameters
+    fs << "ColorBalance" << color_balance;
+    fs << "ColorBalancePercent" << color_balance_percent;
     fs << "GaussianBlur" << gaussian_blur;
     fs << "Normalize" << normalize;
     fs << "Equalize" << equalize;
@@ -214,39 +714,55 @@ void MainWindow::on_button_save_conf_clicked() // save configuration
     fs << "ContoursSigma" << contours_sigma;
     fs << "ContoursThickness" << contours_thickness;
     fs << "ContoursAperture" << contours_aperture;
+    fs << "Noise" << denoise;
+    fs << "NoiseLuminance" << luminance;
+    fs << "NoiseChrominance" << chrominance;
+
+    fs.release(); // close file
 
     QMessageBox::information(this, "Save configuration", "Configuration saved to:\n" + filename);
 }
 
 void MainWindow::on_button_load_conf_clicked() // load configuration
 {
-    QString filename = QFileDialog::getOpenFileName(this, "Select XML configuration file", QString::fromStdString(basedir + basefile + "-segmentation-conf.xml"), "XML parameters (*.xml *.XML)");
+    QString filename = QFileDialog::getOpenFileName(this, "Select XML configuration file", QString::fromStdString(basedir + basefile + "-segmentation-conf.xml"), "XML parameters (*.xml *.XML)"); // filename
     if (filename.isNull()) // cancel ?
         return;
 
     std::string filename_s = filename.toUtf8().constData(); // convert filename from QString to std::string
 
     // Initialize variables to save
-    int algorithm, region_size, ruler, min_element_size, num_iterations, line_color,
-        num_superpixels, num_levels, prior, num_histogram_bins, contours_sigma, contours_thickness, contours_aperture;
+    int algorithm, region_size, ruler, min_element_size, num_iterations, line_color, color_balance_percent,
+        num_superpixels, num_levels, prior, num_histogram_bins,
+        contours_sigma, contours_thickness, contours_aperture, luminance, chrominance;
     double ratio;
-    bool thick_lines, double_step, lab, gaussian_blur, equalize, normalize, contours;
+    bool thick_lines, double_step, lab, gaussian_blur, equalize, normalize, color_balance, contours, denoise;
 
     FileStorage fs(filename_s, FileStorage::READ); // load from openCV XML file
+
+    if (!fs.isOpened()) {
+        QMessageBox::critical(this, "File error",
+                              "There was a problem reading the configuration file");
+        return;
+    }
+
     fs["Algorithm"] >> algorithm;
     fs["RegionSize"] >> region_size;
     fs["Ruler"] >> ruler;
     fs["Connectivity"] >> min_element_size;
     fs["NumIterations"] >> num_iterations;
-    fs["Color"] >> line_color;
-    fs["ThickLines"] >> thick_lines;
     fs["Superpixels"] >> num_superpixels;
     fs["Levels"] >> num_levels;
     fs["Prior"] >> prior;
     fs["Histograms"] >> num_histogram_bins;
     fs["DoubleStep"] >> double_step;
     fs["Ratio"] >> ratio;
+    fs["ThickLines"] >> thick_lines;
     fs["LabColors"] >> lab;
+    fs["Color"] >> line_color;
+
+    fs["ColorBalance"] >> color_balance;
+    fs["ColorBalancePercent"] >> color_balance_percent;
     fs["GaussianBlur"] >> gaussian_blur;
     fs["Normalize"] >> normalize;
     fs["Equalize"] >> equalize;
@@ -254,8 +770,13 @@ void MainWindow::on_button_load_conf_clicked() // load configuration
     fs["ContoursSigma"] >> contours_sigma;
     fs["ContoursThickness"] >> contours_thickness;
     fs["ContoursAperture"] >> contours_aperture;
+    fs["Noise"] >> denoise;
+    fs["NoiseLuminance"] >> luminance;
+    fs["NoiseChrominance"] >> chrominance;
 
-    ui->comboBox_algorithm->setCurrentIndex(algorithm); // update GUI values
+    fs.release();
+
+    ui->comboBox_algorithm->setCurrentIndex(algorithm); // update GUI parameters values
     ui->horizontalSlider_region_size->setValue(region_size);
     ui->horizontalSlider_ruler->setValue(ruler);
     ui->horizontalSlider_connectivity->setValue(min_element_size);
@@ -272,10 +793,15 @@ void MainWindow::on_button_load_conf_clicked() // load configuration
     ui->checkBox_gaussian_blur->setChecked(gaussian_blur);
     ui->checkBox_normalize->setChecked(normalize);
     ui->checkBox_equalize->setChecked(equalize);
+    ui->checkBox_color_balance->setChecked(color_balance);
+    ui->spinBox_color_balance_percent->setValue(color_balance_percent);
     ui->checkBox_contours->setChecked(contours);
     ui->spinBox_contours_sigma->setValue(contours_sigma);
     ui->spinBox_contours_thickness->setValue(contours_thickness);
     ui->comboBox_contours_aperture->setCurrentIndex((contours_aperture - 3) / 2);
+    ui->checkBox_denoise->setChecked(denoise);
+    ui->horizontalSlider_luminance->setValue(luminance);
+    ui->horizontalSlider_chrominance->setValue(chrominance);
 
     QMessageBox::information(this, "Load configuration", "Configuration loaded from:\n" + filename);
 }
@@ -297,29 +823,29 @@ void MainWindow::on_checkBox_grid_clicked() // Refresh image : grid on/off
     ShowSegmentation(); // update display
 }
 
-void MainWindow::on_horizontalSlider_blend_mask_valueChanged(int value) // Refresh image : blend mask transparency changed
+void MainWindow::on_horizontalSlider_blend_mask_valueChanged() // Refresh image : blend mask transparency changed
 {
     ShowSegmentation(); // update display
 }
 
-void MainWindow::on_horizontalSlider_blend_image_valueChanged(int value) // Refresh image : image mask transparency changed
+void MainWindow::on_horizontalSlider_blend_image_valueChanged() // Refresh image : image mask transparency changed
 {
     ShowSegmentation(); // update display
 }
 
-void MainWindow::on_horizontalScrollBar_segmentation_valueChanged(int value) // update viewport
+void MainWindow::on_horizontalScrollBar_segmentation_valueChanged() // update viewport
 {
     viewport.x = ui->horizontalScrollBar_segmentation->value(); // new value
     ShowSegmentation(); // update display
 }
 
-void MainWindow::on_verticalScrollBar_segmentation_valueChanged(int value)  // update viewport
+void MainWindow::on_verticalScrollBar_segmentation_valueChanged()  // update viewport
 {
     viewport.y = ui->verticalScrollBar_segmentation->value(); // new value
     ShowSegmentation(); // update display
 }
 
-void MainWindow::on_comboBox_grid_color_currentIndexChanged(int index) // Change grid color
+void MainWindow::on_comboBox_grid_color_currentIndexChanged(int) // Change grid color
 {
     if (!computed) // not computed = no mask !
         return;
@@ -406,30 +932,36 @@ void MainWindow::on_pushButton_zoom_100_clicked() // zoom 100%
     QApplication::restoreOverrideCursor(); // Restore cursor
 }
 
-void MainWindow::ShowZoomValue()
+void MainWindow::ShowZoomValue() // display zoom percentage in ui
 {
     ui->label_zoom->setText(QString::number(int(zoom * 100)) +"%"); // show new zoom value in percent
 }
 
 /////////////////// Undo //////////////////////
 
+void MainWindow::SaveUndo()
+{
+    mask.copyTo(undo_mask); // mask
+    labels_mask.copyTo(undo_labels); // labels
+}
+
 void MainWindow::on_button_undo_clicked() // Undo last action
 {
-    undo.copyTo(mask); // get back !
+    if (!computed) { // if image not computed yet get out
+        QMessageBox::warning(this, "No cells found",
+                                 "Not now!\n\nBefore anything else, compute the segmentation or load a previous session");
+        return;
+    }
+
+    undo_mask.copyTo(mask); // get back !
+    undo_labels.copyTo(labels_mask); // get back !
+
     ShowSegmentation(); // update display
 }
 
 /////////////////// Algorithm parameters visibility //////////////////////
 
-void MainWindow::on_checkBox_contours_clicked() // zoom 100%
-{
-    bool checked = ui->checkBox_contours->isChecked(); // checkbox state
-    ui->spinBox_contours_sigma->setVisible(checked); // hide or reveal parameters
-    ui->spinBox_contours_thickness->setVisible(checked);
-    ui->comboBox_contours_aperture->setVisible(checked);
-}
-
-void MainWindow::on_comboBox_algorithm_currentIndexChanged(int index) // algorithm changed : hide/show options
+void MainWindow::on_comboBox_algorithm_currentIndexChanged(int) // algorithm changed : hide/show options
 {
     ui->horizontalSlider_region_size->setVisible(false); // hide all options first
     ui->horizontalSlider_ruler->setVisible(false);
@@ -515,140 +1047,280 @@ void MainWindow::on_comboBox_algorithm_currentIndexChanged(int index) // algorit
     }
 }
 
-/////////////////// Edit colors //////////////////////
+/////////////////// Labels colors ////////////////////
+
+void MainWindow::ShowCurrentColor(int red, int green, int blue) // show current label color and set it to label in list
+{
+    QString text_color;
+    if (IsColorDark(red, green, blue)) // text color white or black according to label color
+        text_color = "white";
+        else text_color = "black";
+
+    ui->label_color->setStyleSheet("QLabel { color:" + text_color + "; background-color:rgb("
+                                   + QString::number(red) + ","
+                                   + QString::number(green) + ","
+                                   + QString::number(blue)
+                                   + ");border: 3px solid black; }"); // update current color background and text color
+
+    color = Vec3b(blue, green, red); // color in mask
+    QListWidgetItem *item = ui->listWidget_labels->currentItem(); // current label
+    item->setBackground(QColor(color[2], color[1], color[0])); // label color
+    if (IsColorDark(color[2], color[1], color[0])) // label text color according to label color
+        item->setForeground(QColor(255, 255, 255)); // white
+        else item->setForeground(QColor(0, 0, 0)); // black
+    ui->label_color->setText(item->text()); // show color name
+
+    if (computed) { // a mask exist ?
+        Mat1b superpixel_mask = labels_mask == GetCurrentLabelNumber(); // extract label
+        mask.setTo(color, superpixel_mask); // set new color to the mask
+        ShowSegmentation(); // show result
+    }
+}
+
+void MainWindow::on_pushButton_color_pick_clicked() // Pick custom color for current label
+{
+    QColor pick_color(color[2], color[1], color[0]); // current label color
+    pick_color = QColorDialog::getColor(pick_color, this, "Select Color", QColorDialog::DontUseNativeDialog); // pick color dialog
+
+    if (pick_color.isValid()) { // color selected ?
+        color = Vec3b(pick_color.green(), pick_color.blue(), pick_color.red()); // get selected color
+        QListWidgetItem *item = ui->listWidget_labels->currentItem(); // current label
+        item->setBackground(QColor(color[2], color[1], color[0])); // set current label color
+        if (IsColorDark(color[2], color[1], color[0])) // text color according to label color
+            item->setForeground(QColor(255, 255, 255)); // white
+            else item->setForeground(QColor(0, 0, 0)); // black
+        ShowCurrentColor(pick_color.red(), pick_color.green(), pick_color.blue()); // show new color
+    }
+}
+
 // All following functions are the same, only the BGR colors change
 
 void MainWindow::on_pushButton_color_red_clicked() //Red
 {
     color = Vec3b(0,0,255); // chosen color
-    ui->label_color->setStyleSheet("QLabel { background-color:rgb(255,0,0);border: 3px solid black; }"); // update current color
-    ui->label_color->setText("RED"); // show color name
+    ShowCurrentColor(color[2], color[1], color[0]); // show new color
 }
 
 void MainWindow::on_pushButton_color_green_clicked() // Green
 {
     color = Vec3b(0,255,0);
-    ui->label_color->setStyleSheet("QLabel { background-color:rgb(0,255,0);border: 3px solid black; }");
-    ui->label_color->setText("GREEN");
+    ShowCurrentColor(0, 255, 0);
 }
 
 void MainWindow::on_pushButton_color_blue_clicked() // Blue
 {
     color = Vec3b(255,0,0);
-    ui->label_color->setStyleSheet("QLabel { background-color:rgb(0,0,255);border: 3px solid black; }");
-    ui->label_color->setText("BLUE");
+    ShowCurrentColor(color[2], color[1], color[0]);
 }
 
 void MainWindow::on_pushButton_color_cyan_clicked() // Cyan
 {
     color = Vec3b(255,255,0);
-    ui->label_color->setStyleSheet("QLabel { background-color:rgb(0,255,255);border: 3px solid black; }");
-    ui->label_color->setText("CYAN");
+    ShowCurrentColor(color[2], color[1], color[0]);
 }
 
 void MainWindow::on_pushButton_color_magenta_clicked() // Magenta
 {
     color = Vec3b(255,0,255);
-    ui->label_color->setStyleSheet("QLabel { background-color:rgb(255,0,255);border: 3px solid black; }");
-    ui->label_color->setText("MAGENTA");
+    ShowCurrentColor(color[2], color[1], color[0]);
 }
 
 void MainWindow::on_pushButton_color_yellow_clicked() // Yellow
 {
     color = Vec3b(0,255,255);
-    ui->label_color->setStyleSheet("QLabel { background-color:rgb(255,255,0);border: 3px solid black; }");
-    ui->label_color->setText("YELLOW");
-}
-
-void MainWindow::on_pushButton_color_white_clicked() // White
-{
-    color = Vec3b(255,255,255);
-    ui->label_color->setStyleSheet("QLabel { background-color:rgb(255,255,255);border: 3px solid black; }");
-    ui->label_color->setText("WHITE");
+    ShowCurrentColor(color[2], color[1], color[0]);
 }
 
 void MainWindow::on_pushButton_color_orange_clicked() // Orange
 {
     color = Vec3b(0,128,255);
-    ui->label_color->setStyleSheet("QLabel { background-color:rgb(255,128,0);border: 3px solid black; }");
-    ui->label_color->setText("ORANGE");
+    ShowCurrentColor(color[2], color[1], color[0]);
 }
 
 void MainWindow::on_pushButton_color_brown_clicked() // Brown
 {
     color = Vec3b(0,0,128);
-    ui->label_color->setStyleSheet("QLabel { background-color:rgb(128,0,0);border: 3px solid black; }");
-    ui->label_color->setText("BROWN");
+    ShowCurrentColor(color[2], color[1], color[0]);
 }
 
 void MainWindow::on_pushButton_color_olive_clicked() // Olive = dark green
 {
-    color = Vec3b(0,128,0);
-    ui->label_color->setStyleSheet("QLabel { background-color:rgb(0,128,0);border: 3px solid black; }");
-    ui->label_color->setText("OLIVE");
+    color = Vec3b(0,128,128);
+    ShowCurrentColor(color[2], color[1], color[0]);
 }
 
 void MainWindow::on_pushButton_color_navy_clicked() // Navy blue
 {
     color = Vec3b(128,0,0);
-    ui->label_color->setStyleSheet("QLabel { background-color:rgb(0,0,128);border: 3px solid black; }");
-    ui->label_color->setText("NAVY");
+    ShowCurrentColor(color[2], color[1], color[0]);
 }
 
 void MainWindow::on_pushButton_color_emerald_clicked() // Emerald = blue / green
 {
     color = Vec3b(128,128,0);
-    ui->label_color->setStyleSheet("QLabel { background-color:rgb(0,128,128);border: 3px solid black; }");
-    ui->label_color->setText("EMERALD");
+    ShowCurrentColor(color[2], color[1], color[0]);
 }
 
 void MainWindow::on_pushButton_color_purple_clicked() // Purple
 {
     color = Vec3b(255,0,128);
-    ui->label_color->setStyleSheet("QLabel { background-color:rgb(128,0,255);border: 3px solid black; }");
-    ui->label_color->setText("PURPLE");
+    ShowCurrentColor(color[2], color[1], color[0]);
 }
 
-void MainWindow::on_pushButton_color_gray_clicked() // Gray
+void MainWindow::on_pushButton_color_lime_clicked() // Lime
 {
-    color = Vec3b(128,128,128);
-    ui->label_color->setStyleSheet("QLabel { background-color:rgb(128,128,128);border: 3px solid black; }");
-    ui->label_color->setText("GRAY");
+    color = Vec3b(0,255,192);
+    ShowCurrentColor(color[2], color[1], color[0]);
+}
+
+void MainWindow::on_pushButton_color_rose_clicked() // Rose
+{
+    color = Vec3b(128,0,255);
+    ShowCurrentColor(color[2], color[1], color[0]);
+}
+
+void MainWindow::on_pushButton_color_violet_clicked() // Violet
+{
+    color = Vec3b(128,0,128);
+    ShowCurrentColor(color[2], color[1], color[0]);
+}
+
+void MainWindow::on_pushButton_color_azure_clicked() // Azure
+{
+    color = Vec3b(255,128,0);
+    ShowCurrentColor(color[2], color[1], color[0]);
+}
+
+void MainWindow::on_pushButton_color_malibu_clicked() // Malibu
+{
+    color = Vec3b(255,128,128);
+    ShowCurrentColor(color[2], color[1], color[0]);
+}
+
+void MainWindow::on_pushButton_color_laurel_clicked() // Laurel
+{
+    color = Vec3b(0,128,0);
+    ShowCurrentColor(color[2], color[1], color[0]);
+}
+
+///////////////////  Key events  //////////////////////
+
+void MainWindow::keyReleaseEvent(QKeyEvent *keyEvent) // draw cell mode : when spacebar is released
+{
+    if ((keyEvent->key() == Qt::Key_Space) & (ui->pushButton_label_create->isChecked())) { // add cell mode ?
+        if (pos_save == cv::Point(-1, -1)) // first point not set ?
+            return;
+
+        if (keyEvent->isAutoRepeat()) { // if <space> still pressed
+            mask_line_save.copyTo(mask); // erase line
+
+            ShowSegmentation(); // show result
+        }
+        else { // <space> released = really draw line
+            QPoint mouse_pos = ui->label_segmentation->mapFromGlobal(QCursor::pos()); // current mouse position
+            cv::Point pos = Viewport2Image(cv::Point(mouse_pos.x(), mouse_pos.y())); // convert position from viewport to image coordinates
+
+            mask_line_save.copyTo(mask); // erase line (mouse position can have changed a bit
+            SaveUndo(); // for undo
+
+            cv::line(mask, pos_save, pos, Scalar(255,255,255), 1); // line drawn in mask
+            cv::line(labels_mask, pos_save, pos, GetCurrentLabelNumber(), 1); // line drawn in labels mask
+
+            mask.copyTo(mask_line_save); // save result for next line
+            pos_save = pos; // the last pixel is the new line origin
+        }
+    }
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *keyEvent) // draw cell mode : when spacebar is pressed
+{
+    if ((keyEvent->key() == Qt::Key_Space) & (ui->pushButton_label_create->isChecked())) { // add cell mode ?
+        if (pos_save == cv::Point(-1, -1)) // first point not set
+            return;
+
+        if (!keyEvent->isAutoRepeat()) mask.copyTo(mask_line_save); // first time <space> is pressed
+
+        QPoint mouse_pos = ui->label_segmentation->mapFromGlobal(QCursor::pos()); // current mouse position
+        cv::Point pos = Viewport2Image(cv::Point(mouse_pos.x(), mouse_pos.y())); // convert position from viewport to image coordinates
+
+        cv::line(mask, pos_save, pos, Scalar(255,255,255), 1); // draw temp line
+
+        ShowSegmentation(); // show result
+    }
 }
 
 /////////////////// Mouse events //////////////////////
 
+void MainWindow::mouseReleaseEvent(QMouseEvent *eventRelease) // event triggered by releasing a mouse click
+{
+    QApplication::restoreOverrideCursor(); // Restore cursor
+}
+
 void MainWindow::mousePressEvent(QMouseEvent *eventPress) // event triggered by a mouse click
 {
-    if (!computed) // nothing to do
-        return;
+    if (!loaded) return; // no image = get out
 
     if (ui->label_segmentation->underMouse()) { // if the mouse is over the viewport
-        mouse_origin = ui->label_segmentation->mapFromGlobal(QCursor::pos()); // mouse position
-        Point pos = Viewport2Image(Point(mouse_origin.x(), mouse_origin.y())); // convert from viewport to image coordinates
-        mouseButton = eventPress->button(); // mouse button value
         bool key_control = QGuiApplication::queryKeyboardModifiers().testFlag(Qt::ControlModifier); // modifier keys pressed ? (shift control etc)
-        bool key_shift = QGuiApplication::queryKeyboardModifiers().testFlag(Qt::ShiftModifier);
         bool key_alt = QGuiApplication::queryKeyboardModifiers().testFlag(Qt::AltModifier);
-        bool key_meta = QGuiApplication::queryKeyboardModifiers().testFlag(Qt::MetaModifier);
 
-        if (key_alt) { // <alt> pressed at the same time = fill function
-            mask.copyTo(undo); // for undo
-            Vec3b temp_color;
-            if (mouseButton == Qt::LeftButton) temp_color = color; else temp_color = 0; // left button=color / right button=delete
-            floodFill(mask, Point(pos.x, pos.y), temp_color); // fill the area with the color
-            ShowSegmentation(); // display the result
-        }
-        else {
-            // Color already set before ? saves CPU time
-            Vec3b pixel = mask.at<Vec3b>(pos.y,pos.x); // find mask pixel color
-            if ((mouseButton == Qt::LeftButton) & (pixel == color)) // left button : compare pixel with current color
-                return; // color already set
-            else if ((mouseButton == Qt::RightButton) & (pixel == Vec3b(0,0,0))) // right button : compare pixel with 0 (delete)
-                return;  // color already set
+        mouse_origin = ui->label_segmentation->mapFromGlobal(QCursor::pos()); // mouse position
+        cv::Point pos = Viewport2Image(cv::Point(mouse_origin.x(), mouse_origin.y())); // convert from viewport to image coordinates
+        mouseButton = eventPress->button(); // mouse button value
 
-            WhichCell(pos.x, pos.y); // Show which cell has been clicked
+        if (mouseButton == Qt::MiddleButton) { // not for a zoom !
+            QApplication::setOverrideCursor(Qt::SizeAllCursor); // Move cursor
+            return;
         }
+
+        if ((computed) & (ui->Tabs->currentIndex() == 2)) { // in labels tab ?
+            if (key_control) { // <control> pressed at the same time = fill function
+                if (mouseButton == Qt::LeftButton) { // fill with color
+                    SaveUndo(); // save for undo
+                    floodFill(mask, cv::Point(pos.x, pos.y), color); // floodfill mask
+                    floodFill(labels_mask, cv::Point(pos.x, pos.y), GetCurrentLabelNumber()); // floodfill labels mask
+                }
+                else if (mouseButton == Qt::RightButton) { // floodfill with zeros = delete
+                    SaveUndo(); // save for undo
+                    floodFill(mask, cv::Point(pos.x, pos.y), 0); // floodfill mask
+                    floodFill(labels_mask, cv::Point(pos.x, pos.y), 0); // floodfill labels mask
+                }
+                ShowSegmentation(); // show result
+            }
+            else {
+                if (ui->pushButton_label_create->isChecked()) { // direct draw pixel for new label
+                    SaveUndo(); // for undo
+                    if (mouseButton == Qt::LeftButton) { // left mouse button = white pixel
+                        mask.at<Vec3b>(pos.y, pos.x) = Vec3b(255, 255, 255); // draw white pixel in mask
+                        labels_mask.at<int>(pos.y, pos.x) = GetCurrentLabelNumber(); // draw pixel in label mask pixel
+                    }
+                    else if (mouseButton == Qt::RightButton) { // right mouse button = transparent/black pixel
+                        mask.at<Vec3b>(pos.y, pos.x) = Vec3b(0,0,0); // return to pixel from undo mask
+                        labels_mask.at<int>(pos.y, pos.x) = 0; // return to pixel from undo labels
+                    }
+
+                    pos_save = pos; // this pixel can be the origin of a new line
+                    mask.copyTo(mask_line_save); // for draw cell mode
+
+                    ShowSegmentation(); // show result
+                }
+                else {
+                    // Color already set before ? saves CPU time
+                    int pixel = labels_mask.at<int>(pos.y, pos.x); // get label mask value
+                    if (mouseButton == Qt::MiddleButton) { // not for a zoom !
+                        return;
+                    }
+                    else if ((mouseButton == Qt::LeftButton) & (pixel == GetCurrentLabelNumber())) // left button : compare pixel with current color
+                            return; // color already set
+                         else if ((mouseButton == Qt::RightButton) & (pixel == 0)) // right button : compare pixel with 0 (delete)
+                                 return;  // color already set
+                    SaveUndo(); // for undo
+                    WhichCell(pos.x, pos.y); // Show which cell has been clicked
+                }
+            }
+        }
+            else if (mouseButton != Qt::MiddleButton) QMessageBox::warning(this, "Labels edition",
+                                          "Labels edition is only possible in the ''Labels'' tab.\n\nYou must first:\n   - compute the segmentation in the ''Segmentation'' tab\n   - or load a previous session in the ''Labels'' tab");
     }  else {
         if (ui->label_thumbnail->underMouse()) { // if the mouse is over the thumbnail
             QPoint mouse_pos = ui->label_thumbnail->mapFromGlobal(QCursor::pos()); // current mouse position
@@ -660,19 +1332,30 @@ void MainWindow::mousePressEvent(QMouseEvent *eventPress) // event triggered by 
                 int middleY = double(mouse_pos.y() - (ui->label_thumbnail->height() - ui->label_thumbnail->pixmap()->height()) / 2) / ui->label_thumbnail->pixmap()->height() * image.rows;
                 SetViewportXY(middleX - viewport.width /2, middleY - viewport.height /2); // set viewport to new middle position
 
-                ShowSegmentation(); // display the result
-                return;
+                ShowSegmentation(); // show result
             }
         }
     }
 }
 
-void MainWindow::mouseMoveEvent(QMouseEvent *eventMove) // one mouse click has already been treated and is holded down
+void MainWindow::mouseMoveEvent(QMouseEvent *eventMove) // first mouse click has already been treated and is holded down
 {
-    if (!computed) // nothing to do
-        return;
+    if (!loaded) return;// no image = get out
 
-    if (ui->label_segmentation->underMouse()) { // if the mouse is over the viewport
+    if (ui->label_thumbnail->underMouse()) { // if the mouse is over the thumbnail
+        QPoint mouse_pos = ui->label_thumbnail->mapFromGlobal(QCursor::pos()); // current mouse position
+
+        if (mouseButton == Qt::LeftButton) { // move view
+            // convert middle of viewport from thumbnail to image coordinates
+            int middleX = double(mouse_pos.x() - (ui->label_thumbnail->width() - ui->label_thumbnail->pixmap()->width()) / 2) / ui->label_thumbnail->pixmap()->width() * image.cols;
+            int middleY = double(mouse_pos.y() - (ui->label_thumbnail->height() - ui->label_thumbnail->pixmap()->height()) / 2) / ui->label_thumbnail->pixmap()->height() * image.rows;
+            SetViewportXY(middleX - viewport.width /2, middleY - viewport.height /2); // set viewport to new middle position
+
+            ShowSegmentation(); // display the result
+            return;
+        }
+    }
+    else if (ui->label_segmentation->underMouse()) { // if the mouse is over the viewport
         QPoint mouse_pos = ui->label_segmentation->mapFromGlobal(QCursor::pos()); // current mouse position
 
         if (mouseButton == Qt::MidButton) { // move view
@@ -682,30 +1365,47 @@ void MainWindow::mouseMoveEvent(QMouseEvent *eventMove) // one mouse click has a
 
             ShowSegmentation(); // display the result
         }
-        else {
-            Point pos = Viewport2Image(Point(mouse_pos.x(), mouse_pos.y())); // convert position from viewport to image coordinates
+        else if ((computed) & (ui->Tabs->currentIndex() == 2)) {
+            cv::Point pos = Viewport2Image(cv::Point(mouse_pos.x(), mouse_pos.y())); // convert position from viewport to image coordinates
 
-            // Color already set before ? saves CPU time
-            Vec3b pixel = mask.at<Vec3b>(pos.y,pos.x); // find mask pixel color
-            if ((mouseButton == Qt::LeftButton) & (pixel == color)) // left button : compare pixel with current color
-                return; // color already set
-            else if ((mouseButton == Qt::RightButton) & (pixel == Vec3b(0,0,0))) // right button : compare pixel with 0
-                return;  // color already set
+            if (ui->pushButton_label_create->isChecked()) { // direct draw pixel for new label
+                if (mouseButton == Qt::LeftButton) { // left mouse button pixel = white
+                    mask.at<Vec3b>(pos.y, pos.x) = Vec3b(255, 255, 255); // white pixel
+                    labels_mask.at<int>(pos.y, pos.x) = GetCurrentLabelNumber(); // label mask pixel
+                }
+                else if (mouseButton == Qt::RightButton) { // left mouse button pixel unset
+                    mask.at<Vec3b>(pos.y, pos.x) = Vec3b(0,0,0); // return to pixel from undo mask
+                    labels_mask.at<int>(pos.y, pos.x) = 0; // return to pixel from undo labels
+                }
 
-            WhichCell(pos.x, pos.y); // Show which cell has been clicked
+                pos_save = pos; // the pixel can be the origin of a new line
+                mask.copyTo(mask_line_save); // mask cache for drawing a line
+
+                ShowSegmentation(); // show result
+            }
+            else {
+                // Color already set before ? saves CPU time
+                //Vec3b pixel = mask.at<Vec3b>(pos.y,pos.x); // find mask pixel color
+                int pixel = labels_mask.at<int>(pos.y, pos.x); // value of pixel in labels mask
+                if ((mouseButton == Qt::LeftButton) & (pixel == GetCurrentLabelNumber())) // left button : compare pixel with current color
+                    return; // color already set
+                else if ((mouseButton == Qt::RightButton) & (pixel == 0)) // right button : compare pixel with 0
+                    return;  // color already set
+
+                WhichCell(pos.x, pos.y); // Show which cell has been clicked
+            }
         }
     }
 }
 
 void MainWindow::wheelEvent(QWheelEvent *wheelEvent) // mouse wheel turned
 {
-    if (!computed) // nothing to do
-        return;
+    if (!loaded) return;// no image = get out
 
     if (ui->label_segmentation->underMouse()) { // if the mouse is over the viewport
         mouse_origin = ui->label_segmentation->mapFromGlobal(QCursor::pos()); // mouse position
-        Point pos = Viewport2Image(Point(mouse_origin.x(), mouse_origin.y())); // convert from viewport to image coordinates
-        mouse_origin = QPoint(pos.x, pos.y);
+        cv::Point pos = Viewport2Image(cv::Point(mouse_origin.x(), mouse_origin.y())); // convert from viewport to image coordinates
+        mouse_origin = QPoint(pos.x, pos.y); // zoom from mouse psoition
         int n = wheelEvent->delta(); // amount of wheel turn
         if (n < 0) { // positive = zoom out
             zoom_type = "wheel";
@@ -721,11 +1421,11 @@ void MainWindow::wheelEvent(QWheelEvent *wheelEvent) // mouse wheel turned
 
 /////////////////// Core functions //////////////////////
 
-Point MainWindow::Viewport2Image(Point p) // convert viewport to image coordinates
+cv::Point MainWindow::Viewport2Image(cv::Point p) // convert viewport to image coordinates
 {
     int posX = double(p.x - (ui->label_segmentation->width() - ui->label_segmentation->pixmap()->width()) / 2) / zoom + viewport.x;
     int posY = double(p.y - (ui->label_segmentation->height() - ui->label_segmentation->pixmap()->height()) / 2) / zoom + viewport.y;
-    return Point(posX, posY);
+    return cv::Point(posX, posY);
 }
 
 void MainWindow::DisplayThumbnail() // image thumnail with transparent viewport indicator
@@ -761,8 +1461,8 @@ void MainWindow::DisplayThumbnail() // image thumnail with transparent viewport 
     Mat thumbnail_temp;
     thumbnail.copyTo(thumbnail_temp);
     thumbnail_temp = 0;
-    rectangle(thumbnail_temp, Point(p1x, p1y), Point(p2x-1, p2y-1), Scalar(92,92,92), -1); // draw filled rectangle representing the viewport position
-    rectangle(thumbnail_temp, Point(p1x, p1y), Point(p2x-1, p2y-1), Scalar(255,255,255), 2); // draw rectangle with thick border
+    rectangle(thumbnail_temp, cv::Point(p1x, p1y), cv::Point(p2x-1, p2y-1), Scalar(92,92,92), -1); // draw filled rectangle representing the viewport position
+    rectangle(thumbnail_temp, cv::Point(p1x, p1y), cv::Point(p2x-1, p2y-1), Scalar(255,255,255), 2); // draw rectangle with thick border
     cv::addWeighted(thumbnail, 1, thumbnail_temp, 0.25, 0, thumbnail_temp, -1); // with transparency
     ui->label_thumbnail->setPixmap(Mat2QPixmap(thumbnail_temp)); // update view
 }
@@ -802,18 +1502,18 @@ void MainWindow::SetViewportXY(int x, int y) // set viewport top-left to (x,y) n
 
 void MainWindow::ShowSegmentation() // show image + mask + grid
 {
-    if (!computed) // nah !
+    if (!loaded) // no image to display
         return;
 
     int oldMiddleX, oldMiddleY;
     if (oldZoom != zoom) { // zoom has changed ?
         oldMiddleX = viewport.x + viewport.width / 2; // current middle of viewport for zooming to the center of image
         oldMiddleY = viewport.y + viewport.height / 2;
-        if (zoom_type == "wheel") {
+        if (zoom_type == "wheel") { // if zoomed with the wheel set origin of zoom under mouse
             oldMiddleX = mouse_origin.x();
             oldMiddleY = mouse_origin.y();
             QCursor cursor;
-            cursor.setPos(ui->label_segmentation->mapToGlobal(ui->label_segmentation->rect().center()));
+            cursor.setPos(ui->label_segmentation->mapToGlobal(ui->label_segmentation->rect().center())); // move mouse cursor to center of viewport
             setCursor(cursor);
             zoom_type = "";
         }
@@ -824,32 +1524,111 @@ void MainWindow::ShowSegmentation() // show image + mask + grid
         ui->verticalScrollBar_segmentation->setMaximum(image.rows-viewport.height);
         SetViewportXY(newPosX, newPosY); // set the top-left coordinates of viewport to new value
         ShowZoomValue(); // display new zoom value
-        oldZoom = zoom;
+        oldZoom = zoom; // backup zoom value
     }
 
     // Combine image + mask + grid
-    CopyFromImage(image, viewport).copyTo(disp_color); // copy only the viewport part of image
+    CopyFromImage(image, viewport).copyTo(disp_color); // copy only the viewport part of image to display
     if (!ui->checkBox_image->isChecked()) disp_color = 0; // image
-    if (ui->checkBox_mask->isChecked() & !mask.empty()) { // mask
-        cv::addWeighted(disp_color, double(ui->horizontalSlider_blend_image->value()) / 100, CopyFromImage(mask, viewport),
-                        double(ui->horizontalSlider_blend_mask->value()) / 100, 0, disp_color, -1); // with transparency
+    if (ui->checkBox_mask->isChecked() & (!mask.empty())) { // mask
+        cv::addWeighted(disp_color, double(ui->horizontalSlider_blend_image->value()) / 100,
+                        CopyFromImage(mask, viewport), double(ui->horizontalSlider_blend_mask->value()) / 100,
+                        0, disp_color, -1); // with transparency
     }
-    if (ui->checkBox_grid->isChecked() & !grid.empty()) { // grid
-        if (zoom <= 1) { // dilate grid lines only if zoom out so they won't disappear when we zoom out
-            Mat dilate_grid;
-            grid.copyTo(dilate_grid);
-            dilate_grid = DilatePixels(dilate_grid, int(1/zoom)-2); // dilation
-            disp_color += CopyFromImage(dilate_grid, viewport); // update view
-        }
-        else disp_color += CopyFromImage(grid, viewport); // update image displayed
+    if (ui->checkBox_grid->isChecked() & (!grid.empty())) { // grid
+            disp_color.setTo(gridColor, CopyFromImage(grid, viewport)); // update image displayed
     }
 
+    // display the viewport
     QPixmap D;
-    D = Mat2QPixmapResized(disp_color, int(viewport.width*zoom), int(viewport.height*zoom)); // zoomed image
+    D = Mat2QPixmapResized(disp_color, int(viewport.width*zoom), int(viewport.height*zoom), (zoom < 1)); // zoomed image
     ui->label_segmentation->setPixmap(D); // Set new image content to viewport
     DisplayThumbnail(); // update thumbnail view
 
     //qApp->processEvents(); // Force repaint;
+}
+
+void MainWindow::on_button_apply_clicked() // Preprocess image : equalize normalize gaussian blur etc
+{
+    if (!loaded) { // if image not loaded get out
+        QMessageBox::warning(this, "Load an image first",
+                                 "Not now!\n\nTry to load an image first");
+        return;
+    }
+
+    QApplication::setOverrideCursor(Qt::WaitCursor); // Waiting cursor
+
+    bool gaussian_blur = ui->checkBox_gaussian_blur->isChecked(); // Gaussian blur
+    bool equalize = ui->checkBox_equalize->isChecked(); // Equalize
+    bool normalize = ui->checkBox_normalize->isChecked(); // Normalize
+    bool color_balance = ui->checkBox_color_balance->isChecked(); // Auto color balance
+    int color_balance_percent = ui->spinBox_color_balance_percent->value(); //
+    bool contours = ui->checkBox_contours->isChecked(); // Contours
+    int contours_sigma = ui->spinBox_contours_sigma->value(); // contours threshold
+    int contours_thickness = ui->spinBox_contours_thickness->value(); // contours ratio
+    int contours_aperture = ui->comboBox_contours_aperture->currentIndex() * 2 + 3; // contours aperture
+    bool denoise = ui->checkBox_denoise->isChecked(); // Denoise
+    int luminance = ui->horizontalSlider_luminance->value();
+    int chrominance = ui->horizontalSlider_chrominance->value();
+
+    image_backup.copyTo(image); // restore original image
+
+    if (denoise) { // denoise
+        int template_window_size, search_window_size;
+        double h;
+
+        if (luminance <= 25) { // parameters change with luminance value
+            h = luminance * 0.55;
+            template_window_size = 3;
+            search_window_size = 21;
+        }
+        else if (luminance <= 55) {
+            h = luminance * 0.4;
+            template_window_size = 5;
+            search_window_size = 25;
+        }
+        else {
+            h = luminance * 0.35;
+            template_window_size = 7;
+            search_window_size = 25;
+        }
+
+        fastNlMeansDenoisingColored(image, image, h, chrominance, template_window_size, search_window_size); // denoise image
+
+        double psnr = PSNR(image_backup, image); // compute PSNR
+        ui->label_psnr->setText(QString::number(psnr, 'f', 2)); // show PSNR
+    }
+    else ui->label_psnr->setText("");
+
+    if (equalize) image = EqualizeHistogram(image); // equalize
+    if (normalize) cv::normalize(image, image, 1, 255, NORM_MINMAX, -1); // normalize
+    if (color_balance) image = SimplestColorBalance(image, color_balance_percent); // color balance
+    if (gaussian_blur) cv::GaussianBlur(image, image, Size(3,3), 0, 0); // gaussian blue
+    if (contours) { // contours
+        Mat contours_mask;
+        contours_mask = DrawColoredContours(image, double(contours_sigma) / 100, contours_aperture, contours_thickness); //compute contours
+        contours_mask.copyTo(image, contours_mask); // copy contours to image view
+    }
+
+    cv::resize(image, thumbnail, Size(ui->label_thumbnail->pixmap()->width(),ui->label_thumbnail->pixmap()->height()),
+               0, 0, INTER_AREA); // create thumbnail
+
+    ShowSegmentation(); // show result
+
+    QApplication::restoreOverrideCursor(); // Restore cursor
+}
+
+void MainWindow::on_button_original_clicked() // undo image pre-processing
+{
+    if (!loaded) { // if image not loaded get out
+        QMessageBox::warning(this, "Load an image first",
+                                 "Not now!\n\nTry to load an image and apply some filters first");
+        return;
+    }
+
+    image_backup.copyTo(image); // revert to loaded image
+
+    ShowSegmentation(); // show result
 }
 
 void MainWindow::on_button_compute_clicked() // compute segmentation
@@ -872,13 +1651,6 @@ void MainWindow::on_button_compute_clicked() // compute segmentation
     bool double_step = ui->checkBox_double_step->isChecked(); // SEEDS two steps
     double ratio = ui->doubleSpinBox_ratio->value(); // LSC compactness
     bool lab = ui->checkBox_lab_colors->isChecked(); // convert to LAB colorimetry
-    bool gaussian_blur = ui->checkBox_gaussian_blur->isChecked(); // Gaussian blur image before computing
-    bool equalize = ui->checkBox_equalize->isChecked(); // Equalize image before computing
-    bool normalize = ui->checkBox_normalize->isChecked(); // Normalize image before computing
-    bool contours = ui->checkBox_contours->isChecked(); // Find image edges before computing
-    int contours_sigma = ui->spinBox_contours_sigma->value(); // contours threshold
-    int contours_thickness = ui->spinBox_contours_thickness->value(); // contours ratio
-    int contours_aperture = ui->comboBox_contours_aperture->currentIndex() * 2 + 3; // contours aperture
     cv::Vec3b maskColor; // BGR
     switch (ui->comboBox_grid_color->currentIndex()) { // color to set the grid to
         case 0: maskColor = Vec3b(0,0,255);break; // Red
@@ -888,19 +1660,6 @@ void MainWindow::on_button_compute_clicked() // compute segmentation
         case 4: maskColor = Vec3b(255,0,255);break; // Magenta
         case 5: maskColor = Vec3b(0,255,255);break; // Yellow
         case 6: maskColor = Vec3b(255,255,255);break; // White
-    }
-
-    backup.copyTo(image); // restore original image
-
-    //// Preprocess image : equalize normalize gaussian blur
-
-    if (equalize) image = EqualizeHistogram(image); // equalize ?
-    if (normalize) cv::normalize(image, image, 1, 255, NORM_MINMAX, -1); // normalize ?
-    if (gaussian_blur) cv::GaussianBlur(image, image, Size(3,3), 0, 0); // gaussian blue ?
-    if (contours) { // contours ?
-        Mat contours_mask;
-        contours_mask = DrawColoredContours(image, double(contours_sigma) / 100, contours_aperture, contours_thickness); //compute contours
-        contours_mask.copyTo(image, contours_mask); // copy contours to image view
     }
 
     Mat converted;
@@ -940,6 +1699,9 @@ void MainWindow::on_button_compute_clicked() // compute segmentation
         seeds->getLabelContourMask(maskTemp, !ui->checkBox_thick->isChecked()); // contours
     }
 
+    labels.copyTo(labels_mask);
+    labels_mask = 0;
+
     // contours for displaying : grid & mask initialization
     cv::cvtColor(maskTemp, mask, CV_GRAY2RGB); // at first the mask contains the grid, need to convert labels from gray to RGB
     mask.setTo(0); // reinit mask
@@ -954,6 +1716,8 @@ void MainWindow::on_button_compute_clicked() // compute segmentation
     // convert the image to a QPixmap and display it
     ShowSegmentation(); // update display
 
+    ui->Tabs->setTabEnabled(2, true);
+
     QApplication::restoreOverrideCursor(); // Restore cursor
 }
 
@@ -962,14 +1726,17 @@ void MainWindow::WhichCell(int posX, int posY) // for (posX,posY) in image, colo
     if (labels.empty()) // of course if labels have been computed
         return;
 
-    mask.copyTo(undo); // save the current mask for undo function
-
     int label = labels.at<int>(posY,posX); // find pixel label
     Mat1b superpixel_mask = labels == label; // extract label
 
     mask.setTo(0, superpixel_mask); // erase label in the mask
-    if (mouseButton == Qt::LeftButton) mask.setTo(color, superpixel_mask); // set color to cell in the mask
+    labels_mask.setTo(0, superpixel_mask); // delete label from labels mask
 
-    ShowSegmentation(); // display the result
+    if (mouseButton == Qt::LeftButton) {
+        mask.setTo(color, superpixel_mask); // set color to cell in the mask
+        labels_mask.setTo(GetCurrentLabelNumber(), superpixel_mask); // claim cell in labels mask
+    }
+
+    ShowSegmentation(); // show result
     return;
 }

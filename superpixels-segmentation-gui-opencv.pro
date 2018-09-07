@@ -4,7 +4,7 @@
 #
 #    by AbsurdePhoton - www.absurdephoton.fr
 #
-#                v1 - 2018/08/22
+#                v2 - 2018/09/02
 #
 #-------------------------------------------------
 
@@ -16,7 +16,10 @@ TARGET = superpixels-segmentation-opencv
 TEMPLATE = app
 
 INCLUDEPATH += /usr/local/include/opencv2
-LIBS += -L/usr/local/lib -lopencv_core -lopencv_imgcodecs -lopencv_highgui
+INCLUDEPATH += /usr/local/include/ImageMagick-7
+
+LIBS += -L/usr/local/lib -lopencv_core -lopencv_imgcodecs -lopencv_highgui -ltiff
+LIBS += $(shell Magick++-config --ldflags --libs)
 
 SOURCES +=  main.cpp\
             mainwindow.cpp \
@@ -32,6 +35,7 @@ CONFIG += link_pkgconfig
 PKGCONFIG += opencv
 
 QMAKE_CXXFLAGS += -std=c++11
+QMAKE_CXXFLAGS += $(shell Magick++-config --cppflags --cxxflags)
 
 # icons
 RESOURCES += resources.qrc

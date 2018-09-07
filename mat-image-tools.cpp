@@ -2,7 +2,7 @@
  * OpenCV image tools library
  * Author: AbsurdePhoton
  *
- * v1.4 - 2018/08/22
+ * v1.5 - 2018/09/02
  *
  * Convert mat images to QPixmap or QImage
  * Set brightness and contrast
@@ -10,8 +10,10 @@
  * Erosion / dilation of pixels
  * Copy part of image
  * Contours using Canny algorithm with auto min and max threshold
+ * Noise reduction quality
  *
  */
+
 
 #include <QPixmap>
 
@@ -20,7 +22,19 @@
 using namespace std;
 using namespace cv;
 
-enum Direction{ShiftUp=1, ShiftRight, ShiftDown, ShiftLeft}; // directions for shift function
+//// Utils
+
+bool IsColorDark(int red, int green, int blue) // tell if a RGB color is dark or not
+{
+  double brightness;
+  brightness = (red * 299) + (green * 587) + (blue * 114);
+  brightness = brightness / 255000;
+
+  // values range from 0 to 1 : anything greater than 0.5 should be bright enough for dark text
+  return (brightness <= 0.5);
+}
+
+//// Mat conversions to QImage and QPixmap
 
 QImage Mat2QImage(cv::Mat const& src) // convert Mat to QImage
 {
@@ -38,23 +52,15 @@ QPixmap Mat2QPixmap(cv::Mat source) // convert Mat to QPixmap
     return p;
 }
 
-QPixmap Mat2QPixmapResized(cv::Mat source, int max_width, int max_height) // convert Mat to resized QPixmap
+QPixmap Mat2QPixmapResized(cv::Mat source, int max_width, int max_height, bool smooth) // convert Mat to resized QPixmap
 {
+    Qt::TransformationMode quality;
+    if (smooth) quality = Qt::SmoothTransformation;
+        else quality = Qt::FastTransformation;
+
     QImage i = Mat2QImage(source); // first step: convert to QImage
     QPixmap p = QPixmap::fromImage(i, Qt::AutoColor); // then convert QImage to QPixmap
-    return p.scaled(max_width, max_height, Qt::KeepAspectRatio, Qt::SmoothTransformation); // resize with high quality
-}
-
-Mat BrightnessContrast(Mat source, double alpha, int beta) // set brightness and contrast
-{
-    Mat image = Mat::zeros(source.size(), source.type());
-
-    // Do the operation new_image(i,j) = alpha*image(i,j) + beta
-    for (int y = 0; y < source.rows; y++) // scan entire Mat
-            for (int x = 0; x < source.cols; x++)
-                for (int c = 0; c < 3; c++)
-                    image.at<Vec3b>(y, x)[c] = saturate_cast<uchar>(alpha*(source.at<Vec3b>(y, x)[c]) + beta); // change individual values
-    return image;
+    return p.scaled(max_width, max_height, Qt::KeepAspectRatio, quality); // resize with high quality
 }
 
 QImage cvMatToQImage(const cv::Mat &inMat) // another implementation
@@ -100,6 +106,20 @@ QImage cvMatToQImage(const cv::Mat &inMat) // another implementation
     return QImage();
 }
 
+//// Color and brightness operations
+
+Mat BrightnessContrast(Mat source, double alpha, int beta) // set brightness and contrast
+{
+    Mat image = Mat::zeros(source.size(), source.type());
+
+    // Do the operation new_image(i,j) = alpha*image(i,j) + beta
+    for (int y = 0; y < source.rows; y++) // scan entire Mat
+            for (int x = 0; x < source.cols; x++)
+                for (int c = 0; c < 3; c++)
+                    image.at<Vec3b>(y, x)[c] = saturate_cast<uchar>(alpha*(source.at<Vec3b>(y, x)[c]) + beta); // change individual values
+    return image;
+}
+
 Mat EqualizeHistogram(cv::Mat image) // histogram equalization
 {
     Mat hist_equalized_image;
@@ -117,6 +137,35 @@ Mat EqualizeHistogram(cv::Mat image) // histogram equalization
 
     return hist_equalized_image;
 }
+
+Mat SimplestColorBalance(Mat& source, float percent) // color balance with histograms
+{
+    Mat out;
+    float half_percent = percent / 200.0f;
+    vector<Mat> tmpsplit;
+    split(source, tmpsplit);
+
+    for (int i=0; i<3; i++) { // for a 4-channel image
+        //find the low and high precentile values (based on the input percentile)
+        Mat flat;
+        tmpsplit[i].reshape(1,1).copyTo(flat);
+        cv::sort(flat,flat,CV_SORT_EVERY_ROW + CV_SORT_ASCENDING);
+        int lowval = flat.at<uchar>(cvFloor(((float)flat.cols) * half_percent));
+        int highval = flat.at<uchar>(cvCeil(((float)flat.cols) * (1.0 - half_percent)));
+
+        //saturate below the low percentile and above the high percentile
+        tmpsplit[i].setTo(lowval,tmpsplit[i] < lowval);
+        tmpsplit[i].setTo(highval,tmpsplit[i] > highval);
+
+        //scale the channel
+        normalize(tmpsplit[i], tmpsplit[i], 0, 255, NORM_MINMAX);
+    }
+
+    merge(tmpsplit, out); // result
+    return out;
+}
+
+//// Dilation and Erosion
 
 Mat DilatePixels(cv::Mat image, int dilation_size) // dilate pixels
 {
@@ -148,6 +197,10 @@ Mat ErodePixels(cv::Mat image, int erosion_size) // erode pixels
     return dst;
 }
 
+//// Shift a frame in one direction
+
+enum Direction{ShiftUp=1, ShiftRight, ShiftDown, ShiftLeft}; // directions for shift function
+
 Mat ShiftFrame(cv::Mat frame, int pixels, Direction direction) // shift frame in one direction
 {
     Mat temp = Mat::zeros(frame.size(), frame.type()); //create a same sized temporary Mat with all the pixels flagged as invalid (-1)
@@ -171,17 +224,23 @@ Mat ShiftFrame(cv::Mat frame, int pixels, Direction direction) // shift frame in
     return temp;
 }
 
+//// Clipping
+
 Mat CopyFromImage (cv::Mat source, cv::Rect frame) // copy part of an image
 {
     return source(frame);
 }
 
-double medianMat(cv::Mat input)
+//// Contours
+
+double medianMat(cv::Mat input) // median, used by DrawColoredContours
 {
     input = input.reshape(0,1);// spread input to single row
     std::vector<double> vecFromMat;
+
     input.copyTo(vecFromMat); // copy input to vector vecFromMat
     std::nth_element(vecFromMat.begin(), vecFromMat.begin() + vecFromMat.size() / 2, vecFromMat.end());
+
     return vecFromMat[vecFromMat.size() / 2];
 }
 
@@ -189,6 +248,7 @@ Mat DrawColoredContours(cv::Mat source, double sigma, int apertureSize, int thic
 {
     RNG rng(123); // controled randomization
     Mat canny_output, gray, blur;
+
     GaussianBlur(source, blur, Size(3,3), 0, 0); // better with a gaussian blur first
     cvtColor(blur, gray, COLOR_BGR2GRAY ); // convert to gray
     double v = medianMat(gray); // get median value of matrix
@@ -203,5 +263,30 @@ Mat DrawColoredContours(cv::Mat source, double sigma, int apertureSize, int thic
         Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255)); // apply colors
         drawContours( drawing, contours, (int)i, color, thickness, 8, hierarchy, 0, Point() ); // draw the lines
     }
+
     return drawing;
+}
+
+//// Noise filters utils
+
+double PSNR(const Mat& I1, const Mat& I2) // noise difference between 2 images
+{
+    Mat s1;
+    absdiff(I1, I2, s1);       // |I1 - I2|
+    s1.convertTo(s1, CV_32F);  // cannot make a square on 8 bits
+    s1 = s1.mul(s1);           // |I1 - I2|^2
+
+    Scalar s = sum(s1);         // sum elements per channel
+
+    double sse = s.val[0] + s.val[1] + s.val[2]; // sum channels
+
+    if( sse <= 1e-10) // for small values return zero
+        return 0;
+    else // compute PSNR
+    {
+        double  mse =sse /(double)(I1.channels() * I1.total());
+        double psnr = 10.0*log10((255*255)/mse);
+
+        return psnr;
+    }
 }

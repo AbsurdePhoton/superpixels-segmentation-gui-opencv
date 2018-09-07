@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1366</width>
-    <height>768</height>
+    <height>789</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -20,112 +20,11 @@
    <string>Superpixels Segmentation with OpenCV by AbsurdePhoton</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QPushButton" name="button_save_session">
-    <property name="geometry">
-     <rect>
-      <x>900</x>
-      <y>706</y>
-      <width>131</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="cursor">
-     <cursorShape>PointingHandCursor</cursorShape>
-    </property>
-    <property name="toolTip">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the current session: image, mask, grid and labels (cells).&lt;/p&gt;&lt;p&gt;The parameters won't be saved, do this separately.&lt;/p&gt;&lt;p&gt;Useful if you want to finish a work later: retrieving a session will allow you to continue where you left it, without recomputing.&lt;/p&gt;&lt;p&gt;Image, mask, grid are saved to PNG image format.&lt;/p&gt;&lt;p&gt;Labels are saved in openCV XML/YAML format&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-    </property>
-    <property name="text">
-     <string>Save session</string>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normalon>:/icons/session-save.png</normalon>
-     </iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>24</width>
-      <height>24</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="button_compute">
-    <property name="geometry">
-     <rect>
-      <x>25</x>
-      <y>642</y>
-      <width>151</width>
-      <height>71</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>-1</pointsize>
-     </font>
-    </property>
-    <property name="cursor">
-     <cursorShape>PointingHandCursor</cursorShape>
-    </property>
-    <property name="toolTip">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Compute the segmentation.&lt;/p&gt;&lt;p&gt;After computation, use the right part of the window to edit the mask&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">font-size: 20px;</string>
-    </property>
-    <property name="text">
-     <string>COMPUTE</string>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normalon>:/icons/compute.png</normalon>
-     </iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>32</width>
-      <height>32</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="button_load_session">
-    <property name="geometry">
-     <rect>
-      <x>1040</x>
-      <y>706</y>
-      <width>131</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="cursor">
-     <cursorShape>PointingHandCursor</cursorShape>
-    </property>
-    <property name="toolTip">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load a previously saved session: image, mask, grid and labels (cells)&lt;/p&gt;&lt;p&gt;Useful if you want to finish a previous work, but it won't work until you have loaded the original image first.&lt;/p&gt;&lt;p&gt;Tip: you don't have to save the parameters to continue working with the cells.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-    </property>
-    <property name="text">
-     <string>Load session</string>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normalon>:/icons/session-load.png</normalon>
-     </iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>22</width>
-      <height>22</height>
-     </size>
-    </property>
-    <property name="checkable">
-     <bool>true</bool>
-    </property>
-   </widget>
    <widget class="QFrame" name="frame_view_parameters">
     <property name="geometry">
      <rect>
       <x>1250</x>
-      <y>50</y>
+      <y>10</y>
       <width>111</width>
       <height>186</height>
      </rect>
@@ -148,6 +47,9 @@
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
+     <property name="focusPolicy">
+      <enum>Qt::ClickFocus</enum>
+     </property>
      <property name="toolTip">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Transparency of the mask.&lt;/p&gt;&lt;p&gt;Lower values = more transparent&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
@@ -155,7 +57,7 @@
       <number>100</number>
      </property>
      <property name="value">
-      <number>50</number>
+      <number>90</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -176,21 +78,43 @@
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="toolTip">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Display (or not) the image&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:checked {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
      </property>
      <property name="text">
       <string>Image</string>
      </property>
      <property name="icon">
       <iconset resource="resources.qrc">
-       <normaloff>:/icons/image-off.png</normaloff>
-       <normalon>:/icons/image.png</normalon>:/icons/image-off.png</iconset>
+       <normaloff>:/icons/hide.png</normaloff>
+       <normalon>:/icons/image.png</normalon>:/icons/hide.png</iconset>
      </property>
      <property name="iconSize">
       <size>
-       <width>23</width>
-       <height>23</height>
+       <width>25</width>
+       <height>25</height>
       </size>
      </property>
      <property name="checkable">
@@ -212,16 +136,38 @@
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="toolTip">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Display (or not) the segmentation mask.&lt;/p&gt;&lt;p&gt;Change the blend factor to set the transparency&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:checked {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
      </property>
      <property name="text">
       <string> Mask</string>
      </property>
      <property name="icon">
       <iconset resource="resources.qrc">
-       <normaloff>:/icons/mask-off.png</normaloff>
-       <normalon>:/icons/mask.png</normalon>:/icons/mask-off.png</iconset>
+       <normaloff>:/icons/hide.png</normaloff>
+       <normalon>:/icons/mask.png</normalon>:/icons/hide.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -248,21 +194,43 @@
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Display (or not) the segmentation boundaries.&lt;/p&gt;&lt;p&gt;The blend factor does not affect this mask, but you can change the grid color with the control just below.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Display (or not) the superpixels boundaries.&lt;/p&gt;&lt;p&gt;The blend factor does not affect this mask, but you can change the grid color with the control just below.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:checked {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
      </property>
      <property name="text">
       <string> Grid</string>
      </property>
      <property name="icon">
       <iconset resource="resources.qrc">
-       <normaloff>:/icons/grid-off.png</normaloff>
-       <normalon>:/icons/grid.png</normalon>:/icons/grid-off.png</iconset>
+       <normaloff>:/icons/hide.png</normaloff>
+       <normalon>:/icons/grid.png</normalon>:/icons/hide.png</iconset>
      </property>
      <property name="iconSize">
       <size>
-       <width>23</width>
-       <height>23</height>
+       <width>25</width>
+       <height>25</height>
       </size>
      </property>
      <property name="checkable">
@@ -303,6 +271,9 @@
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
+     <property name="focusPolicy">
+      <enum>Qt::ClickFocus</enum>
+     </property>
      <property name="toolTip">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Transparency of the image.&lt;/p&gt;&lt;p&gt;Lower values = more transparent&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
@@ -319,1548 +290,6 @@
       <enum>QSlider::NoTicks</enum>
      </property>
     </widget>
-   </widget>
-   <widget class="QFrame" name="frame_pick_colors">
-    <property name="geometry">
-     <rect>
-      <x>1249</x>
-      <y>270</y>
-      <width>111</width>
-      <height>401</height>
-     </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
-    </property>
-    <widget class="QPushButton" name="pushButton_color_red">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>50</y>
-       <width>41</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="toolTip">
-      <string>Color to use for the cells</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:rgb(255,0,0);border-radius: 10px;border: 1px solid black;</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>16</width>
-       <height>16</height>
-      </size>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_color_brown">
-     <property name="geometry">
-      <rect>
-       <x>60</x>
-       <y>50</y>
-       <width>41</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="toolTip">
-      <string>Color to use for the cells</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:rgb(128,0,0);border-radius: 10px;border: 1px solid black;</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>16</width>
-       <height>16</height>
-      </size>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_color_orange">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>100</y>
-       <width>41</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="toolTip">
-      <string>Color to use for the cells</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:rgb(255,128,0);border-radius: 10px;border: 1px solid black;</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>16</width>
-       <height>16</height>
-      </size>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_color_gray">
-     <property name="geometry">
-      <rect>
-       <x>60</x>
-       <y>100</y>
-       <width>41</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="toolTip">
-      <string>Color to use for the cells</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:rgb(128,128,128);border-radius: 10px;border: 1px solid black;</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>16</width>
-       <height>16</height>
-      </size>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_color">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>10</y>
-       <width>81</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Currently used color to colorize the segmentation cells.&lt;/p&gt;&lt;p&gt;Click on the image:&lt;/p&gt;&lt;p&gt;* Left button: set the cell color&lt;/p&gt;&lt;p&gt;* Right button: delete (set to transparent)&lt;/p&gt;&lt;p&gt;* Drag the mouse while holding the mouse buttons to colorize several cells&lt;/p&gt;&lt;p&gt;* use &amp;lt;ALT&amp;gt; + left click to fill a closed area. Be careful, one pixel missing and you have to use the Undo function!&lt;/p&gt;&lt;p&gt;* hold the middle button of the mouse to navigate in the image&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:rgb(255,0,0);border: 3px solid black;</string>
-     </property>
-     <property name="text">
-      <string>RED</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_8">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>6</y>
-       <width>28</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap resource="resources.qrc">:/icons/edit.png</pixmap>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_color_yellow">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>150</y>
-       <width>41</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="toolTip">
-      <string>Color to use for the cells</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:rgb(255,255,0);border-radius: 10px;border: 1px solid black;</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>16</width>
-       <height>16</height>
-      </size>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_color_white">
-     <property name="geometry">
-      <rect>
-       <x>60</x>
-       <y>150</y>
-       <width>41</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="toolTip">
-      <string>Color to use for the cells</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:rgb(255,255,255);border-radius: 10px;border: 1px solid black;</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>16</width>
-       <height>16</height>
-      </size>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_color_green">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>200</y>
-       <width>41</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="toolTip">
-      <string>Color to use for the cells</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:rgb(0,255,0);border-radius: 10px;border: 1px solid black;</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>16</width>
-       <height>16</height>
-      </size>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_color_olive">
-     <property name="geometry">
-      <rect>
-       <x>60</x>
-       <y>200</y>
-       <width>41</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="toolTip">
-      <string>Color to use for the cells</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:rgb(0,128,0);border-radius: 10px;border: 1px solid black;</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>16</width>
-       <height>16</height>
-      </size>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_color_cyan">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>250</y>
-       <width>41</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="toolTip">
-      <string>Color to use for the cells</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:rgb(0,255,255);border-radius: 10px;border: 1px solid black;</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>16</width>
-       <height>16</height>
-      </size>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_color_emerald">
-     <property name="geometry">
-      <rect>
-       <x>60</x>
-       <y>250</y>
-       <width>41</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="toolTip">
-      <string>Color to use for the cells</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:rgb(0,128,128);border-radius: 10px;border: 1px solid black;</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>16</width>
-       <height>16</height>
-      </size>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_color_blue">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>300</y>
-       <width>41</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="toolTip">
-      <string>Color to use for the cells</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:rgb(0,0,255);border-radius: 10px;border: 1px solid black;</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>16</width>
-       <height>16</height>
-      </size>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_color_navy">
-     <property name="geometry">
-      <rect>
-       <x>60</x>
-       <y>300</y>
-       <width>41</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="toolTip">
-      <string>Color to use for the cells</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:rgb(0,0,128);border-radius: 10px;border: 1px solid black;</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>16</width>
-       <height>16</height>
-      </size>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_color_magenta">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>350</y>
-       <width>41</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="toolTip">
-      <string>Color to use for the cells</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:rgb(255,0,255);border-radius: 10px;border: 1px solid black;</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>16</width>
-       <height>16</height>
-      </size>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_color_purple">
-     <property name="geometry">
-      <rect>
-       <x>60</x>
-       <y>350</y>
-       <width>41</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="toolTip">
-      <string>Color to use for the cells</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:rgb(128,0,255);border-radius: 10px;border: 1px solid black;</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>16</width>
-       <height>16</height>
-      </size>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QFrame" name="frame_segmentation_parameters">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>130</y>
-      <width>341</width>
-      <height>491</height>
-     </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
-    </property>
-    <widget class="QCheckBox" name="checkBox_gaussian_blur">
-     <property name="geometry">
-      <rect>
-       <x>180</x>
-       <y>4</y>
-       <width>151</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Apply a gaussian blur to the image before processing often improves the results by lowering noise&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="text">
-      <string>Gaussian blur</string>
-     </property>
-     <property name="icon">
-      <iconset resource="resources.qrc">
-       <normaloff>:/icons/blur.png</normaloff>:/icons/blur.png</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>24</width>
-       <height>24</height>
-      </size>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QCheckBox" name="checkBox_lab_colors">
-     <property name="geometry">
-      <rect>
-       <x>180</x>
-       <y>30</y>
-       <width>151</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Convert the image to LAB colors space: often improves the results&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="text">
-      <string>LAB colors</string>
-     </property>
-     <property name="icon">
-      <iconset resource="resources.qrc">
-       <normaloff>:/icons/color.png</normaloff>:/icons/color.png</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>24</width>
-       <height>24</height>
-      </size>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QSlider" name="horizontalSlider_region_size">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>209</y>
-       <width>191</width>
-       <height>29</height>
-      </rect>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Average superpixel size measured in pixels&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="minimum">
-      <number>1</number>
-     </property>
-     <property name="maximum">
-      <number>200</number>
-     </property>
-     <property name="value">
-      <number>30</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="tickPosition">
-      <enum>QSlider::TicksBelow</enum>
-     </property>
-    </widget>
-    <widget class="QSlider" name="horizontalSlider_ruler">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>239</y>
-       <width>191</width>
-       <height>29</height>
-      </rect>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="toolTip">
-      <string>Enforcement of superpixel smoothness factor of superpixel</string>
-     </property>
-     <property name="minimum">
-      <number>1</number>
-     </property>
-     <property name="maximum">
-      <number>100</number>
-     </property>
-     <property name="value">
-      <number>30</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="tickPosition">
-      <enum>QSlider::TicksBelow</enum>
-     </property>
-    </widget>
-    <widget class="QSlider" name="horizontalSlider_connectivity">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>269</y>
-       <width>191</width>
-       <height>29</height>
-      </rect>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum element size in percents that should be absorbed into a bigger superpixel.&lt;/p&gt;&lt;p&gt;The function merges components that are too small, assigning the previously found adjacent label to this component&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="minimum">
-      <number>0</number>
-     </property>
-     <property name="maximum">
-      <number>100</number>
-     </property>
-     <property name="value">
-      <number>25</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="tickPosition">
-      <enum>QSlider::TicksBelow</enum>
-     </property>
-    </widget>
-    <widget class="QSlider" name="horizontalSlider_iterations">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>330</y>
-       <width>191</width>
-       <height>29</height>
-      </rect>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Higher number improves the result: the algorithms starts from a grid of superpixels and then refines the boundaries by proposing updates of edges boundaries&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="minimum">
-      <number>1</number>
-     </property>
-     <property name="maximum">
-      <number>50</number>
-     </property>
-     <property name="value">
-      <number>10</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="tickPosition">
-      <enum>QSlider::TicksBelow</enum>
-     </property>
-    </widget>
-    <widget class="QSlider" name="horizontalSlider_num_superpixels">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>209</y>
-       <width>191</width>
-       <height>29</height>
-      </rect>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Desired number of superpixels. Note that the actual number may be smaller due to restrictions (depending on the image size and num_levels)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="minimum">
-      <number>1</number>
-     </property>
-     <property name="maximum">
-      <number>5000</number>
-     </property>
-     <property name="value">
-      <number>50</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="tickPosition">
-      <enum>QSlider::TicksBelow</enum>
-     </property>
-     <property name="tickInterval">
-      <number>500</number>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_superpixels">
-     <property name="geometry">
-      <rect>
-       <x>15</x>
-       <y>211</y>
-       <width>81</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Superpixels</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_value_num_superpixels">
-     <property name="geometry">
-      <rect>
-       <x>290</x>
-       <y>210</y>
-       <width>31</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>300</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QSlider" name="horizontalSlider_num_levels">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>239</y>
-       <width>191</width>
-       <height>29</height>
-      </rect>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of block levels. The more levels, the more accurate is the segmentation, but needs more memory and CPU time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="minimum">
-      <number>1</number>
-     </property>
-     <property name="maximum">
-      <number>50</number>
-     </property>
-     <property name="value">
-      <number>4</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="tickPosition">
-      <enum>QSlider::TicksBelow</enum>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_value_num_levels">
-     <property name="geometry">
-      <rect>
-       <x>290</x>
-       <y>241</y>
-       <width>31</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>10</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_levels">
-     <property name="geometry">
-      <rect>
-       <x>15</x>
-       <y>241</y>
-       <width>81</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Levels</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QSlider" name="horizontalSlider_prior">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>269</y>
-       <width>191</width>
-       <height>29</height>
-      </rect>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable 3x3 shape smoothing term if &amp;gt;0.&lt;/p&gt;&lt;p&gt;A larger value leads to smoother shapes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="minimum">
-      <number>0</number>
-     </property>
-     <property name="maximum">
-      <number>5</number>
-     </property>
-     <property name="value">
-      <number>2</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="tickPosition">
-      <enum>QSlider::TicksBelow</enum>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_value_prior">
-     <property name="geometry">
-      <rect>
-       <x>290</x>
-       <y>271</y>
-       <width>31</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>2</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_prior">
-     <property name="geometry">
-      <rect>
-       <x>15</x>
-       <y>271</y>
-       <width>81</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Prior</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QSlider" name="horizontalSlider_num_histogram_bins">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>299</y>
-       <width>191</width>
-       <height>29</height>
-      </rect>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of histogram bins&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="minimum">
-      <number>1</number>
-     </property>
-     <property name="maximum">
-      <number>50</number>
-     </property>
-     <property name="value">
-      <number>5</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="tickPosition">
-      <enum>QSlider::TicksBelow</enum>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_value_num_histogram_bins">
-     <property name="geometry">
-      <rect>
-       <x>290</x>
-       <y>301</y>
-       <width>31</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>5</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_histograms">
-     <property name="geometry">
-      <rect>
-       <x>15</x>
-       <y>301</y>
-       <width>81</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Histograms</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QCheckBox" name="checkBox_double_step">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>361</y>
-       <width>191</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If set, iterate each block level twice for higher accuracy&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="text">
-      <string>Double step</string>
-     </property>
-     <property name="icon">
-      <iconset resource="resources.qrc">
-       <normaloff>:/icons/double-step.png</normaloff>:/icons/double-step.png</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>24</width>
-       <height>24</height>
-      </size>
-     </property>
-     <property name="checked">
-      <bool>false</bool>
-     </property>
-    </widget>
-    <widget class="QDoubleSpinBox" name="doubleSpinBox_ratio">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>364</y>
-       <width>69</width>
-       <height>27</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enforcement of superpixel compactness factor&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="decimals">
-      <number>3</number>
-     </property>
-     <property name="maximum">
-      <double>2.000000000000000</double>
-     </property>
-     <property name="singleStep">
-      <double>0.100000000000000</double>
-     </property>
-     <property name="value">
-      <double>0.075000000000000</double>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_ratio">
-     <property name="geometry">
-      <rect>
-       <x>16</x>
-       <y>366</y>
-       <width>81</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Ratio</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QCheckBox" name="checkBox_thick">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>401</y>
-       <width>131</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ticked: all pixels at the border of the cells are masked, otherwise the border is only one pixel wide&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="text">
-      <string>Thick lines</string>
-     </property>
-     <property name="icon">
-      <iconset resource="resources.qrc">
-       <normaloff>:/icons/thick.png</normaloff>:/icons/thick.png</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>24</width>
-       <height>24</height>
-      </size>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="button_image">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>160</y>
-       <width>61</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the image to process&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="text">
-      <string>Load</string>
-     </property>
-     <property name="icon">
-      <iconset>
-       <normalon>:/icons/image.png</normalon>
-      </iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>18</width>
-       <height>18</height>
-      </size>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_thumbnail">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>161</width>
-       <height>151</height>
-      </rect>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>400</width>
-       <height>400</height>
-      </size>
-     </property>
-     <property name="cursor">
-      <cursorShape>CrossCursor</cursorShape>
-     </property>
-     <property name="mouseTracking">
-      <bool>true</bool>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Image to process.&lt;/p&gt;&lt;p&gt;Click on it to set the viewport's center&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Sunken</enum>
-     </property>
-     <property name="lineWidth">
-      <number>2</number>
-     </property>
-     <property name="text">
-      <string>Image</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-    <widget class="QComboBox" name="comboBox_algorithm">
-     <property name="geometry">
-      <rect>
-       <x>160</x>
-       <y>176</y>
-       <width>111</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose the algorithm variant to use: &lt;/p&gt;&lt;p&gt;* SLIC (Simple Linear Iterative Clustering) clusters pixels using pixel channels and image plane space to efficiently generate compact, nearly uniform superpixels&lt;/p&gt;&lt;p&gt;* SLICO (Zero parameter SLIC) optimizes SLIC, using adaptive compactness factor&lt;/p&gt;&lt;p&gt;* MSLIC (Manifold SLIC) optimizes SLIC using manifold methods resulting in more content-sensitive superpixels&lt;/p&gt;&lt;p&gt;* LSC (Linear Spectral Clustering) produces compact and uniform superpixels with low computational costs, and keeps global images properties&lt;/p&gt;&lt;p&gt;* SEEDS (Superpixels Extracted via Energy-Driven Sampling) uses an efficient hill-climbing algorithm to optimize the superpixels' energy function that is based on color histograms and a boundary term, producing smooth boundaries&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="maxVisibleItems">
-      <number>5</number>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_algorithm">
-     <property name="geometry">
-      <rect>
-       <x>83</x>
-       <y>181</y>
-       <width>71</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"/>
-     </property>
-     <property name="text">
-      <string>Algorithm</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="button_load_conf">
-     <property name="geometry">
-      <rect>
-       <x>30</x>
-       <y>451</y>
-       <width>121</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Retrieve parameters from a previously saved XML file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="text">
-      <string> Load conf</string>
-     </property>
-     <property name="icon">
-      <iconset>
-       <normalon>:/icons/config.png</normalon>
-      </iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>23</width>
-       <height>23</height>
-      </size>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="button_save_conf">
-     <property name="geometry">
-      <rect>
-       <x>170</x>
-       <y>451</y>
-       <width>121</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save parameters to a XML file&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="text">
-      <string> Save conf</string>
-     </property>
-     <property name="icon">
-      <iconset>
-       <normalon>:/icons/save.png</normalon>
-      </iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>24</width>
-       <height>24</height>
-      </size>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_iterations">
-     <property name="geometry">
-      <rect>
-       <x>16</x>
-       <y>332</y>
-       <width>81</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Iterations</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_connectivity">
-     <property name="geometry">
-      <rect>
-       <x>6</x>
-       <y>271</y>
-       <width>91</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Min size</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_ruler">
-     <property name="geometry">
-      <rect>
-       <x>56</x>
-       <y>241</y>
-       <width>41</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Ruler</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_region_size">
-     <property name="geometry">
-      <rect>
-       <x>16</x>
-       <y>211</y>
-       <width>81</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Region size</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_value_ruler">
-     <property name="geometry">
-      <rect>
-       <x>290</x>
-       <y>241</y>
-       <width>31</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>30</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_value_region_size">
-     <property name="geometry">
-      <rect>
-       <x>290</x>
-       <y>211</y>
-       <width>31</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>30</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_value_connectivity">
-     <property name="geometry">
-      <rect>
-       <x>290</x>
-       <y>271</y>
-       <width>31</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>25</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_value_connectivity_percent">
-     <property name="geometry">
-      <rect>
-       <x>320</x>
-       <y>273</y>
-       <width>16</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>%</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_value_iterations">
-     <property name="geometry">
-      <rect>
-       <x>290</x>
-       <y>331</y>
-       <width>31</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>10</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QCheckBox" name="checkBox_normalize">
-     <property name="geometry">
-      <rect>
-       <x>180</x>
-       <y>82</y>
-       <width>151</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Normalize the image histogram before processing.&lt;/p&gt;&lt;p&gt;Image normalization changes the range of pixel intensity values, by stretching the histogram to the maximum values.&lt;/p&gt;&lt;p&gt;It is recommended for grayscale images, or color images with a limited number of colors&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="text">
-      <string>Normalize</string>
-     </property>
-     <property name="icon">
-      <iconset resource="resources.qrc">
-       <normaloff>:/icons/normalize.png</normaloff>:/icons/normalize.png</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>24</width>
-       <height>24</height>
-      </size>
-     </property>
-     <property name="checked">
-      <bool>false</bool>
-     </property>
-    </widget>
-    <widget class="QCheckBox" name="checkBox_equalize">
-     <property name="geometry">
-      <rect>
-       <x>180</x>
-       <y>56</y>
-       <width>151</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equalize histogram of the image before processing: increases the global contrast of the image before processing.&lt;/p&gt;&lt;p&gt;It can improve many images, especially when the usable data is represented by close contrast values. Through this adjustment, the intensities can be better distributed on the histogram: this allows for areas of lower local contrast to gain a higher contrast. Histogram equalization accomplishes this by effectively spreading out the most frequent intensity values&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="text">
-      <string>Equalize</string>
-     </property>
-     <property name="icon">
-      <iconset resource="resources.qrc">
-       <normaloff>:/icons/equalize.png</normaloff>:/icons/equalize.png</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>24</width>
-       <height>24</height>
-      </size>
-     </property>
-     <property name="checked">
-      <bool>false</bool>
-     </property>
-    </widget>
-    <widget class="QCheckBox" name="checkBox_contours">
-     <property name="geometry">
-      <rect>
-       <x>180</x>
-       <y>110</y>
-       <width>151</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Apply an edge detector to the image before processing. It draws colored lines over the image, and so can help the superpixels algorithms defining the cells.&lt;/p&gt;&lt;p&gt;Results are often improved by a Gaussian blur first.&lt;/p&gt;&lt;p&gt;Click on this to reveal the parameters:&lt;/p&gt;&lt;p&gt;* Threshold: threshold for the hysteresis procedure&lt;/p&gt;&lt;p&gt;* Ratio: used for edge linking&lt;/p&gt;&lt;p&gt;* Aperture: aperture size for the Sobel operator&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The &lt;span style=&quot; font-style:italic;&quot;&gt;Canny Edge detector&lt;/span&gt; was developed by John F. Canny in 1986. Also known to many as the &lt;span style=&quot; font-style:italic;&quot;&gt;optimal detector&lt;/span&gt;, Canny algorithm aims to satisfy three main criteria:&lt;/p&gt;&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Low error rate:&lt;/span&gt; meaning a good detection of only existent edges&lt;/li&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Good localization:&lt;/span&gt; the distance between edge pixels detected and real edge pixels have to be minimized.&lt;/li&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Minimal response:&lt;/span&gt; only one detector response per edge&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="text">
-      <string>Contours</string>
-     </property>
-     <property name="icon">
-      <iconset resource="resources.qrc">
-       <normaloff>:/icons/contours.png</normaloff>:/icons/contours.png</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>24</width>
-       <height>24</height>
-      </size>
-     </property>
-     <property name="checked">
-      <bool>false</bool>
-     </property>
-    </widget>
-    <widget class="QSpinBox" name="spinBox_contours_sigma">
-     <property name="geometry">
-      <rect>
-       <x>190</x>
-       <y>140</y>
-       <width>53</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Contours sigma (in percents): value between min and max of the threshold of hysteresis procedure&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="minimum">
-      <number>1</number>
-     </property>
-     <property name="maximum">
-      <number>100</number>
-     </property>
-     <property name="value">
-      <number>33</number>
-     </property>
-    </widget>
-    <widget class="QSpinBox" name="spinBox_contours_thickness">
-     <property name="geometry">
-      <rect>
-       <x>290</x>
-       <y>140</y>
-       <width>45</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Contours Thickness: size of the lines in pixels&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="minimum">
-      <number>1</number>
-     </property>
-     <property name="maximum">
-      <number>10</number>
-     </property>
-     <property name="value">
-      <number>2</number>
-     </property>
-    </widget>
-    <widget class="QComboBox" name="comboBox_contours_aperture">
-     <property name="geometry">
-      <rect>
-       <x>250</x>
-       <y>140</y>
-       <width>35</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Contours Aperture: aperture size for the Sobel operator.&lt;/p&gt;&lt;p&gt;In most cases you should leave it to 3 (minimum value)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <item>
-      <property name="text">
-       <string>3</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>5</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>7</string>
-      </property>
-     </item>
-    </widget>
-    <zorder>label_thumbnail</zorder>
-    <zorder>checkBox_gaussian_blur</zorder>
-    <zorder>checkBox_lab_colors</zorder>
-    <zorder>horizontalSlider_region_size</zorder>
-    <zorder>horizontalSlider_ruler</zorder>
-    <zorder>horizontalSlider_connectivity</zorder>
-    <zorder>horizontalSlider_iterations</zorder>
-    <zorder>horizontalSlider_num_superpixels</zorder>
-    <zorder>label_superpixels</zorder>
-    <zorder>label_value_num_superpixels</zorder>
-    <zorder>horizontalSlider_num_levels</zorder>
-    <zorder>label_value_num_levels</zorder>
-    <zorder>label_levels</zorder>
-    <zorder>horizontalSlider_prior</zorder>
-    <zorder>label_value_prior</zorder>
-    <zorder>label_prior</zorder>
-    <zorder>horizontalSlider_num_histogram_bins</zorder>
-    <zorder>label_value_num_histogram_bins</zorder>
-    <zorder>label_histograms</zorder>
-    <zorder>checkBox_double_step</zorder>
-    <zorder>doubleSpinBox_ratio</zorder>
-    <zorder>label_ratio</zorder>
-    <zorder>checkBox_thick</zorder>
-    <zorder>button_image</zorder>
-    <zorder>comboBox_algorithm</zorder>
-    <zorder>label_algorithm</zorder>
-    <zorder>button_load_conf</zorder>
-    <zorder>button_save_conf</zorder>
-    <zorder>label_iterations</zorder>
-    <zorder>label_connectivity</zorder>
-    <zorder>label_ruler</zorder>
-    <zorder>label_region_size</zorder>
-    <zorder>label_value_ruler</zorder>
-    <zorder>label_value_region_size</zorder>
-    <zorder>label_value_connectivity</zorder>
-    <zorder>label_value_connectivity_percent</zorder>
-    <zorder>label_value_iterations</zorder>
-    <zorder>checkBox_normalize</zorder>
-    <zorder>checkBox_equalize</zorder>
-    <zorder>checkBox_contours</zorder>
-    <zorder>spinBox_contours_sigma</zorder>
-    <zorder>spinBox_contours_thickness</zorder>
-    <zorder>comboBox_contours_aperture</zorder>
-   </widget>
-   <widget class="QPushButton" name="button_undo">
-    <property name="geometry">
-     <rect>
-      <x>420</x>
-      <y>706</y>
-      <width>131</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="cursor">
-     <cursorShape>PointingHandCursor</cursorShape>
-    </property>
-    <property name="toolTip">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Undo last action.&lt;/p&gt;&lt;p&gt;Caution, it will only work once!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-    </property>
-    <property name="text">
-     <string>Undo</string>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normalon>:/icons/undo.png</normalon>
-     </iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>24</width>
-      <height>24</height>
-     </size>
-    </property>
    </widget>
    <widget class="QFrame" name="frame_image_resolution">
     <property name="geometry">
@@ -1983,13 +412,3302 @@
      <string>Image file</string>
     </property>
    </widget>
-   <widget class="QFrame" name="frameabout">
+   <widget class="QScrollBar" name="horizontalScrollBar_segmentation">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>10</y>
-      <width>231</width>
-      <height>101</height>
+      <x>360</x>
+      <y>710</y>
+      <width>871</width>
+      <height>14</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QScrollBar" name="verticalScrollBar_segmentation">
+    <property name="geometry">
+     <rect>
+      <x>1231</x>
+      <y>30</y>
+      <width>16</width>
+      <height>681</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_segmentation">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>30</y>
+      <width>861</width>
+      <height>681</height>
+     </rect>
+    </property>
+    <property name="cursor">
+     <cursorShape>ArrowCursor</cursorShape>
+    </property>
+    <property name="mouseTracking">
+     <bool>false</bool>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Sunken</enum>
+    </property>
+    <property name="text">
+     <string>Segmentation not computed</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QTabWidget" name="Tabs">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>3</y>
+      <width>351</width>
+      <height>441</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="currentIndex">
+     <number>2</number>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>16</width>
+      <height>16</height>
+     </size>
+    </property>
+    <widget class="QWidget" name="tab_image">
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tab Image:&lt;/p&gt;&lt;p&gt;Before anything else, load an image&lt;/p&gt;&lt;p&gt;You can then apply effects and filters on this image: tick the elements and set the parameters for each, then click on APPLY.&lt;/p&gt;&lt;p&gt;The effects are always applied on the ORIGINAL image, not the current one.&lt;/p&gt;&lt;p&gt;If you want to revert to the original image, click ORIGINAL&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <attribute name="icon">
+      <iconset>
+       <normalon>:/icons/image.png</normalon>
+      </iconset>
+     </attribute>
+     <attribute name="title">
+      <string>Image</string>
+     </attribute>
+     <widget class="QPushButton" name="button_image">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>20</y>
+        <width>131</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the image to process.&lt;/p&gt;&lt;p&gt;It also resets the previously defined mask, grid and labels&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+      </property>
+      <property name="text">
+       <string>Load image</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normalon>:/icons/image.png</normalon>
+       </iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>32</width>
+        <height>32</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="button_apply">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>352</y>
+        <width>151</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>-1</pointsize>
+       </font>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Compute the segmentation.&lt;/p&gt;&lt;p&gt;After computation, use the &amp;quot;labels&amp;quot; tab to edit the labels&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+	font-size: 20px;
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+      </property>
+      <property name="text">
+       <string>APPLY</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normalon>:/icons/compute.png</normalon>
+       </iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>32</width>
+        <height>32</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="button_original">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>362</y>
+        <width>101</width>
+        <height>33</height>
+       </rect>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Undo last action.&lt;/p&gt;&lt;p&gt;Caution, it will only work once!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+      </property>
+      <property name="text">
+       <string>Original</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normalon>:/icons/undo.png</normalon>
+       </iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>24</width>
+        <height>24</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QFrame" name="frame_denoise">
+      <property name="geometry">
+       <rect>
+        <x>9</x>
+        <y>90</y>
+        <width>171</width>
+        <height>171</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QLabel" name="label">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>148</y>
+         <width>41</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>PSNR:</string>
+       </property>
+      </widget>
+      <widget class="QSlider" name="horizontalSlider_luminance">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>57</y>
+         <width>131</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::ClickFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Noise is mostly found in dark areas with digital cameras, especially with high ISO values (over 800).&lt;/p&gt;&lt;p&gt;Bright areas are also affected, but in this case the noise is less perceptible by humans.&lt;/p&gt;&lt;p&gt;Try higher values of luminance to clean the image of unwanted brighter or darker pixels&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>100</number>
+       </property>
+       <property name="value">
+        <number>3</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="tickPosition">
+        <enum>QSlider::TicksBelow</enum>
+       </property>
+       <property name="tickInterval">
+        <number>10</number>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_chrominance">
+       <property name="geometry">
+        <rect>
+         <x>35</x>
+         <y>94</y>
+         <width>91</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Chrominance</string>
+       </property>
+      </widget>
+      <widget class="QSlider" name="horizontalSlider_chrominance">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>108</y>
+         <width>131</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Chrominance: noise in this case consists in color variations, for example orange and yellow spots in a red colored area.&lt;/p&gt;&lt;p&gt;Superpixel algorithms are less affected by chrominance than luminance&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>100</number>
+       </property>
+       <property name="value">
+        <number>3</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="tickPosition">
+        <enum>QSlider::TicksBelow</enum>
+       </property>
+       <property name="tickInterval">
+        <number>10</number>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_psnr">
+       <property name="geometry">
+        <rect>
+         <x>65</x>
+         <y>148</y>
+         <width>71</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;PSNR: when you apply the effect, PSNR (Peak Signal to Noise Ratio) represents the noise difference between the original and the denoised image.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The higher value the better, over 40dB is usally good enough for superpixels algorithms&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::Box</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Sunken</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="checkBox_denoise">
+       <property name="geometry">
+        <rect>
+         <x>3</x>
+         <y>4</y>
+         <width>151</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Denoising - noise in images often interfere with the superpixels algorithms, the result is often indented in this case&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Denoise</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normalon>:/icons/denoise.png</normalon>
+        </iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>26</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_luminance">
+       <property name="geometry">
+        <rect>
+         <x>35</x>
+         <y>46</y>
+         <width>81</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Luminance</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_luminance_value">
+       <property name="geometry">
+        <rect>
+         <x>139</x>
+         <y>55</y>
+         <width>31</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>3</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_chrominance_value">
+       <property name="geometry">
+        <rect>
+         <x>139</x>
+         <y>113</y>
+         <width>31</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>3</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QFrame" name="frame_contours">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>265</y>
+        <width>171</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QSpinBox" name="spinBox_contours_thickness">
+       <property name="geometry">
+        <rect>
+         <x>115</x>
+         <y>35</y>
+         <width>45</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Contours Thickness: n pixels wide lines are drawn over the image&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>10</number>
+       </property>
+       <property name="value">
+        <number>2</number>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="comboBox_contours_aperture">
+       <property name="geometry">
+        <rect>
+         <x>75</x>
+         <y>35</y>
+         <width>35</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Contours Aperture: aperture size for the Sobel operator.&lt;/p&gt;&lt;p&gt;In most cases you should leave it to 3 (minimum value)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <item>
+        <property name="text">
+         <string>3</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>5</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>7</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QCheckBox" name="checkBox_contours">
+       <property name="geometry">
+        <rect>
+         <x>3</x>
+         <y>4</y>
+         <width>151</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Apply an edge detector to the image before processing. It draws colored lines over the image, and so can help the superpixels algorithms defining the cells.&lt;/p&gt;&lt;p&gt;Results are often improved by a Gaussian blur first.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;* Sigma: threshold for the hysteresis procedure&lt;/p&gt;&lt;p&gt;* Aperture: aperture size for the Sobel operator&lt;/p&gt;&lt;p&gt;* Thickness: value in pixels, for the resulting lines drawn over the image &lt;br/&gt;&lt;/p&gt;&lt;p&gt;The present alogorithm is &lt;span style=&quot; font-style:italic;&quot;&gt;Canny Edge detector&lt;/span&gt;, it was developed by John F. Canny in 1986. Also known to many as the &lt;span style=&quot; font-style:italic;&quot;&gt;optimal detector&lt;/span&gt;, Canny algorithm aims to satisfy three main criteria:&lt;/p&gt;&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Low error rate:&lt;/span&gt; meaning a good detection of only existent edges&lt;/li&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Good localization:&lt;/span&gt; the distance between edge pixels detected and real edge pixels have to be minimized.&lt;/li&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Minimal response:&lt;/span&gt; only one detector response per edge&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Contours</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normalon>:/icons/contours.png</normalon>
+        </iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>24</width>
+         <height>24</height>
+        </size>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="spinBox_contours_sigma">
+       <property name="geometry">
+        <rect>
+         <x>15</x>
+         <y>35</y>
+         <width>53</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Contours sigma (in percents): value between min and max of the threshold of hysteresis procedure&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>100</number>
+       </property>
+       <property name="value">
+        <number>33</number>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QFrame" name="frame_filters">
+      <property name="geometry">
+       <rect>
+        <x>185</x>
+        <y>89</y>
+        <width>154</width>
+        <height>189</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QSpinBox" name="spinBox_color_balance_percent">
+       <property name="geometry">
+        <rect>
+         <x>56</x>
+         <y>150</y>
+         <width>61</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Color balance percent: max variation in percents&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>100</number>
+       </property>
+       <property name="value">
+        <number>1</number>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="checkBox_normalize">
+       <property name="geometry">
+        <rect>
+         <x>3</x>
+         <y>80</y>
+         <width>151</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Normalize the image histogram before processing.&lt;/p&gt;&lt;p&gt;Image normalization changes the range of pixel intensity values, by stretching the histogram to the maximum values.&lt;/p&gt;&lt;p&gt;It is recommended for grayscale images, or color images with a limited number of colors&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Normalize</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normalon>:/icons/normalize.png</normalon>
+        </iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>24</width>
+         <height>24</height>
+        </size>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="checkBox_color_balance">
+       <property name="geometry">
+        <rect>
+         <x>3</x>
+         <y>120</y>
+         <width>151</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Color balance the image before processing.&lt;/p&gt;&lt;p&gt;Color balance (also called &amp;quot;white balance&amp;quot;) is the global adjustment of the intensities of the colors (typically red, green, and blue primary colors).&lt;/p&gt;&lt;p&gt;An important goal of this adjustment is to render specific colors – particularly neutral colors – correctly&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Color Balance</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normalon>:/icons/color-balance.png</normalon>
+        </iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>24</width>
+         <height>24</height>
+        </size>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="checkBox_gaussian_blur">
+       <property name="geometry">
+        <rect>
+         <x>3</x>
+         <y>5</y>
+         <width>151</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Apply a gaussian blur to the image before processing often improves the results by lowering noise&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Gaussian blur</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normalon>:/icons/blur.png</normalon>
+        </iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>24</width>
+         <height>24</height>
+        </size>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="checkBox_equalize">
+       <property name="geometry">
+        <rect>
+         <x>3</x>
+         <y>40</y>
+         <width>151</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equalize histogram of the image before processing: increases the global contrast of the image before processing.&lt;/p&gt;&lt;p&gt;It can improve many images, especially when the usable data is represented by close contrast values. Through this adjustment, the intensities can be better distributed on the histogram: this allows for areas of lower local contrast to gain a higher contrast. Histogram equalization accomplishes this by effectively spreading out the most frequent intensity values&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Equalize</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normalon>:/icons/equalize.png</normalon>
+        </iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>24</width>
+         <height>24</height>
+        </size>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </widget>
+     <zorder>frame_filters</zorder>
+     <zorder>frame_contours</zorder>
+     <zorder>frame_denoise</zorder>
+     <zorder>button_image</zorder>
+     <zorder>button_apply</zorder>
+     <zorder>button_original</zorder>
+    </widget>
+    <widget class="QWidget" name="tab_segmentation">
+     <attribute name="icon">
+      <iconset>
+       <normalon>:/icons/compute.png</normalon>
+      </iconset>
+     </attribute>
+     <attribute name="title">
+      <string>Segmentation</string>
+     </attribute>
+     <widget class="QPushButton" name="button_compute">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>317</y>
+        <width>161</width>
+        <height>46</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>-1</pointsize>
+       </font>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Compute the segmentation.&lt;/p&gt;&lt;p&gt;After computation, use the &amp;quot;Labels&amp;quot; tab to edit the mask&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+   font-size: 20px;
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+      </property>
+      <property name="text">
+       <string>COMPUTE</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normalon>:/icons/compute.png</normalon>
+       </iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>32</width>
+        <height>32</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QFrame" name="frame_lcd">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>370</y>
+        <width>141</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QLabel" name="label_11">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>5</y>
+         <width>21</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap resource="resources.qrc">:/icons/grid.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLCDNumber" name="lcd_cells">
+       <property name="geometry">
+        <rect>
+         <x>35</x>
+         <y>5</y>
+         <width>61</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>Number of cells in the computed segmentation</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLCDNumber{ 
+    background-color: rgb(64, 64,64);
+}</string>
+       </property>
+       <property name="digitCount">
+        <number>6</number>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_7">
+       <property name="geometry">
+        <rect>
+         <x>102</x>
+         <y>6</y>
+         <width>41</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>cells</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QComboBox" name="comboBox_algorithm">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>20</y>
+        <width>111</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose the algorithm variant to use: &lt;/p&gt;&lt;p&gt;* SLIC (Simple Linear Iterative Clustering) clusters pixels using pixel channels and image plane space to efficiently generate compact, nearly uniform superpixels&lt;/p&gt;&lt;p&gt;* SLICO (Zero parameter SLIC) optimizes SLIC, using adaptive compactness factor&lt;/p&gt;&lt;p&gt;* MSLIC (Manifold SLIC) optimizes SLIC using manifold methods resulting in more content-sensitive superpixels&lt;/p&gt;&lt;p&gt;* LSC (Linear Spectral Clustering) produces compact and uniform superpixels with low computational costs, and keeps global images properties&lt;/p&gt;&lt;p&gt;* SEEDS (Superpixels Extracted via Energy-Driven Sampling) uses an efficient hill-climbing algorithm to optimize the superpixels' energy function that is based on color histograms and a boundary term, producing smooth boundaries&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="maxVisibleItems">
+       <number>5</number>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_algorithm">
+      <property name="geometry">
+       <rect>
+        <x>83</x>
+        <y>25</y>
+        <width>71</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string>Algorithm</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+     <widget class="QFrame" name="frame_slic">
+      <property name="geometry">
+       <rect>
+        <x>9</x>
+        <y>69</y>
+        <width>331</width>
+        <height>193</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Sunken</enum>
+      </property>
+      <widget class="QLabel" name="label_region_size">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>50</y>
+         <width>81</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Region size</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+      <widget class="QSlider" name="horizontalSlider_iterations">
+       <property name="geometry">
+        <rect>
+         <x>100</x>
+         <y>9</y>
+         <width>191</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Higher number improves the result: the algorithms starts from a grid of superpixels and then refines the boundaries by proposing updates of edges boundaries&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>50</number>
+       </property>
+       <property name="value">
+        <number>10</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="tickPosition">
+        <enum>QSlider::TicksBelow</enum>
+       </property>
+      </widget>
+      <widget class="QSlider" name="horizontalSlider_region_size">
+       <property name="geometry">
+        <rect>
+         <x>94</x>
+         <y>48</y>
+         <width>191</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Average superpixel size measured in pixels&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>200</number>
+       </property>
+       <property name="value">
+        <number>30</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="tickPosition">
+        <enum>QSlider::TicksBelow</enum>
+       </property>
+      </widget>
+      <widget class="QSlider" name="horizontalSlider_ruler">
+       <property name="geometry">
+        <rect>
+         <x>94</x>
+         <y>128</y>
+         <width>191</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="toolTip">
+        <string>Enforcement of superpixel smoothness factor of superpixel</string>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>100</number>
+       </property>
+       <property name="value">
+        <number>30</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="tickPosition">
+        <enum>QSlider::TicksBelow</enum>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_connectivity">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>90</y>
+         <width>91</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Min size</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_iterations">
+       <property name="geometry">
+        <rect>
+         <x>16</x>
+         <y>11</y>
+         <width>81</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Iterations</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+      <widget class="QSlider" name="horizontalSlider_connectivity">
+       <property name="geometry">
+        <rect>
+         <x>94</x>
+         <y>88</y>
+         <width>191</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum element size in percents that should be absorbed into a bigger superpixel.&lt;/p&gt;&lt;p&gt;The function merges components that are too small, assigning the previously found adjacent label to this component&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="minimum">
+        <number>0</number>
+       </property>
+       <property name="maximum">
+        <number>100</number>
+       </property>
+       <property name="value">
+        <number>25</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="tickPosition">
+        <enum>QSlider::TicksBelow</enum>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_value_ruler">
+       <property name="geometry">
+        <rect>
+         <x>280</x>
+         <y>130</y>
+         <width>31</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>30</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_value_region_size">
+       <property name="geometry">
+        <rect>
+         <x>280</x>
+         <y>50</y>
+         <width>31</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>30</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_ruler">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>129</y>
+         <width>41</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Ruler</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_value_connectivity_percent">
+       <property name="geometry">
+        <rect>
+         <x>312</x>
+         <y>92</y>
+         <width>16</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>%</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_value_connectivity">
+       <property name="geometry">
+        <rect>
+         <x>280</x>
+         <y>90</y>
+         <width>31</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>25</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_value_iterations">
+       <property name="geometry">
+        <rect>
+         <x>280</x>
+         <y>10</y>
+         <width>31</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>10</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+      <widget class="QDoubleSpinBox" name="doubleSpinBox_ratio">
+       <property name="geometry">
+        <rect>
+         <x>97</x>
+         <y>127</y>
+         <width>69</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enforcement of superpixel compactness factor&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="decimals">
+        <number>3</number>
+       </property>
+       <property name="maximum">
+        <double>2.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>0.100000000000000</double>
+       </property>
+       <property name="value">
+        <double>0.075000000000000</double>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_ratio">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>130</y>
+         <width>41</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Ratio</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_value_num_histogram_bins">
+       <property name="geometry">
+        <rect>
+         <x>280</x>
+         <y>131</y>
+         <width>31</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>5</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_prior">
+       <property name="geometry">
+        <rect>
+         <x>15</x>
+         <y>101</y>
+         <width>81</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Prior</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+      <widget class="QSlider" name="horizontalSlider_prior">
+       <property name="geometry">
+        <rect>
+         <x>100</x>
+         <y>98</y>
+         <width>191</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable 3x3 shape smoothing term if &amp;gt;0.&lt;/p&gt;&lt;p&gt;A larger value leads to smoother shapes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="minimum">
+        <number>0</number>
+       </property>
+       <property name="maximum">
+        <number>5</number>
+       </property>
+       <property name="value">
+        <number>2</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="tickPosition">
+        <enum>QSlider::NoTicks</enum>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_value_num_levels">
+       <property name="geometry">
+        <rect>
+         <x>282</x>
+         <y>72</y>
+         <width>31</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>4</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_value_prior">
+       <property name="geometry">
+        <rect>
+         <x>281</x>
+         <y>100</y>
+         <width>31</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>2</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+      <widget class="QSlider" name="horizontalSlider_num_levels">
+       <property name="geometry">
+        <rect>
+         <x>100</x>
+         <y>70</y>
+         <width>191</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of block levels. The more levels, the more accurate is the segmentation, but needs more memory and CPU time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>50</number>
+       </property>
+       <property name="value">
+        <number>4</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="tickPosition">
+        <enum>QSlider::NoTicks</enum>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_superpixels">
+       <property name="geometry">
+        <rect>
+         <x>15</x>
+         <y>42</y>
+         <width>81</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Superpixels</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_value_num_superpixels">
+       <property name="geometry">
+        <rect>
+         <x>296</x>
+         <y>41</y>
+         <width>31</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>1000</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+      <widget class="QSlider" name="horizontalSlider_num_superpixels">
+       <property name="geometry">
+        <rect>
+         <x>100</x>
+         <y>40</y>
+         <width>191</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Desired number of superpixels. Note that the actual number may be smaller due to restrictions (depending on the image size and num_levels)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>10000</number>
+       </property>
+       <property name="value">
+        <number>1000</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="tickPosition">
+        <enum>QSlider::NoTicks</enum>
+       </property>
+       <property name="tickInterval">
+        <number>500</number>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_levels">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>70</y>
+         <width>81</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Levels</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_histograms">
+       <property name="geometry">
+        <rect>
+         <x>15</x>
+         <y>130</y>
+         <width>81</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Histograms</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+      <widget class="QSlider" name="horizontalSlider_num_histogram_bins">
+       <property name="geometry">
+        <rect>
+         <x>100</x>
+         <y>127</y>
+         <width>191</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of histogram bins&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>50</number>
+       </property>
+       <property name="value">
+        <number>5</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="tickPosition">
+        <enum>QSlider::NoTicks</enum>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="checkBox_double_step">
+       <property name="geometry">
+        <rect>
+         <x>80</x>
+         <y>156</y>
+         <width>191</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::ClickFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If set, iterate each block level twice for higher accuracy&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Double step</string>
+       </property>
+       <property name="icon">
+        <iconset resource="resources.qrc">
+         <normaloff>:/icons/double-step.png</normaloff>:/icons/double-step.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>24</width>
+         <height>24</height>
+        </size>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <zorder>horizontalSlider_connectivity</zorder>
+      <zorder>horizontalSlider_ruler</zorder>
+      <zorder>horizontalSlider_prior</zorder>
+      <zorder>horizontalSlider_num_histogram_bins</zorder>
+      <zorder>horizontalSlider_num_levels</zorder>
+      <zorder>label_region_size</zorder>
+      <zorder>horizontalSlider_iterations</zorder>
+      <zorder>horizontalSlider_region_size</zorder>
+      <zorder>label_connectivity</zorder>
+      <zorder>label_iterations</zorder>
+      <zorder>label_value_ruler</zorder>
+      <zorder>label_value_region_size</zorder>
+      <zorder>label_ruler</zorder>
+      <zorder>label_value_connectivity_percent</zorder>
+      <zorder>label_value_connectivity</zorder>
+      <zorder>label_value_iterations</zorder>
+      <zorder>doubleSpinBox_ratio</zorder>
+      <zorder>label_ratio</zorder>
+      <zorder>label_value_num_histogram_bins</zorder>
+      <zorder>label_prior</zorder>
+      <zorder>label_value_num_levels</zorder>
+      <zorder>label_value_prior</zorder>
+      <zorder>label_superpixels</zorder>
+      <zorder>label_value_num_superpixels</zorder>
+      <zorder>horizontalSlider_num_superpixels</zorder>
+      <zorder>label_levels</zorder>
+      <zorder>label_histograms</zorder>
+      <zorder>checkBox_double_step</zorder>
+     </widget>
+     <widget class="QPushButton" name="button_save_conf">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>370</y>
+        <width>121</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save parameters to a XML file&lt;/p&gt;&lt;p&gt;&lt;br/&gt;It saves the parameters from the Image and Segmentation tabs&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+      </property>
+      <property name="text">
+       <string> Save conf</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normalon>:/icons/save.png</normalon>
+       </iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>24</width>
+        <height>24</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="button_load_conf">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>340</y>
+        <width>121</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Retrieve parameters from a previously saved XML file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+      </property>
+      <property name="text">
+       <string> Load conf</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normalon>:/icons/config.png</normalon>
+       </iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>23</width>
+        <height>23</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="checkBox_thick">
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>265</y>
+        <width>131</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::ClickFocus</enum>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ticked: the computed grid is thicker, otherwise the border of the cells is only one pixel wide&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>Thick lines</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resources.qrc">
+        <normaloff>:/icons/grid.png</normaloff>:/icons/grid.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>26</width>
+        <height>26</height>
+       </size>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="checkBox_lab_colors">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>265</y>
+        <width>151</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::ClickFocus</enum>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Convert the image to LAB colors space: often improves the results.&lt;/p&gt;&lt;p&gt;If not set, HSV color space will be used instead&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>LAB colors</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resources.qrc">
+        <normaloff>:/icons/color.png</normaloff>:/icons/color.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>24</width>
+        <height>24</height>
+       </size>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_labels">
+     <attribute name="icon">
+      <iconset>
+       <normalon>:/icons/label.png</normalon>
+      </iconset>
+     </attribute>
+     <attribute name="title">
+      <string>Labels</string>
+     </attribute>
+     <widget class="QPushButton" name="button_load_session">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>326</y>
+        <width>131</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load a previously saved session: image, mask, grid and labels (cells)&lt;/p&gt;&lt;p&gt;Useful if you want to finish a previous work, but it won't work until you have loaded the original image first.&lt;/p&gt;&lt;p&gt;Tip: you don't have to save the parameters to continue working with the cells.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+      </property>
+      <property name="text">
+       <string>Load session</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normalon>:/icons/session-load.png</normalon>
+       </iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>22</width>
+        <height>22</height>
+       </size>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="button_save_session">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>366</y>
+        <width>131</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the current session: image, mask, grid and labels (cells).&lt;/p&gt;&lt;p&gt;The parameters won't be saved, do this separately.&lt;/p&gt;&lt;p&gt;Useful if you want to finish a work later: retrieving a session will allow you to continue where you left it, without recomputing.&lt;/p&gt;&lt;p&gt;Image, mask, grid are saved to PNG image format.&lt;/p&gt;&lt;p&gt;Labels and parameters are saved in openCV XML/YAML format&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+      </property>
+      <property name="text">
+       <string>Save session</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normalon>:/icons/session-save.png</normalon>
+       </iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>23</width>
+        <height>23</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="button_undo">
+      <property name="geometry">
+       <rect>
+        <x>229</x>
+        <y>338</y>
+        <width>93</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Undo last action, even in &amp;quot;new cell&amp;quot; mode.&lt;/p&gt;&lt;p&gt;Caution, it will only work once!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+	font-size: 16px;
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+      </property>
+      <property name="text">
+       <string>UNDO</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normalon>:/icons/undo.png</normalon>
+       </iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>32</width>
+        <height>32</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QListWidget" name="listWidget_labels">
+      <property name="geometry">
+       <rect>
+        <x>6</x>
+        <y>48</y>
+        <width>191</width>
+        <height>275</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The labels are listed here, in alphabetical order.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;You can select several labels by holding down the &amp;lt;CTRL&amp;gt; key, then clicking with the mouse&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOn</enum>
+      </property>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
+      </property>
+      <property name="selectionMode">
+       <enum>QAbstractItemView::ExtendedSelection</enum>
+      </property>
+      <property name="selectionBehavior">
+       <enum>QAbstractItemView::SelectItems</enum>
+      </property>
+      <property name="viewMode">
+       <enum>QListView::ListMode</enum>
+      </property>
+      <property name="selectionRectVisible">
+       <bool>true</bool>
+      </property>
+      <property name="sortingEnabled">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QFrame" name="frame_pick_colors">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>60</y>
+        <width>131</width>
+        <height>261</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Sunken</enum>
+      </property>
+      <widget class="QPushButton" name="pushButton_color_red">
+       <property name="geometry">
+        <rect>
+         <x>82</x>
+         <y>123</y>
+         <width>28</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>Color to use for the cells</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+	background-color:rgb(255,0,0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_color_brown">
+       <property name="geometry">
+        <rect>
+         <x>82</x>
+         <y>149</y>
+         <width>28</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>Color to use for the cells</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+	background-color:rgb(128,0,0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_color_orange">
+       <property name="geometry">
+        <rect>
+         <x>18</x>
+         <y>123</y>
+         <width>28</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>Color to use for the cells</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+	background-color:rgb(255,128,0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_color">
+       <property name="geometry">
+        <rect>
+         <x>8</x>
+         <y>15</y>
+         <width>118</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Current label and used color to colorize the segmentation cells.&lt;/p&gt;&lt;p&gt;Click on the image:&lt;/p&gt;&lt;p&gt;    * Left button: set the cell color&lt;/p&gt;&lt;p&gt;    * Right button: delete (set to transparent)&lt;/p&gt;&lt;p&gt;    * Drag the mouse while holding the mouse buttons to colorize several cells&lt;/p&gt;&lt;p&gt;    * use &amp;lt;CTRL&amp;gt; key + left click to fill a closed area. Be careful, one pixel missing and you have to use the Undo function!&lt;/p&gt;&lt;p&gt;* hold the middle button of the mouse to navigate in the image&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color:rgb(255,0,0);border: 3px solid black;</string>
+       </property>
+       <property name="text">
+        <string>Label</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_8">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>11</y>
+         <width>28</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap resource="resources.qrc">:/icons/edit.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_color_yellow">
+       <property name="geometry">
+        <rect>
+         <x>18</x>
+         <y>97</y>
+         <width>28</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>Color to use for the cells</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+	background-color:rgb(255,255,0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_color_pick">
+       <property name="geometry">
+        <rect>
+         <x>34</x>
+         <y>52</y>
+         <width>61</width>
+         <height>38</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>Color to use for the cells</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normalon>:/icons/color.png</normalon>
+        </iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>32</width>
+         <height>32</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_color_green">
+       <property name="geometry">
+        <rect>
+         <x>82</x>
+         <y>97</y>
+         <width>28</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>Color to use for the cells</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+	background-color:rgb(0,255,0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_color_olive">
+       <property name="geometry">
+        <rect>
+         <x>18</x>
+         <y>227</y>
+         <width>28</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>Color to use for the cells</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+	background-color:rgb(128,128,0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_color_cyan">
+       <property name="geometry">
+        <rect>
+         <x>18</x>
+         <y>175</y>
+         <width>28</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>Color to use for the cells</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+	background-color:rgb(0,255,255);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_color_emerald">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>227</y>
+         <width>28</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>Color to use for the cells</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+	background-color:rgb(0,128,128);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_color_blue">
+       <property name="geometry">
+        <rect>
+         <x>82</x>
+         <y>175</y>
+         <width>28</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>Color to use for the cells</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+	background-color:rgb(0,0,255);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_color_navy">
+       <property name="geometry">
+        <rect>
+         <x>82</x>
+         <y>201</y>
+         <width>28</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>Color to use for the cells</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+	background-color:rgb(0,0,128);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_color_magenta">
+       <property name="geometry">
+        <rect>
+         <x>18</x>
+         <y>149</y>
+         <width>28</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>Color to use for the cells</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+	background-color:rgb(255,0,255);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_color_purple">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>201</y>
+         <width>28</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>Color to use for the cells</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+	background-color:rgb(128,0,255);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_color_lime">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>97</y>
+         <width>28</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>Color to use for the cells</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+	background-color:rgb(192,255,0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_color_laurel">
+       <property name="geometry">
+        <rect>
+         <x>82</x>
+         <y>227</y>
+         <width>28</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>Color to use for the cells</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+	background-color:rgb(0,128,0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_color_malibu">
+       <property name="geometry">
+        <rect>
+         <x>18</x>
+         <y>201</y>
+         <width>28</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>Color to use for the cells</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+	background-color:rgb(128,128,255);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_color_violet">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>149</y>
+         <width>28</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>Color to use for the cells</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+	background-color:rgb(128,0,128);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_color_rose">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>123</y>
+         <width>28</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>Color to use for the cells</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+	background-color:rgb(255,0,128);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_color_azure">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>175</y>
+         <width>28</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>Color to use for the cells</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+	background-color:rgb(0,128,255);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QPushButton" name="pushButton_label_delete">
+      <property name="geometry">
+       <rect>
+        <x>13</x>
+        <y>10</y>
+        <width>51</width>
+        <height>34</height>
+       </rect>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delete the selected label and all its colored cells in the mask.&lt;/p&gt;&lt;p&gt;If several labels are highlighted, the last selected will be considered&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normalon>:/icons/delete.png</normalon>
+       </iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>26</width>
+        <height>26</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_label_add">
+      <property name="geometry">
+       <rect>
+        <x>143</x>
+        <y>10</y>
+        <width>51</width>
+        <height>34</height>
+       </rect>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add a new label with a default color.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Don't forget to rename the new label (double-click on it), and to set a new color&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normalon>:/icons/add.png</normalon>
+       </iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>26</width>
+        <height>26</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_label_hide">
+      <property name="geometry">
+       <rect>
+        <x>78</x>
+        <y>10</y>
+        <width>51</width>
+        <height>34</height>
+       </rect>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hide the selected label.&lt;/p&gt;&lt;p&gt;Even if the cells become transparent in the mask, you can have them back by selecting a new color.&lt;/p&gt;&lt;p&gt;If several labels are highlighted, the last selected will be considered&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normalon>:/icons/hide.png</normalon>
+       </iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>28</width>
+        <height>28</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_psd">
+      <property name="geometry">
+       <rect>
+        <x>166</x>
+        <y>327</y>
+        <width>41</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save to a single Photoshop image (.psd) the processed image as &amp;quot;background&amp;quot;, and the labels masks as transparent &amp;quot;layers&amp;quot;. &lt;/p&gt;&lt;p&gt;    * Each layer is named using the label name&lt;/p&gt;&lt;p&gt;    * To edit a layer in Photoshop, you have to &amp;quot;unlock&amp;quot; it first&lt;/p&gt;&lt;p&gt;    * The saved PSD image is not compatible with Photoshop 7 and under, but is entirely compatible with The Gimp &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normalon>:/icons/photoshop.png</normalon>
+       </iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>32</width>
+        <height>32</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_tif">
+      <property name="geometry">
+       <rect>
+        <x>166</x>
+        <y>367</y>
+        <width>41</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save to a single Tiff image (.tif) the processed image and the labels masks as &amp;quot;pages&amp;quot;. &lt;/p&gt;&lt;p&gt;    * If you try to open the saved Tiff image with Photoshop (and most image tools), only the processed image will appear. Only a few image tools are able to read a multi-page Tiff image (e.g. XnViewMP)&lt;/p&gt;&lt;p&gt;    * Lyckily, an open-source solution exists: open the image file in &amp;quot;The Gimp&amp;quot;, select all pages as layers. Unfortunaltely, you will lose the labels names, the Tiff format does'nt enable this function&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normalon>:/icons/tiff.png</normalon>
+       </iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>32</width>
+        <height>32</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_label_create">
+      <property name="geometry">
+       <rect>
+        <x>280</x>
+        <y>10</y>
+        <width>51</width>
+        <height>34</height>
+       </rect>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Create new cell: useful when you want to extract a set of pixels from a group of cells.&lt;/p&gt;&lt;p&gt;When you click on this button, a new label is created.&lt;/p&gt;&lt;p&gt;You have to draw the new cell:&lt;/p&gt;&lt;p&gt;* the cursor is now a cross, and all the other tabs and unwanted buttons are hidden until you apply the changes&lt;/p&gt;&lt;p&gt;* the white color is used for the new cell&lt;/p&gt;&lt;p&gt;* click with the right and left mouse buttons to draw pixels: left for white, right for unset. You can maintain the click to draw several pixels in a free-style way&lt;/p&gt;&lt;p&gt;* the last pixel set can be the beginning of a line: press and hold the &amp;lt;space&amp;gt; keyboard button, then move the mouse until you have the perfect line. Release the &amp;lt;space&amp;gt; key, the line is drawn&lt;/p&gt;&lt;p&gt;* the extremity of a new line becomes the next line origin. Click elsewhere with the mouse to set a new origin&lt;/p&gt;&lt;p&gt;* you can fill a closed area with the left (white) or right (unset) mouse button while holding down the &amp;lt;CTRL&amp;gt; key&lt;/p&gt;&lt;p&gt;* you can cancel the last action with the UNDO button (be careful, possible only once) - it is recommended to save your session before attempting this function&lt;/p&gt;&lt;p&gt;* finish by clicking again on the &amp;quot;new cell&amp;quot; button to apply (or not) what you did. If you keep your changes, the purple color will be set to the new label, and the grid mask will be updated with the boundaries of the new cell. Rename the new cell if you want&lt;/p&gt;&lt;p&gt;* tip: only draw contigous areas, separate pixels will be considered pertaining to the same new cell!&lt;/p&gt;&lt;p&gt;* be careful, you can't cancel a new cell creation&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:checked {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="resources.qrc">
+        <normaloff>:/icons/label-new-add.png</normaloff>
+        <normalon>:/icons/label-new.png</normalon>:/icons/label-new-add.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>28</width>
+        <height>28</height>
+       </size>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_label_join">
+      <property name="geometry">
+       <rect>
+        <x>213</x>
+        <y>10</y>
+        <width>51</width>
+        <height>34</height>
+       </rect>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Join several labels.&lt;/p&gt;&lt;p&gt;Select the labels using the &amp;lt;CTRL&amp;gt; key, then press this button.&lt;/p&gt;&lt;p&gt;One of the selected labels becomes the new merged label. Its name will contain the orginal name + &amp;quot; (joined) &amp;quot;.&lt;/p&gt;&lt;p&gt;All the cells of the selected labels will get the merged label's color.&lt;/p&gt;&lt;p&gt;You can then rename thie joined label (double-click on it), and set a new color if you want.&lt;/p&gt;&lt;p&gt;Useful when you have defined a new cell, and want to integrate it to another label&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normalon>:/icons/label-join.png</normalon>
+       </iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>28</width>
+        <height>28</height>
+       </size>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="QLabel" name="label_thumbnail">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>450</y>
+      <width>351</width>
+      <height>261</height>
+     </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>400</width>
+      <height>400</height>
+     </size>
+    </property>
+    <property name="cursor">
+     <cursorShape>CrossCursor</cursorShape>
+    </property>
+    <property name="mouseTracking">
+     <bool>true</bool>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Image to process.&lt;/p&gt;&lt;p&gt;Click on it to set the viewport's center&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Sunken</enum>
+    </property>
+    <property name="lineWidth">
+     <number>2</number>
+    </property>
+    <property name="text">
+     <string>Image</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QFrame" name="frame_about">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>735</y>
+      <width>351</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -2001,10 +3719,10 @@
     <widget class="QLabel" name="label_16">
      <property name="geometry">
       <rect>
-       <x>180</x>
-       <y>30</y>
-       <width>41</width>
-       <height>41</height>
+       <x>10</x>
+       <y>4</y>
+       <width>21</width>
+       <height>21</height>
       </rect>
      </property>
      <property name="toolTip">
@@ -2023,14 +3741,14 @@
     <widget class="QLabel" name="label_18">
      <property name="geometry">
       <rect>
-       <x>7</x>
-       <y>37</y>
-       <width>31</width>
+       <x>9</x>
+       <y>29</y>
+       <width>25</width>
        <height>16</height>
       </rect>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;* v0: launch&lt;/p&gt;&lt;p&gt;* v1: added contours + several improvements&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;* v0: launch&lt;/p&gt;&lt;p&gt;* v1: added contours + several improvements&lt;/p&gt;&lt;p&gt;* v2: tabbed workflow + labels management + PSD and TIFF export + create cell&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="frameShape">
       <enum>QFrame::Box</enum>
@@ -2039,7 +3757,7 @@
       <enum>QFrame::Sunken</enum>
      </property>
      <property name="text">
-      <string>v1</string>
+      <string>v2</string>
      </property>
      <property name="scaledContents">
       <bool>false</bool>
@@ -2057,10 +3775,10 @@
     <widget class="QLabel" name="label_15">
      <property name="geometry">
       <rect>
-       <x>0</x>
+       <x>36</x>
        <y>0</y>
-       <width>211</width>
-       <height>101</height>
+       <width>311</width>
+       <height>51</height>
       </rect>
      </property>
      <property name="cursor">
@@ -2076,7 +3794,7 @@
       <number>3</number>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Superpixels segmentation&lt;BR&gt;with OpenCV&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;by &lt;span style=&quot; color:#d89d1a;&quot;&gt;AbsurdePhoton&lt;/span&gt;&lt;a href=&quot;https::/www.absurdephoton.fr&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;&lt;BR&gt;www.absurdephoton.fr&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Superpixels segmentation with OpenCV&lt;/span&gt;&lt;BR&gt;by &lt;span style=&quot; color:#d89d1a;&quot;&gt;AbsurdePhoton - &lt;/span&gt;&lt;a href=&quot;https::/www.absurdephoton.fr&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;www.absurdephoton.fr&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -2089,13 +3807,13 @@
     <zorder>label_18</zorder>
     <zorder>label_16</zorder>
    </widget>
-   <widget class="QFrame" name="frame">
+   <widget class="QFrame" name="frame_zoom">
     <property name="geometry">
      <rect>
-      <x>190</x>
-      <y>660</y>
-      <width>141</width>
-      <height>41</height>
+      <x>1253</x>
+      <y>540</y>
+      <width>106</width>
+      <height>181</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -2104,275 +3822,253 @@
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QLabel" name="label_11">
+    <widget class="QPushButton" name="pushButton_zoom_plus">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>21</width>
-       <height>21</height>
+       <x>58</x>
+       <y>127</y>
+       <width>41</width>
+       <height>41</height>
       </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="toolTip">
+      <string>Zoom in</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
      </property>
      <property name="text">
       <string/>
      </property>
-     <property name="pixmap">
-      <pixmap resource="resources.qrc">:/icons/grid.png</pixmap>
+     <property name="icon">
+      <iconset>
+       <normalon>:/icons/zoom-plus.png</normalon>
+      </iconset>
      </property>
-     <property name="scaledContents">
-      <bool>true</bool>
+     <property name="iconSize">
+      <size>
+       <width>32</width>
+       <height>32</height>
+      </size>
      </property>
     </widget>
-    <widget class="QLCDNumber" name="lcd_cells">
+    <widget class="QPushButton" name="pushButton_zoom_100">
      <property name="geometry">
       <rect>
-       <x>35</x>
+       <x>22</x>
        <y>10</y>
        <width>61</width>
-       <height>21</height>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="toolTip">
+      <string>1:1 zoom level</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+     </property>
+     <property name="text">
+      <string>1:1</string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normalon>:/icons/zoom-100.png</normalon>
+      </iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>24</width>
+       <height>24</height>
+      </size>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_zoom_minus">
+     <property name="geometry">
+      <rect>
+       <x>8</x>
+       <y>127</y>
+       <width>41</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="toolTip">
+      <string>Zoom out</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normalon>:/icons/zoom-minus.png</normalon>
+      </iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>32</width>
+       <height>32</height>
+      </size>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_zoom_fit">
+     <property name="geometry">
+      <rect>
+       <x>15</x>
+       <y>50</y>
+       <width>75</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="toolTip">
+      <string>Fit the image to the viewport</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+     </property>
+     <property name="text">
+      <string>FIT</string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normalon>:/icons/zoom.png</normalon>
+      </iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>24</width>
+       <height>24</height>
+      </size>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_zoom">
+     <property name="geometry">
+      <rect>
+       <x>8</x>
+       <y>88</y>
+       <width>91</width>
+       <height>31</height>
       </rect>
      </property>
      <property name="toolTip">
-      <string>Number of cells in the computed segmentation</string>
+      <string>Zoom level</string>
      </property>
      <property name="styleSheet">
-      <string notr="true">QLCDNumber{ 
-    background-color: rgb(64, 64,64);
-}</string>
+      <string notr="true">background-color:rgb(64,64,64);border: 1px solid white;color:rgb(255,255,255);</string>
      </property>
-     <property name="digitCount">
-      <number>6</number>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
-    </widget>
-    <widget class="QLabel" name="label_7">
-     <property name="geometry">
-      <rect>
-       <x>102</x>
-       <y>11</y>
-       <width>41</width>
-       <height>17</height>
-      </rect>
+     <property name="frameShadow">
+      <enum>QFrame::Sunken</enum>
      </property>
      <property name="text">
-      <string>cells</string>
+      <string>100%</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
    </widget>
-   <widget class="QPushButton" name="pushButton_zoom_minus">
-    <property name="geometry">
-     <rect>
-      <x>610</x>
-      <y>706</y>
-      <width>31</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="cursor">
-     <cursorShape>PointingHandCursor</cursorShape>
-    </property>
-    <property name="toolTip">
-     <string>Zoom out</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normalon>:/icons/zoom-minus.png</normalon>
-     </iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>24</width>
-      <height>24</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_zoom_plus">
-    <property name="geometry">
-     <rect>
-      <x>730</x>
-      <y>706</y>
-      <width>31</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="cursor">
-     <cursorShape>PointingHandCursor</cursorShape>
-    </property>
-    <property name="toolTip">
-     <string>Zoom in</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normalon>:/icons/zoom-plus.png</normalon>
-     </iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>24</width>
-      <height>24</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_zoom_fit">
-    <property name="geometry">
-     <rect>
-      <x>794</x>
-      <y>706</y>
-      <width>31</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="cursor">
-     <cursorShape>PointingHandCursor</cursorShape>
-    </property>
-    <property name="toolTip">
-     <string>Fit the image to the viewport</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normalon>:/icons/zoom.png</normalon>
-     </iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>24</width>
-      <height>24</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_zoom_100">
-    <property name="geometry">
-     <rect>
-      <x>830</x>
-      <y>706</y>
-      <width>31</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="cursor">
-     <cursorShape>PointingHandCursor</cursorShape>
-    </property>
-    <property name="toolTip">
-     <string>1:1 zoom level</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normalon>:/icons/zoom-100.png</normalon>
-     </iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>24</width>
-      <height>24</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="QScrollBar" name="horizontalScrollBar_segmentation">
-    <property name="geometry">
-     <rect>
-      <x>360</x>
-      <y>690</y>
-      <width>871</width>
-      <height>14</height>
-     </rect>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
-    </property>
-   </widget>
-   <widget class="QScrollBar" name="verticalScrollBar_segmentation">
-    <property name="geometry">
-     <rect>
-      <x>1231</x>
-      <y>30</y>
-      <width>14</width>
-      <height>661</height>
-     </rect>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Vertical</enum>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_segmentation">
-    <property name="geometry">
-     <rect>
-      <x>360</x>
-      <y>30</y>
-      <width>871</width>
-      <height>661</height>
-     </rect>
-    </property>
-    <property name="cursor">
-     <cursorShape>CrossCursor</cursorShape>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::Box</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Sunken</enum>
-    </property>
-    <property name="text">
-     <string>Segmentation not computed</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_zoom">
-    <property name="geometry">
-     <rect>
-      <x>650</x>
-      <y>706</y>
-      <width>71</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="toolTip">
-     <string>Zoom level</string>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::Box</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Sunken</enum>
-    </property>
-    <property name="text">
-     <string>100%</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <zorder>frame_segmentation_parameters</zorder>
-   <zorder>frame</zorder>
-   <zorder>frameabout</zorder>
+   <zorder>frame_zoom</zorder>
+   <zorder>label_segmentation</zorder>
+   <zorder>Tabs</zorder>
    <zorder>frame_image_resolution</zorder>
-   <zorder>frame_pick_colors</zorder>
    <zorder>frame_view_parameters</zorder>
-   <zorder>button_compute</zorder>
-   <zorder>button_save_session</zorder>
-   <zorder>button_load_session</zorder>
-   <zorder>button_undo</zorder>
    <zorder>label_filename</zorder>
-   <zorder>pushButton_zoom_minus</zorder>
-   <zorder>pushButton_zoom_plus</zorder>
-   <zorder>pushButton_zoom_fit</zorder>
-   <zorder>pushButton_zoom_100</zorder>
    <zorder>horizontalScrollBar_segmentation</zorder>
    <zorder>verticalScrollBar_segmentation</zorder>
-   <zorder>label_segmentation</zorder>
-   <zorder>label_zoom</zorder>
+   <zorder>label_thumbnail</zorder>
+   <zorder>frame_about</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
@@ -2505,6 +4201,38 @@
     <hint type="destinationlabel">
      <x>315</x>
      <y>511</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalSlider_luminance</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>label_luminance_value</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>87</x>
+     <y>198</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>168</x>
+     <y>195</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalSlider_chrominance</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>label_chrominance_value</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>87</x>
+     <y>242</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>168</x>
+     <y>241</y>
     </hint>
    </hints>
   </connection>
