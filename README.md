@@ -2,7 +2,7 @@
 ## Superpixels segmentation algorithms with QT and OpenCV, with a nice GUI to manage labels and colorize the cells
 ### v2 - 2018-09-02
 
-![Screenshot](screenshot.jpg?raw=true)
+![Screenshot - Global](screenshot.jpg?raw=true)
 <br/>
 
 ## HISTORY
@@ -53,7 +53,7 @@ This software should also work under Microsoft Windows: if you tried it successf
 
 ### IMAGE TAB
 
-![Screenshot](screenshot-image.jpg?raw=true)
+![Screenshot - Image tab](screenshot-image.jpg?raw=true)
 
 * To begin, load an image, nothing is possible without it! The image appears in the main viewport and its thumbnail is shown on the left side
 
@@ -70,7 +70,7 @@ This software should also work under Microsoft Windows: if you tried it successf
   
 ### SEGMENTATION TAB
 
-[Screenshot](screenshot-segmentation.jpg?raw=true)
+![Screenshot - Segmentation tab](screenshot-segmentation.jpg?raw=true)
 
 * First, select the algorithm you want to use, and tune the parameters
 
@@ -94,7 +94,7 @@ This software should also work under Microsoft Windows: if you tried it successf
 
 ### LABELS TAB
 
-[Screenshot](screenshot-labels.jpg?raw=true)
+![Screenshot - Labels tab](screenshot-labels.jpg?raw=true)
 
 This tab has two functions: colorize the cells and manage the labels
 
