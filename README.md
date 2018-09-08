@@ -91,7 +91,7 @@ This software should also work under Microsoft Windows: if you tried it successf
   * you now have on your right 3 layers that you can activate / deactivate / blend in the viewport :
     * the processed image
     * the (for the moment) empty colored mask
-    * the superpixels (cells) grid (this is what you just computed)
+    * the superpixels grid (superpixel cells, this is what you just computed)
   
 * You can save and retrieve the segmentation parameters (XML openCV format) - the filters and effects parameters from the Image tab will also be saved
 
@@ -121,10 +121,10 @@ Basic operations:
   * UNDO: use this button to cancel the last action
 
 * Change the view:
-  * you can choose the transparency of the image and mask with the sliders on the right (image and mask)
-  * you can change the grid color with the control just under the grid layer button
+  * you can choose the transparency of the image, mask and grid with the sliders on the right
+  * you can change the grid color with the control under the grid layer button
   * use the zoom controls on the right to zoom in / out - you can also use the mouse wheel over the viewport
-  * click on the thumbnail to choose the zoomed area in the viewport
+  * click on the thumbnail to position the zoomed area in the viewport
   * hold the middle mouse button on the viewport to move the view position when the image is zoomed in - you can also use the scrollbars
   
 * Modifiy the cells:
