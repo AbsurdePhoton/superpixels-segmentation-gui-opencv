@@ -1212,7 +1212,20 @@ void MainWindow::on_pushButton_color_laurel_clicked() // Laurel
 
 void MainWindow::keyReleaseEvent(QKeyEvent *keyEvent) // draw cell mode : when spacebar is released
 {
-    if ((keyEvent->key() == Qt::Key_Space) & (ui->pushButton_label_create->isChecked())) { // add cell mode ?
+    if ((keyEvent->key() == Qt::Key_Space) & (ui->label_segmentation->underMouse())) { // spacebar = move the view
+        QPoint mouse_pos = ui->label_segmentation->mapFromGlobal(QCursor::pos()); // current mouse position
+
+        int decX = mouse_pos.x() - mouse_origin.x(); // distance from the first click
+        int decY = mouse_pos.y() - mouse_origin.y();
+
+        SetViewportXY(viewport.x - decX, viewport.y - decY); // update viewport
+
+        ShowSegmentation(); // display the result
+
+        QApplication::restoreOverrideCursor(); // Restore cursor
+    }
+    else
+    if ((keyEvent->key() == Qt::Key_X) & (ui->pushButton_label_create->isChecked())) { // add cell mode ?
         if (pos_save == cv::Point(-1, -1)) // first point not set ?
             return;
 
@@ -1239,7 +1252,13 @@ void MainWindow::keyReleaseEvent(QKeyEvent *keyEvent) // draw cell mode : when s
 
 void MainWindow::keyPressEvent(QKeyEvent *keyEvent) // draw cell mode : when spacebar is pressed
 {
-    if ((keyEvent->key() == Qt::Key_Space) & (ui->pushButton_label_create->isChecked())) { // add cell mode ?
+    if ((keyEvent->key() == Qt::Key_Space) & (ui->label_segmentation->underMouse())) { // spacebar = move the view
+        QApplication::setOverrideCursor(Qt::SizeAllCursor); // Move cursor
+
+        mouse_origin = ui->label_segmentation->mapFromGlobal(QCursor::pos()); // current mouse position
+    }
+    else
+    if ((keyEvent->key() == Qt::Key_X) & (ui->pushButton_label_create->isChecked())) { // add cell mode ?
         if (pos_save == cv::Point(-1, -1)) // first point not set
             return;
 
@@ -1366,6 +1385,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *eventMove) // first mouse click has
         if (mouseButton == Qt::MidButton) { // move view
             int decX = mouse_pos.x() - mouse_origin.x(); // distance from the first click
             int decY = mouse_pos.y() - mouse_origin.y();
+
             SetViewportXY(viewport.x - decX, viewport.y - decY); // update viewport
 
             ShowSegmentation(); // display the result
