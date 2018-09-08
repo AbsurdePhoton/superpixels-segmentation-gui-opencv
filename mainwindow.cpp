@@ -395,7 +395,7 @@ void MainWindow::SavePSDorTIF(std::string type) // save image + layers to PSD or
 
 void MainWindow::on_button_image_clicked() // Load main image
 {
-    QString filename = QFileDialog::getOpenFileName(this, "Select picture file", "/media/DataI5/Photos/", "Images (*.jpg *.JPG *.jpeg *.JPEG *.jp2 *.JP2 *.png *.PNG *.tif *.TIF *.tiff *.TIFF *.bmp *.BMP)"); // image filename
+    QString filename = QFileDialog::getOpenFileName(this, "Select picture file", "/home", "Images (*.jpg *.JPG *.jpeg *.JPEG *.jp2 *.JP2 *.png *.PNG *.tif *.TIF *.tiff *.TIFF *.bmp *.BMP)"); // image filename
     if (filename.isNull() || filename.isEmpty()) // cancel ?
         return;
 
