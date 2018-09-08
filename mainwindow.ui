@@ -26,7 +26,7 @@
       <x>1250</x>
       <y>10</y>
       <width>111</width>
-      <height>186</height>
+      <height>207</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -244,13 +244,16 @@ QToolTip {
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>158</y>
+       <y>180</y>
        <width>91</width>
        <height>20</height>
       </rect>
      </property>
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
      </property>
      <property name="toolTip">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Change the grid mask color to your liking&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -282,6 +285,37 @@ QToolTip {
      </property>
      <property name="value">
       <number>50</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="tickPosition">
+      <enum>QSlider::NoTicks</enum>
+     </property>
+    </widget>
+    <widget class="QSlider" name="horizontalSlider_blend_grid">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>153</y>
+       <width>91</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::ClickFocus</enum>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Transparency of the grid.&lt;/p&gt;&lt;p&gt;Lower values = more transparent&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="maximum">
+      <number>100</number>
+     </property>
+     <property name="value">
+      <number>90</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -3748,7 +3782,7 @@ QToolTip {
       </rect>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;* v0: launch&lt;/p&gt;&lt;p&gt;* v1: added contours + several improvements&lt;/p&gt;&lt;p&gt;* v2: tabbed workflow + labels management + PSD and TIFF export + create cell&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;* v0: launch&lt;/p&gt;&lt;p&gt;* v1: added contours + several improvements&lt;/p&gt;&lt;p&gt;* v2: tabbed workflow + labels management + PSD and TIFF export + create cells&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="frameShape">
       <enum>QFrame::Box</enum>

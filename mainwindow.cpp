@@ -395,7 +395,7 @@ void MainWindow::SavePSDorTIF(std::string type) // save image + layers to PSD or
 
 void MainWindow::on_button_image_clicked() // Load main image
 {
-    QString filename = QFileDialog::getOpenFileName(this, "Select picture file", "/home", "Images (*.jpg *.JPG *.jpeg *.JPEG *.jp2 *.JP2 *.png *.PNG *.tif *.TIF *.tiff *.TIFF *.bmp *.BMP)"); // image filename
+    QString filename = QFileDialog::getOpenFileName(this, "Select picture file", "/media/DataI5/Photos/", "Images (*.jpg *.JPG *.jpeg *.JPEG *.jp2 *.JP2 *.png *.PNG *.tif *.TIF *.tiff *.TIFF *.bmp *.BMP)"); // image filename
     if (filename.isNull() || filename.isEmpty()) // cancel ?
         return;
 
@@ -829,6 +829,11 @@ void MainWindow::on_horizontalSlider_blend_mask_valueChanged() // Refresh image 
 }
 
 void MainWindow::on_horizontalSlider_blend_image_valueChanged() // Refresh image : image mask transparency changed
+{
+    ShowSegmentation(); // update display
+}
+
+void MainWindow::on_horizontalSlider_blend_grid_valueChanged() // Refresh image : grid mask transparency changed
 {
     ShowSegmentation(); // update display
 }
@@ -1527,25 +1532,28 @@ void MainWindow::ShowSegmentation() // show image + mask + grid
         oldZoom = zoom; // backup zoom value
     }
 
-    // Combine image + mask + grid
-    CopyFromImage(image, viewport).copyTo(disp_color); // copy only the viewport part of image to display
-    if (!ui->checkBox_image->isChecked()) disp_color = 0; // image
-    if (ui->checkBox_mask->isChecked() & (!mask.empty())) { // mask
-        cv::addWeighted(disp_color, double(ui->horizontalSlider_blend_image->value()) / 100,
+    Mat image_temp = CopyFromImage(image, viewport);
+    image_temp.copyTo(disp_color); // copy only the viewport part of image to display
+    disp_color = 0;
+    if (ui->checkBox_image->isChecked()) // image mask with transparency
+        cv::addWeighted(disp_color, 1-double(ui->horizontalSlider_blend_image->value()) / 100,
+                        image_temp, double(ui->horizontalSlider_blend_image->value()) / 100,
+                        0, disp_color, -1);
+    if (ui->checkBox_mask->isChecked() & (!mask.empty())) // mask with transparency
+        cv::addWeighted(disp_color, 1,
                         CopyFromImage(mask, viewport), double(ui->horizontalSlider_blend_mask->value()) / 100,
-                        0, disp_color, -1); // with transparency
-    }
-    if (ui->checkBox_grid->isChecked() & (!grid.empty())) { // grid
-            disp_color.setTo(gridColor, CopyFromImage(grid, viewport)); // update image displayed
-    }
+                        0, disp_color, -1);
+    if (ui->checkBox_grid->isChecked() & (!grid.empty())) // grid with transparency
+        cv::addWeighted(disp_color, 1,
+                        CopyFromImage(grid, viewport), double(ui->horizontalSlider_blend_grid->value()) / 100,
+                        0, disp_color, -1);
 
     // display the viewport
     QPixmap D;
     D = Mat2QPixmapResized(disp_color, int(viewport.width*zoom), int(viewport.height*zoom), (zoom < 1)); // zoomed image
     ui->label_segmentation->setPixmap(D); // Set new image content to viewport
-    DisplayThumbnail(); // update thumbnail view
 
-    //qApp->processEvents(); // Force repaint;
+    DisplayThumbnail(); // update thumbnail view
 }
 
 void MainWindow::on_button_apply_clicked() // Preprocess image : equalize normalize gaussian blur etc

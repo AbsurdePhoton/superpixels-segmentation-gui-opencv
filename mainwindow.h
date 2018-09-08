@@ -86,14 +86,20 @@ private slots:
     void on_checkBox_mask_clicked(); // toggle mask view
     void on_checkBox_image_clicked(); // toggle image view
     void on_checkBox_grid_clicked(); // toggle grid view
-    void on_horizontalSlider_blend_mask_valueChanged(); // mask transparency
+
     void on_horizontalSlider_blend_image_valueChanged(); // image transparency
+    void on_horizontalSlider_blend_mask_valueChanged(); // mask transparency
+    void on_horizontalSlider_blend_grid_valueChanged(); // grid transparency
+
     void on_pushButton_zoom_minus_clicked(); // levels of zoom
     void on_pushButton_zoom_plus_clicked();
     void on_pushButton_zoom_fit_clicked();
     void on_pushButton_zoom_100_clicked();
+
     void on_comboBox_grid_color_currentIndexChanged(int); // change grid color
+
     void on_comboBox_algorithm_currentIndexChanged(int); // hide and reveal algorithms parameters
+
     void on_horizontalScrollBar_segmentation_valueChanged(); // scroll the viewport
     void on_verticalScrollBar_segmentation_valueChanged();
 
