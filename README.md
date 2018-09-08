@@ -125,7 +125,7 @@ Basic operations:
   * you can change the grid color with the control under the grid layer button
   * use the zoom controls on the right to zoom in / out - you can also use the mouse wheel over the viewport
   * click on the thumbnail to position the zoomed area in the viewport
-  * hold the middle mouse button on the viewport to move the view position when the image is zoomed in - you can also use the scrollbars
+  * hold the middle mouse button on the viewport, or hold down the <SPACE> key to move the view position with your mouse when the image is zoomed in - you can also use the scrollbars
   
 * Modifiy the cells:
   * the superpixel algorithms often misses important details: you can define your own cells with the special "Create new cell" button
@@ -133,8 +133,8 @@ Basic operations:
   * you can set pixels with the left mouse button, and unset them with the right
   * use the <CTRL> key to floodfill entire zones, just like explained before
   * once a pixel is set, it can become the origin of a line:
-    * hold down the <SPACE> key and mouve the mouse over the viewport: a temporary line appears
-    * release <SPACE> and the line is set
+    * hold down the <X> key and mouve the mouse over the viewport: a temporary line appears
+    * release <X> and the line is set
     * the end of a line becomes the new origin from which you can draw another one
     * click with the left mouse button to set a pixel to change once again the origin of the lines
   * when you are done with drawing:
