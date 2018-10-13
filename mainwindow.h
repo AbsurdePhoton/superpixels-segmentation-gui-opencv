@@ -48,7 +48,7 @@ public slots:
 private slots:
 
     //// UI
-    void InitializeValues();
+    void InitializeValues(); // well named !
 
     //// Tabs
     void on_Tabs_currentChanged(int); // tabs handling
@@ -134,7 +134,7 @@ private slots:
     void on_button_compute_clicked(); // compute segmentation mask and grid
 
     //// Keyboard & mouse events
-    void keyPressEvent(QKeyEvent *keyEvent); // for the create cell mode
+    void keyPressEvent(QKeyEvent *keyEvent); // for the create cell mode and move with <SPACE>
     void keyReleaseEvent(QKeyEvent *keyEvent);
 
     void mouseReleaseEvent(QMouseEvent *eventRelease); // when the mouse button is released
@@ -143,7 +143,11 @@ private slots:
     void wheelEvent(QWheelEvent *wheelEvent);
 
 private:
+    // the UI object, to access the UI elements created with Qt Designer
+    Ui::MainWindow *ui;
+
     //// Display
+
     void ShowSegmentation(); // display image in viewport with grid and mask
     void DisplayThumbnail(); // display thumbnail view
 
@@ -157,12 +161,13 @@ private:
     void UpdateViewportDimensions(); // calculate width and height of the viewport
     cv::Point Viewport2Image(cv::Point p); // calculate coordinates in the image from the viewport
 
-    // the UI object, to access the UI elements created with Qt Designer
-    Ui::MainWindow *ui;
+    //// superpixels
 
     Ptr<SuperpixelSLIC> slic; // SLIC Segmentation pointer
     Ptr<SuperpixelLSC> lsc; // LSC Segmentation pointer
     Ptr<SuperpixelSEEDS> seeds; // SEEDS Segmentation pointer
+
+    //// masks & display
 
     cv::Mat labels, labels_mask, undo_labels; // Segmentation cells and labels
     int maxLabels; // max number of labels
@@ -180,17 +185,25 @@ private:
 
     Vec3b color, gridColor; // current colors used
 
+    //// files
+
     std::string basefile, basedir; // main image filename: directory and filename without extension
+
+    //// mouse
 
     Qt::MouseButton mouseButton; // save mouse button value when holding down a mouse button
     QPoint mouse_origin; // save the mouse position when holding down a mouse button
     cv::Point pos_save; // save the mouse position in image coordinates
+
+    //// zoom
 
     int num_zooms = 22; // number of zoom values
     double zooms[23] = {0, 0.05, 0.0625, 0.0833, 0.125, 0.1667, 0.25, 0.3333, 0.5, 0.6667, // reduced view
                         1, 1.25, 1.5, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10000}; // zoomed view
     double zoom, oldZoom; // zoom factor for image display
     QString zoom_type; // if zoom changes indicates where it came from: button clic or mouse wheel
+
+    //// indicators
 
     bool loaded, computed; // indicators: image loaded & segmentation computed
 
