@@ -1,6 +1,6 @@
 # superpixels-segmentation-gui-opencv
 ## Superpixels segmentation algorithms with QT and OpenCV, with a nice GUI to manage labels and colorize the cells
-### v2 - 2018-09-02
+### v2.1 - 2018-10-13
 
 ![Screenshot - Global](screenshots/screenshot.jpg?raw=true)
 <br/>
@@ -10,6 +10,7 @@
 * v0: launch
 * v1: added contours + several improvements
 * v2: tabbed workflow + labels management + PSD and TIFF export + create cell
+* V2.1 : several bugs fixed, select labels from the viewport with "ALT"+click, show the "holes" in the mask
 <br/>
 <br/>
 
@@ -116,9 +117,11 @@ Basic operations:
 * It is time to colorize the cells:
   * left mouse button to colorize with the the current color - you can hold down the mouse button and move it to set several cells
   * right mouse button to unset a cell (you don't have to select the label it belongs to)
-  * <CTRL> key + left mouse click to floodfill a closed area
-  * <CTRL> key + right mouse click to floodfill to transparent a whole contiguous cells area previously colorized
+  * "CTRL" key + left mouse click to floodfill a closed area
+  * "CTRL" key + right mouse click to floodfill to transparent a whole contiguous cells area previously colorized
+  * "ALT" key + left mouse button to select a label directly in the viewport, this will select it in the list
   * UNDO: use this button to cancel the last action
+  * click on the "Holes" button to view every cell that hasn't been colored yet. Click again on it to hide this feature
 
 * Change the view:
   * you can choose the transparency of the image, mask and grid with the sliders on the right
@@ -133,7 +136,7 @@ Basic operations:
   * you can set pixels with the left mouse button, and unset them with the right
   * use the <CTRL> key to floodfill entire zones, just like explained before
   * once a pixel is set, it can become the origin of a line:
-    * hold down the <X> key and mouve the mouse over the viewport: a temporary line appears
+    * hold down the "X" key and move the mouse over the viewport: a temporary line appears
     * release <X> and the line is set
     * the end of a line becomes the new origin from which you can draw another one
     * click with the left mouse button to set a pixel to change once again the origin of the lines
