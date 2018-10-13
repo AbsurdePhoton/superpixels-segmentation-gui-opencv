@@ -58,6 +58,7 @@ private slots:
     QListWidgetItem *AddNewLabel(QString newLabel); // add new label - empty string creates a "rename me!" label
     void on_pushButton_label_delete_clicked(); // delete label
     void DeleteAllLabels(bool newLabel); // delete ALL labels and create one new if wanted
+    void UnselectAllLabels(); // unselect all items in list
     void on_listWidget_labels_currentItemChanged(QListWidgetItem *currentItem); // show current label color when item change
     void on_listWidget_labels_itemChanged(QListWidgetItem *currentItem); // show current label name used
     void on_pushButton_label_add_clicked(); // add one default label
@@ -86,6 +87,7 @@ private slots:
     void on_checkBox_mask_clicked(); // toggle mask view
     void on_checkBox_image_clicked(); // toggle image view
     void on_checkBox_grid_clicked(); // toggle grid view
+    void on_checkBox_holes_clicked(); // toggle holes view
 
     void on_horizontalSlider_blend_image_valueChanged(); // image transparency
     void on_horizontalSlider_blend_mask_valueChanged(); // mask transparency
@@ -140,6 +142,7 @@ private slots:
     void mouseMoveEvent(QMouseEvent *eventPress);
     void wheelEvent(QWheelEvent *wheelEvent);
 
+private:
     //// Display
     void ShowSegmentation(); // display image in viewport with grid and mask
     void DisplayThumbnail(); // display thumbnail view
@@ -154,7 +157,6 @@ private slots:
     void UpdateViewportDimensions(); // calculate width and height of the viewport
     cv::Point Viewport2Image(cv::Point p); // calculate coordinates in the image from the viewport
 
-private:
     // the UI object, to access the UI elements created with Qt Designer
     Ui::MainWindow *ui;
 
@@ -170,6 +172,7 @@ private:
             thumbnail, // thumbnail of main image
             mask, undo_mask, // painted cells
             grid, // grid mask
+            selection, // selection mask
             create_cell_labels_save, create_cell_mask_save, mask_line_save; // used by cell paint
 
     cv::Mat disp_color; // Processed image display with mask and grid
