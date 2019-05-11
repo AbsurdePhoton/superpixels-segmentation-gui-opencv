@@ -1,6 +1,6 @@
 # superpixels-segmentation-gui-opencv
 ## Superpixels segmentation algorithms with QT and OpenCV, with a nice GUI to manage labels and colorize the cells
-### v2.1 - 2018-10-13
+### v2.1 - 2019-05-12
 
 ![Screenshot - Global](screenshots/screenshot.jpg?raw=true)
 <br/>
@@ -120,7 +120,7 @@ Basic operations:
   * "CTRL" key + left mouse click to floodfill a closed area
   * "CTRL" key + right mouse click to floodfill to transparent a whole contiguous cells area previously colorized
   * "ALT" key + left mouse button to select a label directly in the viewport, this will select it in the list
-  * UNDO: use this button to cancel the last action
+  * UNDO: use this button to cancel the last action (only the last action can be cancelled)
   * click on the "Holes" button to view every cell that hasn't been colored yet. Click again on it to hide this feature
 
 * Change the view:
@@ -170,3 +170,4 @@ Basic operations:
 
 ### AbsurdePhoton
 My photographer website ''Photongénique'': www.absurdephoton.fr
+

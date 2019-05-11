@@ -4,7 +4,7 @@
 #
 #    by AbsurdePhoton - www.absurdephoton.fr
 #
-#                v2 - 2018/09/02
+#                v2.1 - 2019/05/12
 #
 #-------------------------------------------------*/
 
@@ -52,7 +52,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     InitializeValues(); // init all indicators and zoom etc
 
-    basedir = "/media/DataI5/Photos/"; // base path and file
+    basedir = "/media/"; // base path and file
     basefile = "";
 }
 
@@ -574,7 +574,7 @@ void MainWindow::on_button_load_session_clicked() // load previous session
     //if (image.empty()) // image mandatory
     //        return;
 
-    QString filename = QFileDialog::getOpenFileName(this, "Load session from XML file...", QString::fromStdString(basedir + basefile + "-segmentation-data.xml"), "*.xml *.XML");
+    QString filename = QFileDialog::getOpenFileName(this, "Load session from XML file...", QString::fromStdString(basedir), "*.xml *.XML");
 
     if (filename.isNull() || filename.isEmpty()) // cancel ?
         return;
@@ -627,7 +627,7 @@ void MainWindow::on_button_load_session_clicked() // load previous session
         return;
     }
 
-    Mat labels_temp(image.rows, image.cols, CV_32SC1); // labels on 1 channel
+    Mat labels_temp(image.rows, image.cols, CV_32SC1);
     fs["Labels"] >> labels_temp; // load labels
     labels_temp.copyTo(labels);
     fs["LabelsMask"] >> labels_temp; // load labels mask
@@ -1590,7 +1590,6 @@ void MainWindow::DisplayThumbnail() // image thumnail with transparent viewport 
         p2y *= double(ui->label_thumbnail->pixmap()->height());
     }
 
-    Mat thumbnail_temp;
     Mat thumbnail_temp = Mat::zeros(thumbnail.rows, thumbnail.cols, CV_8UC3);
     rectangle(thumbnail_temp, cv::Point(p1x, p1y), cv::Point(p2x-1, p2y-1), Scalar(92,92,92), -1); // draw filled rectangle representing the viewport position
     rectangle(thumbnail_temp, cv::Point(p1x, p1y), cv::Point(p2x-1, p2y-1), Scalar(255,255,255), 2); // draw rectangle with thick border
@@ -1846,7 +1845,7 @@ void MainWindow::on_button_compute_clicked() // compute segmentation
         seeds->getLabelContourMask(maskTemp, !ui->checkBox_thick->isChecked()); // contours
     }
 
-    labels_mask = Mat::zeros(labels.rows, labels.cols, CV_8UC3); // new labels mask
+    labels_mask = Mat::zeros(labels.rows, labels.cols, CV_32SC1); // new labels mask
 
     // contours for displaying : grid & mask initialization
     cv::cvtColor(maskTemp, mask, CV_GRAY2RGB); // at first the mask contains the grid, need to convert labels from gray to RGB

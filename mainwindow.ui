@@ -3823,7 +3823,7 @@ QToolTip {
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Current label and used color to colorize the segmentation cells.&lt;/p&gt;&lt;p&gt;Click on the image:&lt;/p&gt;&lt;p&gt;    * Left button: set the cell color&lt;/p&gt;&lt;p&gt;    * Right button: delete (set to transparent)&lt;/p&gt;&lt;p&gt;    * Drag the mouse while holding the mouse buttons to colorize several cells&lt;/p&gt;&lt;p&gt;    * use &amp;lt;CTRL&amp;gt; key + left click to fill a closed area. Be careful, one pixel missing and you have to use the Undo function!&lt;/p&gt;&lt;p&gt;* hold the middle button of the mouse to navigate in the image&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Current label and used color to colorize the segmentation cells.&lt;/p&gt;&lt;p&gt;Click on the image:&lt;/p&gt;&lt;p&gt;* Left mouse button: set the cell color&lt;/p&gt;&lt;p&gt;* Right mouse button: delete (set to transparent)&lt;/p&gt;&lt;p&gt;* Drag the mouse while holding the mouse buttons to colorize several cells&lt;/p&gt;&lt;p&gt;* use &amp;lt;CTRL&amp;gt; key + mouse click (left = color, right= delete) to fill a closed area. Be careful, one pixel missing and you have to use the Undo function!&lt;/p&gt;&lt;p&gt;* use &amp;lt;ALT&amp;gt; key + left mouse button to select a label&lt;/p&gt;&lt;p&gt;* hold the middle button of the mouse to navigate in the image&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color:rgb(255,0,0);border: 3px solid black;</string>
@@ -3930,14 +3930,14 @@ QToolTip {
     <widget class="QLabel" name="label_18">
      <property name="geometry">
       <rect>
-       <x>9</x>
+       <x>3</x>
        <y>29</y>
-       <width>25</width>
-       <height>16</height>
+       <width>31</width>
+       <height>20</height>
       </rect>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;* v0: launch&lt;/p&gt;&lt;p&gt;* v1: added contours + several improvements&lt;/p&gt;&lt;p&gt;* v2: tabbed workflow + labels management + PSD and TIFF export + create cells&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;* v0: launch&lt;/p&gt;&lt;p&gt;* v1: added contours + several improvements&lt;/p&gt;&lt;p&gt;* v2: tabbed workflow + labels management + PSD and TIFF export + create cells&lt;/p&gt;&lt;p&gt;* v2.1: several bugs fixed&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="frameShape">
       <enum>QFrame::Box</enum>
@@ -3946,7 +3946,7 @@ QToolTip {
       <enum>QFrame::Sunken</enum>
      </property>
      <property name="text">
-      <string>v2</string>
+      <string>v2.1</string>
      </property>
      <property name="scaledContents">
       <bool>false</bool>
