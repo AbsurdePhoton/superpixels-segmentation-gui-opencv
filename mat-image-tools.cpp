@@ -39,7 +39,7 @@ bool IsColorDark(int red, int green, int blue) // tell if a RGB color is dark or
 QImage Mat2QImage(cv::Mat const& src) // convert Mat to QImage
 {
      cv::Mat temp;
-     cv::cvtColor(src, temp,CV_BGR2RGB); // convert Mat BGR to QImage RGB
+     cv::cvtColor(src, temp,COLOR_BGR2RGB); // convert Mat BGR to QImage RGB
      QImage dest((const uchar *) temp.data, temp.cols, temp.rows, temp.step, QImage::Format_RGB888); // conversion
      dest.bits(); // enforce deep copy of QImage::QImage ( const uchar * data, int width, int height, Format format )
      return dest;
@@ -149,7 +149,7 @@ Mat SimplestColorBalance(Mat& source, float percent) // color balance with histo
         //find the low and high precentile values (based on the input percentile)
         Mat flat;
         tmpsplit[i].reshape(1,1).copyTo(flat);
-        cv::sort(flat,flat,CV_SORT_EVERY_ROW + CV_SORT_ASCENDING);
+        cv::sort(flat,flat,SORT_EVERY_ROW + SORT_ASCENDING);
         int lowval = flat.at<uchar>(cvFloor(((float)flat.cols) * half_percent));
         int highval = flat.at<uchar>(cvCeil(((float)flat.cols) * (1.0 - half_percent)));
 

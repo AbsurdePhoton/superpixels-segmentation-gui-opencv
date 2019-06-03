@@ -10,7 +10,7 @@
 * v0: launch
 * v1: added contours + several improvements
 * v2: tabbed workflow + labels management + PSD and TIFF export + create cell
-* V2.1 : several bugs fixed, select labels from the viewport with "ALT"+click, show the "holes" in the mask
+* V2.1 : several bugs fixed, select labels from the viewport with "ALT"+click, show the "holes" in the mask + adapted to openCV 4.1
 <br/>
 <br/>
 
@@ -42,7 +42,7 @@ Developed using:
 * QT Creator 3.5
 * Requires these libraries:
   * QT 5
-  * openCV 3.4 compiled with openCV-contribs - should work with 3.x versions without much corrections
+  * openCV 4.1 compiled with openCV-contribs - should work with 3.x versions without much editing
   * Image Magick 7
 
 This software should also work under Microsoft Windows: if you tried it successfully please contact me, I'd like to offer compiled Windows executables

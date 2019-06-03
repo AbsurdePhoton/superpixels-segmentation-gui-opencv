@@ -30,10 +30,13 @@
      </rect>
     </property>
     <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
+     <enum>QFrame::Panel</enum>
     </property>
     <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
+     <enum>QFrame::Sunken</enum>
+    </property>
+    <property name="lineWidth">
+     <number>2</number>
     </property>
     <widget class="QSlider" name="horizontalSlider_blend_mask">
      <property name="geometry">
@@ -393,10 +396,13 @@ QToolTip {
      </rect>
     </property>
     <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
+     <enum>QFrame::Panel</enum>
     </property>
     <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
+     <enum>QFrame::Sunken</enum>
+    </property>
+    <property name="lineWidth">
+     <number>2</number>
     </property>
     <widget class="QLabel" name="label_14">
      <property name="geometry">
@@ -495,10 +501,13 @@ QToolTip {
      <string>Image file name</string>
     </property>
     <property name="frameShape">
-     <enum>QFrame::Box</enum>
+     <enum>QFrame::Panel</enum>
     </property>
     <property name="frameShadow">
      <enum>QFrame::Sunken</enum>
+    </property>
+    <property name="lineWidth">
+     <number>2</number>
     </property>
     <property name="text">
      <string>Image file</string>
@@ -546,10 +555,13 @@ QToolTip {
      <bool>false</bool>
     </property>
     <property name="frameShape">
-     <enum>QFrame::Box</enum>
+     <enum>QFrame::Panel</enum>
     </property>
     <property name="frameShadow">
      <enum>QFrame::Sunken</enum>
+    </property>
+    <property name="lineWidth">
+     <number>2</number>
     </property>
     <property name="text">
      <string>Segmentation not computed</string>
@@ -571,7 +583,7 @@ QToolTip {
      <enum>Qt::NoFocus</enum>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <property name="iconSize">
      <size>
@@ -763,10 +775,13 @@ QToolTip {
        </rect>
       </property>
       <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
+       <enum>QFrame::Panel</enum>
       </property>
       <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
+       <enum>QFrame::Sunken</enum>
+      </property>
+      <property name="lineWidth">
+       <number>2</number>
       </property>
       <widget class="QLabel" name="label">
        <property name="geometry">
@@ -973,10 +988,13 @@ QToolTip {
        </rect>
       </property>
       <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
+       <enum>QFrame::Panel</enum>
       </property>
       <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
+       <enum>QFrame::Sunken</enum>
+      </property>
+      <property name="lineWidth">
+       <number>2</number>
       </property>
       <widget class="QSpinBox" name="spinBox_contours_thickness">
        <property name="geometry">
@@ -1109,10 +1127,13 @@ QToolTip {
        </rect>
       </property>
       <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
+       <enum>QFrame::Panel</enum>
       </property>
       <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
+       <enum>QFrame::Sunken</enum>
+      </property>
+      <property name="lineWidth">
+       <number>2</number>
       </property>
       <widget class="QSpinBox" name="spinBox_color_balance_percent">
        <property name="geometry">
@@ -1415,10 +1436,13 @@ QToolTip {
        </rect>
       </property>
       <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
+       <enum>QFrame::Panel</enum>
       </property>
       <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
+       <enum>QFrame::Sunken</enum>
+      </property>
+      <property name="lineWidth">
+       <number>2</number>
       </property>
       <widget class="QLabel" name="label_11">
        <property name="geometry">
@@ -1562,10 +1586,13 @@ QToolTip {
        </rect>
       </property>
       <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
+       <enum>QFrame::Panel</enum>
       </property>
       <property name="frameShadow">
        <enum>QFrame::Sunken</enum>
+      </property>
+      <property name="lineWidth">
+       <number>2</number>
       </property>
       <widget class="QLabel" name="label_region_size">
        <property name="geometry">
@@ -2547,10 +2574,13 @@ QListWidget::item::selected {
        </rect>
       </property>
       <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
+       <enum>QFrame::Panel</enum>
       </property>
       <property name="frameShadow">
        <enum>QFrame::Sunken</enum>
+      </property>
+      <property name="lineWidth">
+       <number>2</number>
       </property>
       <widget class="QPushButton" name="pushButton_color_red">
        <property name="geometry">
@@ -3875,7 +3905,7 @@ QToolTip {
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Image to process.&lt;/p&gt;&lt;p&gt;Click on it to set the viewport's center&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
+     <enum>QFrame::Panel</enum>
     </property>
     <property name="frameShadow">
      <enum>QFrame::Sunken</enum>
@@ -4006,10 +4036,13 @@ QToolTip {
      </rect>
     </property>
     <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
+     <enum>QFrame::Panel</enum>
     </property>
     <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
+     <enum>QFrame::Sunken</enum>
+    </property>
+    <property name="lineWidth">
+     <number>2</number>
     </property>
     <widget class="QPushButton" name="pushButton_zoom_plus">
      <property name="geometry">

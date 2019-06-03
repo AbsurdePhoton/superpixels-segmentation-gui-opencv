@@ -52,7 +52,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     InitializeValues(); // init all indicators and zoom etc
 
-    basedir = "/media/"; // base path and file
+    basedir = "/media/DataI5/Photos/"; // base path and file
     basefile = "";
 }
 
@@ -429,7 +429,7 @@ void MainWindow::on_button_image_clicked() // Load main image
 
     std::string filename_s = filename.toUtf8().constData(); // convert filename from QString
 
-    cv::Mat mat = cv::imread(filename_s, CV_LOAD_IMAGE_COLOR); // Load image
+    cv::Mat mat = cv::imread(filename_s, IMREAD_COLOR); // Load image
     if (mat.empty()) { // problem ?
         QMessageBox::critical(this, "File error",
                               "There was a problem reading the image file");
@@ -596,7 +596,7 @@ void MainWindow::on_button_load_session_clicked() // load previous session
     mask.release();
     grid.release();
 
-    mask = cv::imread(filesession + "-segmentation-mask.png", CV_LOAD_IMAGE_COLOR); // load mask
+    mask = cv::imread(filesession + "-segmentation-mask.png", IMREAD_COLOR); // load mask
     if (mask.empty()) {
         QMessageBox::critical(this, "File error",
                               "There was a problem reading the segmentation mask file:\nit must end with ''-segmentation-mask.png''");
@@ -940,7 +940,7 @@ void MainWindow::on_comboBox_grid_color_currentIndexChanged(int) // Change grid 
     }
 
     Mat maskTemp;
-    cv::cvtColor(grid, maskTemp, CV_RGB2GRAY); // convert grid to gray values
+    cv::cvtColor(grid, maskTemp, COLOR_RGB2GRAY); // convert grid to gray values
     grid.setTo(gridColor, maskTemp > 0); // update only non-zero values to new color
     ShowSegmentation(); // update display
 }
@@ -1811,7 +1811,7 @@ void MainWindow::on_button_compute_clicked() // compute segmentation
     Mat converted;
     image.copyTo(converted); // copy of image to convert to LAB or HSV
 
-    if (lab) cv::cvtColor(converted, converted, CV_BGR2Lab); // seems to work better with LAB colors space
+    if (lab) cv::cvtColor(converted, converted, COLOR_BGR2Lab); // seems to work better with LAB colors space
         else cv::cvtColor(converted, converted, COLOR_BGR2HSV); // HSV color space
 
     //// Compute
@@ -1848,9 +1848,9 @@ void MainWindow::on_button_compute_clicked() // compute segmentation
     labels_mask = Mat::zeros(labels.rows, labels.cols, CV_32SC1); // new labels mask
 
     // contours for displaying : grid & mask initialization
-    cv::cvtColor(maskTemp, mask, CV_GRAY2RGB); // at first the mask contains the grid, need to convert labels from gray to RGB
+    cv::cvtColor(maskTemp, mask, COLOR_GRAY2RGB); // at first the mask contains the grid, need to convert labels from gray to RGB
     mask.setTo(0); // reinit mask
-    cv::cvtColor(maskTemp, grid, CV_GRAY2RGB); // the same for the grid
+    cv::cvtColor(maskTemp, grid, COLOR_GRAY2RGB); // the same for the grid
     grid.setTo(maskColor, grid); // change grid color
 
     // Visualization

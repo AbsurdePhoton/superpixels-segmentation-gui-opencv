@@ -32,7 +32,7 @@ FORMS    += mainwindow.ui
 
 # we add the package opencv to pkg-config
 CONFIG += link_pkgconfig
-PKGCONFIG += opencv
+PKGCONFIG += opencv4
 
 QMAKE_CXXFLAGS += -std=c++11
 QMAKE_CXXFLAGS += $(shell Magick++-config --cppflags --cxxflags)
