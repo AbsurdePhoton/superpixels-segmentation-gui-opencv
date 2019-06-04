@@ -159,7 +159,7 @@ Basic operations:
     * cells / labels (XML openCV format) 
   * you can export the processed image and the labels to PSD or TIFF image formats:
     * in a PSD Photoshop image, the processed image is the background, and the labels are transparent separated layers
-    * in a TIFF image, each image and label has its own page. Be careful, many software onmy open the first page
+    * in a TIFF image, each image and label has its own page. Be careful, many software only open the first page
     * the PSD and TIFF images work well with an open-source program: The Gimp
     * the PSD files cannot be loaded with Photoshop 7. They work with PHotoshop CS6, but I don't know if it is the case with Photoshop CS to CS5 (let me know if you tried)
    
