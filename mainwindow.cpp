@@ -1684,6 +1684,9 @@ void MainWindow::ShowSegmentation() // show image + mask + grid
         cv::addWeighted(disp_color, 1,
                         CopyFromImage(holes, viewport), 1,
                         0, disp_color, -1); // show the mask over the whole display
+        // Count holes
+        int nbHoles = countNonZero(holes_mask);
+        ui->label_holes->setText(QString::number(nbHoles));
     }
 
     // display the viewport
