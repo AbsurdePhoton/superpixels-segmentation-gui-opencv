@@ -72,6 +72,8 @@ private slots:
     void SavePSDorTIF(std::string type); // save image in PSD or TIFF format with background = image and layers = labels
 
     //// load & save
+    void SaveDirBaseFile(); // just to keep the last open dir
+
     void on_button_image_clicked(); // load image
 
     void on_button_save_session_clicked(); // save and load session
@@ -187,7 +189,7 @@ private:
 
     //// files
 
-    std::string basefile, basedir; // main image filename: directory and filename without extension
+    std::string basefile, basedir, basedirinifile; // main image filename: directory and filename without extension
 
     //// mouse
 

@@ -52,7 +52,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
     InitializeValues(); // init all indicators and zoom etc
 
-    basedir = "/media/DataI5/Photos/"; // base path and file
+    basedirinifile = QDir::currentPath().toUtf8().constData();
+    basedirinifile += "/dir.ini";
+    cv::FileStorage fs(basedirinifile, FileStorage::READ); // open dir ini file
+    if (fs.isOpened()) {
+        fs["BaseDir"] >> basedir; // load labels
+    }
+        else basedir = "/home/"; // base path and file
     basefile = "";
 }
 
@@ -296,7 +302,7 @@ void MainWindow::on_pushButton_label_create_clicked() // special mode to modify 
             QListWidgetItem *item = ui->listWidget_labels->currentItem(); // find new label
             int row = ui->listWidget_labels->currentRow(); // get its row in the list
             ui->listWidget_labels->removeItemWidget(item); // delete the item
-            ui->listWidget_labels->takeItem(row); // delete label form list
+            ui->listWidget_labels->takeItem(row); // delete label from list
 
             create_cell_labels_save.copyTo(labels_mask); // no more undo masks
             create_cell_mask_save.copyTo(mask);
@@ -324,6 +330,13 @@ void MainWindow::on_pushButton_label_create_clicked() // special mode to modify 
 }
 
 /////////////////// Save and load //////////////////////
+
+void MainWindow::SaveDirBaseFile()
+{
+    cv::FileStorage fs(basedirinifile, cv::FileStorage::WRITE); // open labels file for writing
+    fs << "BaseDir" << basedir; // write labels count
+    fs.release(); // close file
+}
 
 void MainWindow::on_pushButton_psd_clicked() // save image (background) + layers (labels) to PSD Photoshop image
 {
@@ -426,6 +439,7 @@ void MainWindow::on_button_image_clicked() // Load main image
     basedir = basedir.substr(0,found) + "/"; // extract file location
     basefile = basefile.substr(found+1); // delete ending slash
     ui->label_filename->setText(filename); // display file name in ui
+    SaveDirBaseFile(); // Save current path to ini file
 
     std::string filename_s = filename.toUtf8().constData(); // convert filename from QString
 
@@ -586,6 +600,7 @@ void MainWindow::on_button_load_session_clicked() // load previous session
     basedir = basedir.substr(0,found) + "/"; // extract file location
     basefile = basefile.substr(found+1); // delete ending slash
     ui->label_filename->setText(filename); // display file name in ui
+    SaveDirBaseFile(); // Save current path to ini file
 
     std::string filesession = filename.toUtf8().constData(); // base file name
     size_t pos = filesession.find("-segmentation-data.xml");
@@ -1035,6 +1050,9 @@ void MainWindow::on_button_undo_clicked() // Undo last action
     undo_mask.copyTo(mask); // get back !
     undo_labels.copyTo(labels_mask); // get back !
 
+    if (ui->pushButton_label_create->isChecked()) // is new label currently created ?
+        mask.copyTo(mask_line_save); // for draw cell mode
+
     ShowSegmentation(); // update display
 }
 
@@ -1311,7 +1329,7 @@ void MainWindow::keyReleaseEvent(QKeyEvent *keyEvent) // draw cell mode and move
         if (pos_save == cv::Point(-1, -1)) // first point not set ?
             return;
 
-        if (keyEvent->isAutoRepeat()) { // if <space> still pressed
+        if (keyEvent->isAutoRepeat()) { // if <x> still pressed
             mask_line_save.copyTo(mask); // erase line
 
             ShowSegmentation(); // show result
@@ -1344,7 +1362,7 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent) // draw cell mode : when spa
         if (pos_save == cv::Point(-1, -1)) // first point not set
             return;
 
-        if (!keyEvent->isAutoRepeat()) mask.copyTo(mask_line_save); // first time <space> is pressed
+        if (!keyEvent->isAutoRepeat()) mask.copyTo(mask_line_save); // first time <X> is pressed
 
         QPoint mouse_pos = ui->label_segmentation->mapFromGlobal(QCursor::pos()); // current mouse position
         cv::Point pos = Viewport2Image(cv::Point(mouse_pos.x(), mouse_pos.y())); // convert position from viewport to image coordinates
