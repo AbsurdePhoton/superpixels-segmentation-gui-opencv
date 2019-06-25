@@ -27,6 +27,10 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    // window
+    setWindowFlags((((windowFlags() | Qt::CustomizeWindowHint)
+                            & ~Qt::WindowCloseButtonHint) | Qt::WindowMinMaxButtonsHint)); // don't show buttons in title bar
+    this->setWindowState(Qt::WindowMaximized); // maximize window
     setFocusPolicy(Qt::StrongFocus); // catch keyboard and mouse in priority
 
     // Populate combo lists
@@ -68,6 +72,15 @@ MainWindow::~MainWindow()
 }
 
 ///////////////////      GUI       //////////////////////
+
+void MainWindow::on_button_quit_clicked()
+{
+    int quit = QMessageBox::question(this, "Quit this wonderful program", "Are you sure you want to quit?", QMessageBox::Yes|QMessageBox::No); // quit, are you sure ?
+    if (quit == QMessageBox::No) // don't quit !
+        return;
+
+    QCoreApplication::quit();
+}
 
 void MainWindow::on_Tabs_currentChanged(int) // when a tab is clicked
 {
@@ -522,6 +535,8 @@ void MainWindow::on_button_save_session_clicked() // save session files
     std::string filesession = filename.toUtf8().constData(); // base file name
     size_t pos = filesession.find("-segmentation-data.xml");
     if (pos != std::string::npos) filesession.erase(pos, filesession.length());
+    pos = filesession.find(".xml");
+    if (pos != std::string::npos) filesession.erase(pos, filesession.length());
 
     bool write;
     write = cv::imwrite(filesession + "-segmentation-mask.png", mask); // save mask
@@ -581,6 +596,16 @@ void MainWindow::on_button_save_session_clicked() // save session files
     fs.release(); // close file
 
     QMessageBox::information(this, "Save segmentation session", "Session saved with base name:\n" + QString::fromStdString(filesession));
+
+    basefile = filesession; // base file name and dir are used after to save other files
+    basedir = basefile;
+    size_t found = basefile.find_last_of("/"); // find last directory
+    basedir = basedir.substr(0,found) + "/"; // extract file location
+    basefile = basefile.substr(found+1); // delete ending slash
+    pos = basefile.find("-segmentation-data");
+    if (pos != std::string::npos) basefile.erase(pos, basefile.length());
+    ui->label_filename->setText(filename); // display file name in ui
+    SaveDirBaseFile(); // Save current path to ini file
 }
 
 void MainWindow::on_button_load_session_clicked() // load previous session
@@ -599,11 +624,13 @@ void MainWindow::on_button_load_session_clicked() // load previous session
     size_t found = basefile.find_last_of("/"); // find last directory
     basedir = basedir.substr(0,found) + "/"; // extract file location
     basefile = basefile.substr(found+1); // delete ending slash
+    size_t pos = basefile.find("-segmentation-data");
+    if (pos != std::string::npos) basefile.erase(pos, basefile.length());
     ui->label_filename->setText(filename); // display file name in ui
     SaveDirBaseFile(); // Save current path to ini file
 
     std::string filesession = filename.toUtf8().constData(); // base file name
-    size_t pos = filesession.find("-segmentation-data.xml");
+    pos = filesession.find("-segmentation-data.xml");
     if (pos != std::string::npos) filesession.erase(pos, filesession.length());
 
     InitializeValues(); // reinit all variables

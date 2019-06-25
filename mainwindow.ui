@@ -540,6 +540,9 @@ QToolTip {
     <property name="text">
      <string>Image file</string>
     </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
    </widget>
    <widget class="QScrollBar" name="horizontalScrollBar_segmentation">
     <property name="geometry">
@@ -4309,6 +4312,55 @@ QToolTip {
      </property>
     </widget>
    </widget>
+   <widget class="QPushButton" name="button_quit">
+    <property name="geometry">
+     <rect>
+      <x>1260</x>
+      <y>360</y>
+      <width>91</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+    </property>
+    <property name="text">
+     <string>QUIT</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normalon>:/icons/quit.png</normalon>
+     </iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>32</width>
+      <height>32</height>
+     </size>
+    </property>
+   </widget>
    <zorder>frame_zoom</zorder>
    <zorder>label_segmentation</zorder>
    <zorder>Tabs</zorder>
@@ -4319,6 +4371,7 @@ QToolTip {
    <zorder>verticalScrollBar_segmentation</zorder>
    <zorder>label_thumbnail</zorder>
    <zorder>frame_about</zorder>
+   <zorder>button_quit</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

@@ -50,6 +50,9 @@ private slots:
     //// UI
     void InitializeValues(); // well named !
 
+    //// quit
+    void on_button_quit_clicked();
+
     //// Tabs
     void on_Tabs_currentChanged(int); // tabs handling
 
