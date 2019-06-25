@@ -306,9 +306,12 @@ void MainWindow::on_pushButton_label_create_clicked() // special mode to modify 
             drawContours(grid, contours, -1, gridColor, 1, 8, hierarchy ); // draw contour of new cell in grid
 
             labels.setTo(maxLabel, white_mask); // set new superpixel value in labels
+            mask.setTo(Vec3b(192, 0, 192), white_mask); // update mask
 
             ShowSegmentation(); // show the result
             ShowCurrentColor(192, 0, 192); // set new label color to purple (I like purple)
+
+            SaveUndo();
         }
         else // don't create the cell !
         {
@@ -1339,8 +1342,10 @@ void MainWindow::on_pushButton_color_laurel_clicked() // Laurel
 
 ///////////////////  Key events  //////////////////////
 
-void MainWindow::keyReleaseEvent(QKeyEvent *keyEvent) // draw cell mode and move view
+void MainWindow::keyReleaseEvent(QKeyEvent *keyEvent) // draw cell mode and move view + show holes
 {
+    if (!loaded) return;// no image = get out
+
     if (keyEvent->key() == Qt::Key_Space) { // spacebar = move the view
         QPoint mouse_pos = QCursor::pos(); // current mouse position
 
@@ -1353,7 +1358,11 @@ void MainWindow::keyReleaseEvent(QKeyEvent *keyEvent) // draw cell mode and move
 
         QApplication::restoreOverrideCursor(); // Restore cursor
     }
-    else if ((keyEvent->key() == Qt::Key_X) & (ui->pushButton_label_create->isChecked())) { // add cell mode ?
+
+    if (!computed) return;// no labels = get out
+    if (ui->Tabs->currentIndex() != 2) return; // Not on labels tab
+
+    if ((keyEvent->key() == Qt::Key_X) & (ui->pushButton_label_create->isChecked())) { // add cell mode ?
         if (pos_save == cv::Point(-1, -1)) // first point not set ?
             return;
 
@@ -1366,7 +1375,7 @@ void MainWindow::keyReleaseEvent(QKeyEvent *keyEvent) // draw cell mode and move
             QPoint mouse_pos = ui->label_segmentation->mapFromGlobal(QCursor::pos()); // current mouse position
             cv::Point pos = Viewport2Image(cv::Point(mouse_pos.x(), mouse_pos.y())); // convert position from viewport to image coordinates
 
-            mask_line_save.copyTo(mask); // erase line (mouse position can have changed a bit
+            mask_line_save.copyTo(mask); // erase line (mouse position can have changed a bit)
             SaveUndo(); // for undo
 
             cv::line(mask, pos_save, pos, Scalar(255,255,255), 1); // line drawn in mask
@@ -1377,16 +1386,44 @@ void MainWindow::keyReleaseEvent(QKeyEvent *keyEvent) // draw cell mode and move
 
         }
     }
+    else if (keyEvent->key() == Qt::Key_H) { // show holes mode ?
+        if (keyEvent->isAutoRepeat()) { // if <H> still pressed
+            selection = 0;
+            Vec3b col(100 + rand() % 156, 100 + rand() % 156, 100 + rand() % 156);
+
+            Mat1b holes_mask;
+            cv::inRange(mask, Vec3b(0,0,0), Vec3b(0,0,0), holes_mask); // extract holes
+            selection.setTo(col, holes_mask); // draw holes in random color
+
+            vector<vector<cv::Point>> contours;
+            vector<Vec4i> hierarchy;
+            findContours(holes_mask, contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE); // find holes contours
+            drawContours(selection, contours, -1, col, rand() % 5 + 1, 8, hierarchy ); // draw contour of holes in selection mask
+
+            ShowSegmentation(); // show result
+        }
+        else { // <H> released = don't show holes anymore
+            mask_line_save.copyTo(selection); // erase line (mouse position can have changed a bit
+
+            ShowSegmentation(); // show result
+        }
+    }
 }
 
-void MainWindow::keyPressEvent(QKeyEvent *keyEvent) // draw cell mode : when spacebar is pressed
+void MainWindow::keyPressEvent(QKeyEvent *keyEvent) //
 {
+    if (!loaded) return;// no image = get out
+
     if (keyEvent->key() == Qt::Key_Space) { // spacebar = move the view
         mouse_origin = QCursor::pos(); // current mouse position
 
         QApplication::setOverrideCursor(Qt::SizeAllCursor); // Move cursor
     }
-    else if ((keyEvent->key() == Qt::Key_X) & (ui->pushButton_label_create->isChecked())) { // add cell mode ?
+
+    if (!computed) return;// no labels = get out
+    if (ui->Tabs->currentIndex() != 2) return; // Not on labels tab
+
+    if ((keyEvent->key() == Qt::Key_X) & (ui->pushButton_label_create->isChecked())) { // draw cell mode ?
         if (pos_save == cv::Point(-1, -1)) // first point not set
             return;
 
@@ -1398,6 +1435,10 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent) // draw cell mode : when spa
         cv::line(mask, pos_save, pos, Scalar(255,255,255), 1); // draw temp line
 
         ShowSegmentation(); // show result
+    }
+    else if ((keyEvent->key() == Qt::Key_H) & (!keyEvent->isAutoRepeat())) {
+        selection.copyTo(mask_line_save); // first time <H> is pressed save selection
+        srand (time(NULL)); // Random seed
     }
 }
 
@@ -1901,6 +1942,8 @@ void MainWindow::on_button_compute_clicked() // compute segmentation
     mask.setTo(0); // reinit mask
     cv::cvtColor(maskTemp, grid, COLOR_GRAY2RGB); // the same for the grid
     grid.setTo(maskColor, grid); // change grid color
+
+    selection = Mat::zeros(image.rows, image.cols, CV_8UC3); // create selection mask
 
     // Visualization
     computed = true; // Indicate that a segmentation has been computed

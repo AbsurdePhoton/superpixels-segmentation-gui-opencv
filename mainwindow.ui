@@ -343,7 +343,7 @@ QToolTip {
       <enum>Qt::NoFocus</enum>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Display (or not) the pixels not pertaining to any label.&lt;/p&gt;&lt;p&gt;These &amp;quot;holes&amp;quot; in the mask appear in white when this option is set.&lt;/p&gt;&lt;p&gt;This option can make inconsistancies appear between the superpixels and the current labels, especially after having created a new label.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Display (or not) the pixels not pertaining to any label.&lt;/p&gt;&lt;p&gt;When activated, the number of unassigned pixels is displayed. You are finished when the count is 0&lt;/p&gt;&lt;p&gt;These &amp;quot;holes&amp;quot; in the mask appear in white when this option is set.&lt;/p&gt;&lt;p&gt;This option can make inconsistancies appear between the superpixels and the current labels, especially after having created a new label.&lt;/p&gt;&lt;p&gt;Hold the &amp;lt;H&amp;gt; key for several seconds to see a flashing indication of holes in the mask. It facilitates the lost pixels hunt&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">QPushButton {
@@ -614,7 +614,7 @@ QToolTip {
      <enum>Qt::NoFocus</enum>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <property name="iconSize">
      <size>
@@ -3884,7 +3884,7 @@ QToolTip {
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Current label and used color to colorize the segmentation cells.&lt;/p&gt;&lt;p&gt;Click on the image:&lt;/p&gt;&lt;p&gt;* Left mouse button: set the cell color&lt;/p&gt;&lt;p&gt;* Right mouse button: delete (set to transparent)&lt;/p&gt;&lt;p&gt;* Drag the mouse while holding the mouse buttons to colorize several cells&lt;/p&gt;&lt;p&gt;* use &amp;lt;CTRL&amp;gt; key + mouse click (left = color, right= delete) to fill a closed area. Be careful, one pixel missing and you have to use the Undo function!&lt;/p&gt;&lt;p&gt;* use &amp;lt;ALT&amp;gt; key + left mouse button to select a label&lt;/p&gt;&lt;p&gt;* hold the middle button of the mouse to navigate in the image&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Current label and used color to colorize the segmentation cells.&lt;/p&gt;&lt;p&gt;Click on the image:&lt;/p&gt;&lt;p&gt;* Left mouse button: set the cell color&lt;/p&gt;&lt;p&gt;* Right mouse button: delete (set to transparent)&lt;/p&gt;&lt;p&gt;* Drag the mouse while holding the mouse buttons to colorize several cells&lt;/p&gt;&lt;p&gt;* Use &amp;lt;CTRL&amp;gt; key + mouse click (left = color, right= delete) to fill a closed area. Be careful, one pixel missing and you have to use the Undo function! The fill is also stopped by already defined labels&lt;/p&gt;&lt;p&gt;* Use &amp;lt;ALT&amp;gt; key + left mouse button to select a label (or use the list on the left)&lt;/p&gt;&lt;p&gt;* Hold the middle button of the mouse or &amp;lt;SPACE&amp;gt; bar then move the mouse to navigate in the image when it is zoomed in&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color:rgb(255,0,0);border: 3px solid black;</string>
