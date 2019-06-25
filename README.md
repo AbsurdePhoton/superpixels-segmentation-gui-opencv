@@ -140,6 +140,7 @@ Basic operations:
     * release <X> and the line is set
     * the end of a line becomes the new origin from which you can draw another one
     * click with the left mouse button to set a pixel to change once again the origin of the lines
+  * you can only UNDO the last action like before
   * when you are done with drawing:
     * click on the "create new cell" button: you can choose to define the new cell or cancel
     * if effectively drawn:
@@ -148,6 +149,12 @@ Basic operations:
       * it is filled with purple color, in the mask layer (I like purple!)
       * the new label contains this cell: you can now join it to another (or leave this label as is)
       * now you can set and unset this new cell
+ 
+* Pixel hunting:
+  * Even if you paid attention in filling all the zones, sometimes pixels are lost, especialy when you draw new cells. No pixel should be left uncolored
+  * Use the Holes button to make missing pixels appear in white
+  * The pixels count is also displayed under this button. You are finished when the count is 0
+  * If your image is big, depending on the level of zoom, you'll be unsuccessfuly chasing pixels. That's when the H key becomes necessary: hold down the H key on your keyboard, and the lost pixels will flash in color, and change size temporarily, as long as you hold the H key down. It also works with high zoom out levels, this time
 
 * Load and save:
   * you can save the current session with a base name (several files are saved)
@@ -158,7 +165,7 @@ Basic operations:
     * grid (PNG image)
     * cells / labels (XML openCV format) 
   * you can export the processed image and the labels to PSD or TIFF image formats:
-    * in a PSD Photoshop image, the processed image is the background, and the labels are transparent separated layers
+    * in a PSD Photoshop image, the processed image is the background, and the labels are transparent separate layers
     * in a TIFF image, each image and label has its own page. Be careful, many software only open the first page
     * the PSD and TIFF images work well with an open-source program: The Gimp
     * the PSD files cannot be loaded with Photoshop 7. They work with PHotoshop CS6, but I don't know if it is the case with Photoshop CS to CS5 (let me know if you tried)
