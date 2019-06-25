@@ -619,12 +619,13 @@ void MainWindow::on_button_load_session_clicked() // load previous session
         return;
 
     basefile = filename.toUtf8().constData(); // base file name and dir are used after to save other files
-    basefile = basefile.substr(0, basefile.size()-4); // strip the file extension
+    size_t pos = basefile.find(".xml");
+    if (pos != std::string::npos) basefile.erase(pos, basefile.length());
     basedir = basefile;
     size_t found = basefile.find_last_of("/"); // find last directory
     basedir = basedir.substr(0,found) + "/"; // extract file location
     basefile = basefile.substr(found+1); // delete ending slash
-    size_t pos = basefile.find("-segmentation-data");
+    pos = basefile.find("-segmentation-data");
     if (pos != std::string::npos) basefile.erase(pos, basefile.length());
     ui->label_filename->setText(filename); // display file name in ui
     SaveDirBaseFile(); // Save current path to ini file
