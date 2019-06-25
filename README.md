@@ -66,11 +66,11 @@ This software should also work under Microsoft Windows: if you tried it successf
   * press APPLY
   * some filters can take a long time to compute, especially the noise filter (which is highly recommended by the way)
   * filters are always applied to the ORIGINAL image, you can't restart from a previously altered image
-  * click ont the ORIGINAL button to revert to the loaded image file
+  * click on the ORIGINAL button to revert to the loaded image file
   
 * You can come back when you want to the Image tab and re-apply filters
 
-* Be aware that when you load a new image, if you computed some segmentation and/or worked on labels and cells, all this work will be lost if you d'ont save the session! More about this later
+* Be aware that when you load a new image, if you computed some segmentation and/or worked on labels and cells, all this work will be lost if you don't save the session! More about this later
   
 ### SEGMENTATION TAB
 
@@ -128,7 +128,7 @@ Basic operations:
   * you can change the grid color with the control under the grid layer button
   * use the zoom controls on the right to zoom in / out - you can also use the mouse wheel over the viewport
   * click on the thumbnail to position the zoomed area in the viewport
-  * hold the middle mouse button on the viewport, or hold down the <SPACE> key to move the view position with your mouse when the image is zoomed in - you can also use the scrollbars
+  * hold the middle mouse button on the viewport, or hold down the < SPACE > key to move the view position with your mouse when the image is zoomed in - you can also use the scrollbars
   
 * Modifiy the cells:
   * the superpixel algorithms often misses important details: you can define your own cells with the special "Create new cell" button
