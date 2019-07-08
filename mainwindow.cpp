@@ -379,8 +379,6 @@ void MainWindow::on_pushButton_draw_clear_clicked()
 
 void MainWindow::on_pushButton_draw_grabcut_clicked()
 {
-    SaveUndo();
-
     Mat result, background, foreground;
 
     result = Mat::zeros(image.rows, image.cols, CV_8UC1);
@@ -411,6 +409,8 @@ void MainWindow::on_pushButton_draw_grabcut_clicked()
     //labels_mask.setTo(maxLabel, mask_tmp);
     cv::inRange(result, GC_PR_FGD, GC_PR_FGD, mask_tmp);
     mask.setTo(Vec3b(255,0,0), mask_tmp); // Maybe = blue
+
+    SaveUndo();
 
     ShowSegmentation(); // show view back to previous state
 }
