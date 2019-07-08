@@ -1,6 +1,6 @@
 # superpixels-segmentation-gui-opencv
 ## Superpixels segmentation algorithms with QT and OpenCV, with a nice GUI to manage labels and colorize the cells
-### v2.1 - 2019-05-12
+### v2.3 - 2019-07-08
 
 ![Screenshot - Global](screenshots/screenshot.jpg?raw=true)
 <br/>
@@ -10,7 +10,8 @@
 * v0: launch
 * v1: added contours + several improvements
 * v2: tabbed workflow + labels management + PSD and TIFF export + create cell
-* V2.1 : several bugs fixed, select labels from the viewport with "ALT"+click, show the "holes" in the mask + adapted to openCV 4.1
+* v2.1: several bugs fixed, select labels from the viewport with "ALT"+click, show the "holes" in the mask + adapted to openCV 4.1
+* v2.3: GrabCut algorithm in create cell mode + code cleanup
 <br/>
 <br/>
 
@@ -131,23 +132,28 @@ Basic operations:
   * hold the middle mouse button on the viewport, or hold down the "SPACE" key to move the view position with your mouse when the image is zoomed in - you can also use the scrollbars
   
 * Modifiy the cells:
-  * the superpixel algorithms often misses important details: you can define your own cells with the special "Create new cell" button
+  * the superpixel algorithms sometimes misses important details: you can define your own cells with the special "Create new cell" button
   * the editor enters a special state: you have to draw your cell in white color
-  * you can set pixels with the left mouse button, and unset them with the right
+  * you can set pixels with the left mouse button, and unset them with the right. You can choose the thickness in the right panel
   * use the "CTRL" key to floodfill entire zones, just like explained before
   * once a pixel is set, it can become the origin of a line:
     * hold down the "X" key and move the mouse over the viewport: a temporary line appears
     * release "X" and the line is set
     * the end of a line becomes the new origin from which you can draw another one
     * click with the left mouse button to set a pixel to change once again the origin of the lines
-  * you can only UNDO the last action like before
+  * you can only UNDO the last action (as usual)
+  * the GrabCut algorithm can help you define a zone:
+    * it can automatically cut out an object/person: choose what you don't want with the red "reject" color, define the inside of the chosen zone with the green "keep" color (or white "mask"), and fill with blue in the intermediate zone ("maybe")
+    * click the "GrabCut" button, and after a while a white zone is defined, with a blue zone outside of it. Add or erase blue where it is interesting, fill the blue zone with the white "mask" color and you're done
+    * you can GrabCut any number of times to refine 
   * when you are done with drawing:
+    * keep in mind that the only color that will be accounted for is the white "mask", any other color (reject, keep, maybe) will be ignored
     * click on the "create new cell" button: you can choose to define the new cell or cancel
     * if effectively drawn:
-      * it is not possible to get back to the previous state, the UNDO button will not work
+      * it is not possible to get back to the previous state, the UNDO button will not work. Save your work before using this function!
       * the new cell boundaries appear in the grid mask
-      * it is filled with purple color, in the mask layer (I like purple!)
-      * the new label contains this cell: you can now join it to another (or leave this label as is)
+      * it is filled with purple color, in the mask layer (I like purple, eh)
+      * the new label contains this cell: you can now join it to another (or leave this label as is). Be sure to rename it
       * now you can set and unset this new cell
  
 * Pixel hunting:
@@ -177,4 +183,5 @@ Basic operations:
 
 ### AbsurdePhoton
 My photographer website ''Photongénique'': www.absurdephoton.fr
+
 

@@ -3,11 +3,13 @@
   <file>./icons/absurdephoton.png</file>
   <file>./icons/add.png</file>
   <file>./icons/blur.png</file>
+  <file>./icons/clear.png</file>
   <file>./icons/color.png</file>
   <file>./icons/color-balance.png</file>
   <file>./icons/compute.png</file>
   <file>./icons/config.png</file>
   <file>./icons/contours.png</file>
+  <file>./icons/cut.png</file>
   <file>./icons/denoise.png</file>
   <file>./icons/delete.png</file>
   <file>./icons/double-step.png</file>

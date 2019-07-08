@@ -618,7 +618,7 @@ QToolTip {
      <enum>Qt::NoFocus</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>2</number>
     </property>
     <property name="iconSize">
      <size>
@@ -4005,7 +4005,7 @@ QToolTip {
       </rect>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;* v0: launch&lt;/p&gt;&lt;p&gt;* v1: added contours + several improvements&lt;/p&gt;&lt;p&gt;* v2: tabbed workflow + labels management + PSD and TIFF export + create cells&lt;/p&gt;&lt;p&gt;* v2.1: several bugs fixed&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;* v0: launch&lt;/p&gt;&lt;p&gt;* v1: added contours + several improvements&lt;/p&gt;&lt;p&gt;* v2: tabbed workflow + labels management + PSD and TIFF export + create cells&lt;/p&gt;&lt;p&gt;* v2.1: several bugs fixed&lt;/p&gt;&lt;p&gt;* v2.2: adapted to OpenCV v4.1&lt;/p&gt;&lt;p&gt;* v2.3: added GrabCut algorithm for new cell creation&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="frameShape">
       <enum>QFrame::Box</enum>
@@ -4014,7 +4014,7 @@ QToolTip {
       <enum>QFrame::Sunken</enum>
      </property>
      <property name="text">
-      <string>v2.1</string>
+      <string>v2.3</string>
      </property>
      <property name="scaledContents">
       <bool>false</bool>
@@ -4323,7 +4323,7 @@ QToolTip {
     <property name="geometry">
      <rect>
       <x>1260</x>
-      <y>360</y>
+      <y>380</y>
       <width>91</width>
       <height>61</height>
      </rect>
@@ -4368,6 +4368,346 @@ QToolTip {
      </size>
     </property>
    </widget>
+   <widget class="QFrame" name="frame_draw">
+    <property name="geometry">
+     <rect>
+      <x>1250</x>
+      <y>320</y>
+      <width>111</width>
+      <height>161</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Panel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Sunken</enum>
+    </property>
+    <property name="lineWidth">
+     <number>2</number>
+    </property>
+    <widget class="QLabel" name="label_draw_size">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>6</y>
+       <width>41</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>Drawing thickness</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Panel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Sunken</enum>
+     </property>
+     <property name="lineWidth">
+      <number>2</number>
+     </property>
+     <property name="text">
+      <string>0</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QSlider" name="horizontalSlider_draw_size">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>91</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::ClickFocus</enum>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Drawing thickness&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+     </property>
+     <property name="maximum">
+      <number>20</number>
+     </property>
+     <property name="value">
+      <number>0</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="tickPosition">
+      <enum>QSlider::NoTicks</enum>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="radioButton_draw_mask">
+     <property name="geometry">
+      <rect>
+       <x>25</x>
+       <y>42</y>
+       <width>81</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use this color to draw the new cell&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+     </property>
+     <property name="text">
+      <string>Mas&amp;k</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="radioButton_draw_keep">
+     <property name="geometry">
+      <rect>
+       <x>25</x>
+       <y>59</y>
+       <width>81</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use this color to draw the GrabCut &amp;quot;keep&amp;quot; zones&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+     </property>
+     <property name="text">
+      <string>Keep</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="radioButton_draw_reject">
+     <property name="geometry">
+      <rect>
+       <x>25</x>
+       <y>95</y>
+       <width>81</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use this color to draw the GrabCut &amp;quot;reject&amp;quot; zones&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+     </property>
+     <property name="text">
+      <string>Re&amp;ject</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_draw_clear">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>120</y>
+       <width>41</width>
+       <height>34</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clear all you have drawn&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:checked {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="resources.qrc">
+       <normaloff>:/icons/clear.png</normaloff>:/icons/clear.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>24</width>
+       <height>24</height>
+      </size>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_draw_grabcut">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>120</y>
+       <width>41</width>
+       <height>34</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;While creating a new cell, you can use the GrabCut algorithm to select a zone.&lt;/p&gt;&lt;p&gt;GrabCut needs these colors to work:&lt;/p&gt;&lt;p&gt;- white and green: what you want to &amp;quot;keep&amp;quot;&lt;/p&gt;&lt;p&gt;- red: what you want to &amp;quot;reject&amp;quot;&lt;/p&gt;&lt;p&gt;- blue: let the algorithm decide - &amp;quot;maybe&amp;quot;&lt;/p&gt;&lt;p&gt;- what was not drawn will be set to &amp;quot;reject&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;To draw:&lt;/p&gt;&lt;p&gt;- choose which color you want to use&lt;/p&gt;&lt;p&gt;- choose the thickness (0 to 20 pixels)&lt;/p&gt;&lt;p&gt;- left mouse button: draw&lt;/p&gt;&lt;p&gt;- right mouse button: erase&lt;/p&gt;&lt;p&gt;- CTRL key + mouse button: floodfill to draw or erase&lt;/p&gt;&lt;p&gt;- maintain X key to draw a line from the last drawn dot - release the key to set it&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;When you finish creating the cell, only the white drawings will be accounted for.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:checked {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="resources.qrc">
+       <normaloff>:/icons/cut.png</normaloff>:/icons/cut.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>24</width>
+       <height>24</height>
+      </size>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="radioButton_draw_maybe">
+     <property name="geometry">
+      <rect>
+       <x>25</x>
+       <y>77</y>
+       <width>81</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use this color to draw the GrabCut &amp;quot;maybe&amp;quot; zones&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+     </property>
+     <property name="text">
+      <string>&amp;Maybe</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>22</x>
+       <y>2</y>
+       <width>24</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>Drawing thickness</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="resources.qrc">:/icons/thick.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </widget>
+   <zorder>button_quit</zorder>
+   <zorder>frame_draw</zorder>
    <zorder>frame_zoom</zorder>
    <zorder>label_segmentation</zorder>
    <zorder>Tabs</zorder>
@@ -4378,7 +4718,6 @@ QToolTip {
    <zorder>verticalScrollBar_segmentation</zorder>
    <zorder>label_thumbnail</zorder>
    <zorder>frame_about</zorder>
-   <zorder>button_quit</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
@@ -4543,6 +4882,22 @@ QToolTip {
     <hint type="destinationlabel">
      <x>168</x>
      <y>241</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalSlider_draw_size</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>label_draw_size</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1305</x>
+     <y>324</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1305</x>
+     <y>308</y>
     </hint>
    </hints>
   </connection>

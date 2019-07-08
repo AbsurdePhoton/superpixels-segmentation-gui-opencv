@@ -4,7 +4,7 @@
 #
 #    by AbsurdePhoton - www.absurdephoton.fr
 #
-#                v2.1 - 2019/05/12
+#                v2.3 - 2019/07/08
 #
 #-------------------------------------------------*/
 
@@ -17,7 +17,16 @@
 #include <QCursor>
 #include <QColorDialog>
 
+//#include <opencv2/ximgproc.hpp>
+
+#include <ImageMagick-7/Magick++.h>
+
 #include "mat-image-tools.h"
+
+using namespace cv;
+using namespace cv::ximgproc;
+using namespace std;
+using namespace Magick;
 
 /////////////////// Window init //////////////////////
 
@@ -94,6 +103,9 @@ void MainWindow::InitializeValues() // initialize all sorts of indicators, zoom,
     ui->Tabs->setTabEnabled(1, false);
     ui->Tabs->setTabEnabled(2, false);
 
+    // Hide drawing tools
+    ui->frame_draw->setVisible(false);
+
     // LCD
     ui->lcd_cells->setPalette(Qt::red);
 
@@ -145,7 +157,7 @@ QListWidgetItem* MainWindow::AddNewLabel(QString newLabel) // add a label to the
     item->setData(Qt::UserRole, maxLabels); // custom field = label number
     item->setFlags(Qt::ItemIsEditable | Qt::ItemIsSelectable | Qt::ItemIsEnabled); // item enabled, editable and selectable
     item->setBackground(QColor(0, 0, 255)); // label color
-    if (IsColorDark(0, 0, 255)) // is the label color dark ?
+    if (IsRGBColorDark(0, 0, 255)) // is the label color dark ?
         item->setForeground(QColor(255, 255, 255)); // if so light text color
         else item->setForeground(QColor(0, 0, 0)); // if not dark text color
     ui->listWidget_labels->addItem(item); // add the item to the list
@@ -277,12 +289,14 @@ void MainWindow::on_pushButton_label_create_clicked() // special mode to modify 
         ui->button_save_session->setVisible(false);
         ui->pushButton_psd->setVisible(false);
         ui->pushButton_tif->setVisible(false);
+        ui->button_quit->setVisible(false);
+        ui->frame_draw->setVisible(true);
         ui->Tabs->setTabEnabled(0, false);
         ui->Tabs->setTabEnabled(1, false);
         ui->listWidget_labels->setEnabled(false);
         ui->checkBox_mask->setChecked(true);
 
-        labels_mask.copyTo(create_cell_labels_save); // save the labels mask for the special mode
+        //labels_mask.copyTo(create_cell_labels_save); // save the labels mask for the special mode
         mask.copyTo(create_cell_mask_save); // as well as the mask
         pos_save = cv::Point(-1, -1); // no first line point defined
     }
@@ -305,7 +319,10 @@ void MainWindow::on_pushButton_label_create_clicked() // special mode to modify 
             grid.setTo(0, white_mask); // erase cell in grid mask
             drawContours(grid, contours, -1, gridColor, 1, 8, hierarchy ); // draw contour of new cell in grid
 
+            //create_cell_labels_save.copyTo(labels_mask);
+            create_cell_mask_save.copyTo(mask); // restore mask
             labels.setTo(maxLabel, white_mask); // set new superpixel value in labels
+            labels_mask.setTo(GetCurrentLabelNumber(), white_mask); // set new label value in labels mask
             mask.setTo(Vec3b(192, 0, 192), white_mask); // update mask
 
             ShowSegmentation(); // show the result
@@ -315,12 +332,15 @@ void MainWindow::on_pushButton_label_create_clicked() // special mode to modify 
         }
         else // don't create the cell !
         {
+            if ((cv::sum(white_mask) == Scalar(0,0,0)) & (create == QMessageBox::Yes)) QMessageBox::warning(this, "Not creating a cell",
+                                                                           "The mask was empty, cell not created");
+
             QListWidgetItem *item = ui->listWidget_labels->currentItem(); // find new label
             int row = ui->listWidget_labels->currentRow(); // get its row in the list
             ui->listWidget_labels->removeItemWidget(item); // delete the item
             ui->listWidget_labels->takeItem(row); // delete label from list
 
-            create_cell_labels_save.copyTo(labels_mask); // no more undo masks
+            //create_cell_labels_save.copyTo(labels_mask); // no more undo masks
             create_cell_mask_save.copyTo(mask);
 
             ShowSegmentation(); // show view back to previous state
@@ -339,10 +359,72 @@ void MainWindow::on_pushButton_label_create_clicked() // special mode to modify 
         ui->button_save_session->setVisible(true);
         ui->pushButton_psd->setVisible(true);
         ui->pushButton_tif->setVisible(true);
+        ui->button_quit->setVisible(true);
+        ui->frame_draw->setVisible(false);
         ui->Tabs->setTabEnabled(0, true);
         ui->Tabs->setTabEnabled(1, true);
         ui->listWidget_labels->setEnabled(true);
     }
+}
+
+void MainWindow::on_pushButton_draw_clear_clicked()
+{
+    SaveUndo();
+
+    //create_cell_labels_save.copyTo(labels_mask); // no more undo masks
+    create_cell_mask_save.copyTo(mask);
+
+    ShowSegmentation(); // show view back to previous state
+}
+
+void MainWindow::on_pushButton_draw_grabcut_clicked()
+{
+    SaveUndo();
+
+    Mat result, background, foreground;
+
+    result = Mat::zeros(image.rows, image.cols, CV_8UC1);
+    result = GC_PR_BGD; // Initialize GrabCut with 'maybe Background'
+
+    Mat1b mask_tmp = Mat::zeros(image.rows, image.cols, CV_8UC1);
+    cv::inRange(mask, Vec3b(255,255,255), Vec3b(255,255,255), mask_tmp);
+    result.setTo(GC_FGD, mask_tmp); // White = foreground
+    cv::inRange(mask, Vec3b(0,255,0), Vec3b(0,255,0), mask_tmp);
+    result.setTo(GC_FGD, mask_tmp); // Green = foreground
+    cv::inRange(mask, Vec3b(0,0,255), Vec3b(0,0,255), mask_tmp);
+    result.setTo(GC_BGD, mask_tmp); // Red = background
+    cv::inRange(mask, Vec3b(255,0,0), Vec3b(255,0,0), mask_tmp);
+    result.setTo(GC_PR_FGD, mask_tmp); // Blue = maybe foreground
+
+    cv::grabCut(image,    // input image
+                result,   // segmentation result
+                cv::Rect(0,0,image.cols,image.rows),// rectangle containing foreground
+                background,foreground, // models
+                1,        // number of iterations
+                cv::GC_INIT_WITH_MASK); // use mask (not rectangle)
+
+    //create_cell_labels_save.copyTo(labels_mask); // no more undo masks
+    create_cell_mask_save.copyTo(mask);
+
+    cv::inRange(result, GC_FGD, GC_FGD, mask_tmp);
+    mask.setTo(Vec3b(255,255,255), mask_tmp); // Foreground = white
+    //labels_mask.setTo(maxLabel, mask_tmp);
+    cv::inRange(result, GC_PR_FGD, GC_PR_FGD, mask_tmp);
+    mask.setTo(Vec3b(255,0,0), mask_tmp); // Maybe = blue
+
+    ShowSegmentation(); // show view back to previous state
+}
+
+Vec3b MainWindow::DrawColor()
+{
+    Vec3b draw_color;
+
+    if (ui->radioButton_draw_mask->isChecked()) draw_color = Vec3b(255, 255, 255);
+    if (ui->radioButton_draw_keep->isChecked()) draw_color = Vec3b(0, 255, 0);
+    if (ui->radioButton_draw_reject->isChecked()) draw_color = Vec3b(0, 0, 255);
+    if (ui->radioButton_draw_maybe->isChecked()) draw_color = Vec3b(255, 0, 0);
+
+    return draw_color;
 }
 
 /////////////////// Save and load //////////////////////
@@ -704,7 +786,7 @@ void MainWindow::on_button_load_session_clicked() // load previous session
         field = "LabelColor" + std::to_string(i); // read label color
         fs [field] >> col;
         item->setBackground(QColor(col[0], col[1], col[2])); // set color to current label
-        if (IsColorDark(col[0], col[1], col[2])) // set text color relative to background darkness
+        if (IsRGBColorDark(col[0], col[1], col[2])) // set text color relative to background darkness
             item->setForeground(QColor(255, 255, 255));
             else item->setForeground(QColor(0, 0, 0));
 
@@ -1180,7 +1262,7 @@ void MainWindow::on_comboBox_algorithm_currentIndexChanged(int) // algorithm cha
 void MainWindow::ShowCurrentColor(int red, int green, int blue) // show current label color and set it to label in list
 {
     QString text_color;
-    if (IsColorDark(red, green, blue)) // text color white or black according to label color
+    if (IsRGBColorDark(red, green, blue)) // text color white or black according to label color
         text_color = "white";
         else text_color = "black";
 
@@ -1193,7 +1275,7 @@ void MainWindow::ShowCurrentColor(int red, int green, int blue) // show current 
     color = Vec3b(blue, green, red); // color in mask
     QListWidgetItem *item = ui->listWidget_labels->currentItem(); // current label
     item->setBackground(QColor(color[2], color[1], color[0])); // label color
-    if (IsColorDark(color[2], color[1], color[0])) // label text color according to label color
+    if (IsRGBColorDark(color[2], color[1], color[0])) // label text color according to label color
         item->setForeground(QColor(255, 255, 255)); // white
         else item->setForeground(QColor(0, 0, 0)); // black
     ui->label_color->setText(item->text()); // show color name
@@ -1223,7 +1305,7 @@ void MainWindow::on_pushButton_color_pick_clicked() // Pick custom color for cur
         if (color == Vec3b(0,0,0)) color = Vec3b(1,1,1);
         QListWidgetItem *item = ui->listWidget_labels->currentItem(); // current label
         item->setBackground(QColor(color[2], color[1], color[0])); // set current label color
-        if (IsColorDark(color[2], color[1], color[0])) // text color according to label color
+        if (IsRGBColorDark(color[2], color[1], color[0])) // text color according to label color
             item->setForeground(QColor(255, 255, 255)); // white
             else item->setForeground(QColor(0, 0, 0)); // black
         ShowCurrentColor(pick_color.red(), pick_color.green(), pick_color.blue()); // show new color
@@ -1378,8 +1460,9 @@ void MainWindow::keyReleaseEvent(QKeyEvent *keyEvent) // draw cell mode and move
             mask_line_save.copyTo(mask); // erase line (mouse position can have changed a bit)
             SaveUndo(); // for undo
 
-            cv::line(mask, pos_save, pos, Scalar(255,255,255), 1); // line drawn in mask
-            cv::line(labels_mask, pos_save, pos, GetCurrentLabelNumber(), 1); // line drawn in labels mask
+            Vec3b draw_color = DrawColor();
+            cv::line(mask, pos_save, pos, draw_color, ui->horizontalSlider_draw_size->value(), LINE_4); // line drawn in mask
+            //cv::line(labels_mask, pos_save, pos, GetCurrentLabelNumber(), ui->horizontalSlider_draw_size->value(), LINE_4); // line drawn in labels mask
 
             mask.copyTo(mask_line_save); // save result for next line
             pos_save = pos; // the last pixel is the new line origin
@@ -1432,7 +1515,8 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent) //
         QPoint mouse_pos = ui->label_segmentation->mapFromGlobal(QCursor::pos()); // current mouse position
         cv::Point pos = Viewport2Image(cv::Point(mouse_pos.x(), mouse_pos.y())); // convert position from viewport to image coordinates
 
-        cv::line(mask, pos_save, pos, Scalar(255,255,255), 1); // draw temp line
+        Vec3b draw_color = DrawColor();
+        cv::line(mask, pos_save, pos, draw_color, ui->horizontalSlider_draw_size->value(), LINE_4); // draw temp line
 
         ShowSegmentation(); // show result
     }
@@ -1468,7 +1552,8 @@ void MainWindow::mousePressEvent(QMouseEvent *eventPress) // event triggered by 
 
         if ((computed) & (ui->Tabs->currentIndex() == 2)) { // mouse in labels tab ?
             if ((key_alt) & (mouseButton == Qt::LeftButton) & (pos.x >= 0) & (pos.x < image.cols)
-                    & (pos.y >= 0) & (pos.y < image.rows)) { // <alt> pressed at the same time = label selection
+                    & (pos.y >= 0) & (pos.y < image.rows)
+                    & (!ui->pushButton_label_create->isChecked())) { // <alt> pressed at the same time = label selection
                 int value = labels_mask.at<int>(pos.y, pos.x); // get label mask value
                 if (value != 0) {
                     for (int i = 0; i < ui->listWidget_labels->count(); i++) { // find the clicked label
@@ -1484,14 +1569,29 @@ void MainWindow::mousePressEvent(QMouseEvent *eventPress) // event triggered by 
                 if ((mouseButton == Qt::LeftButton) & (pos.x >= 0) & (pos.x < image.cols)
                         & (pos.y >= 0) & (pos.y < image.rows)) { // fill with color
                     SaveUndo(); // save for undo
-                    floodFill(mask, cv::Point(pos.x, pos.y), color); // floodfill mask
-                    floodFill(labels_mask, cv::Point(pos.x, pos.y), GetCurrentLabelNumber()); // floodfill labels mask
+                    Vec3b draw_color;
+                    draw_color = color;
+                    if (ui->pushButton_label_create->isChecked()) { // direct draw pixel for new label
+                        draw_color = DrawColor();
+                    }
+                    floodFill(mask, cv::Point(pos.x, pos.y), draw_color); // floodfill mask
+                    if (!ui->pushButton_label_create->isChecked()) floodFill(labels_mask, cv::Point(pos.x, pos.y), GetCurrentLabelNumber()); // floodfill labels mask
                 }
                 else if ((mouseButton == Qt::RightButton) & (pos.x >= 0) & (pos.x < image.cols)
-                        & (pos.y >= 0) & (pos.y < image.rows) & (!ui->pushButton_label_create->isChecked())) { // floodfill with zeros = delete
+                        & (pos.y >= 0) & (pos.y < image.rows)) { // floodfill with zeros = delete
                     SaveUndo(); // save for undo
-                    floodFill(mask, cv::Point(pos.x, pos.y), 0); // floodfill mask
-                    floodFill(labels_mask, cv::Point(pos.x, pos.y), 0); // floodfill labels mask
+                    if (ui->pushButton_label_create->isChecked()) { // direct draw pixel for new label
+                        Mat1b mask_tmp = Mat::zeros(image.rows, image.cols, CV_8UC1);
+                        floodFill(mask, cv::Point(pos.x, pos.y), Vec3b(1, 0, 0)); // floodfill mask
+                        //mask_tmp = mask == Vec3b(255, 0, 0);
+                        cv::inRange(mask, Vec3b(1,0,0), Vec3b(1,0,0), mask_tmp);
+                        create_cell_mask_save.copyTo(mask, mask_tmp);
+                        //create_cell_labels_save.copyTo(labels_mask, mask_tmp);
+                    }
+                    else {
+                        floodFill(mask, cv::Point(pos.x, pos.y), 0); // floodfill mask
+                        floodFill(labels_mask, cv::Point(pos.x, pos.y), 0); // floodfill labels mask
+                    }
                 }
                 ShowSegmentation(); // show result
             }
@@ -1500,14 +1600,20 @@ void MainWindow::mousePressEvent(QMouseEvent *eventPress) // event triggered by 
                     SaveUndo(); // for undo
                     if ((mouseButton == Qt::LeftButton) & (pos.x >= 0) & (pos.x < image.cols)
                             & (pos.y >= 0) & (pos.y < image.rows)) { // left mouse button = white pixel
-                        mask.at<Vec3b>(pos.y, pos.x) = Vec3b(255, 255, 255); // draw white pixel in mask
-                        labels_mask.at<int>(pos.y, pos.x) = GetCurrentLabelNumber(); // draw pixel in label mask pixel
+                        //mask.at<Vec3b>(pos.y, pos.x) = Vec3b(255, 255, 255); // draw white pixel in mask
+                        //labels_mask.at<int>(pos.y, pos.x) = GetCurrentLabelNumber(); // draw pixel in label mask pixel
+                        Vec3b draw_color = DrawColor();
+                        circle(mask, pos, ui->horizontalSlider_draw_size->value(), draw_color, -1, LINE_4);
+                        //circle(labels_mask, pos, ui->horizontalSlider_draw_size->value(), GetCurrentLabelNumber(), -1, LINE_4);
                     }
                     else if ((mouseButton == Qt::RightButton) & (pos.x >= 0) & (pos.x < image.cols)
-                            & (pos.y >= 0) & (pos.y < image.rows)
-                             & (mask.at<Vec3b>(pos.y, pos.x) == Vec3b(255,255,255))) { // right mouse button = transparent/black pixel
-                        mask.at<Vec3b>(pos.y, pos.x) = create_cell_mask_save.at<Vec3b>(pos.y, pos.x); // return to pixel from undo mask
-                        labels_mask.at<int>(pos.y, pos.x) = create_cell_labels_save.at<int>(pos.y, pos.x); // return to pixel from undo labels
+                            & (pos.y >= 0) & (pos.y < image.rows)) { // right mouse button = transparent/black pixel
+                        Mat1b mask_tmp = Mat::zeros(image.rows, image.cols, CV_8UC1);
+                        circle(mask_tmp, pos, ui->horizontalSlider_draw_size->value(), 255, -1, LINE_4);
+                        create_cell_mask_save.copyTo(mask, mask_tmp);
+                        //create_cell_labels_save.copyTo(labels_mask, mask_tmp);
+                        //mask.at<Vec3b>(pos.y, pos.x) = create_cell_mask_save.at<Vec3b>(pos.y, pos.x); // return to pixel from undo mask
+                        //labels_mask.at<int>(pos.y, pos.x) = create_cell_labels_save.at<int>(pos.y, pos.x); // return to pixel from undo labels
                     }
 
                     pos_save = pos; // this pixel can be the origin of a new line
@@ -1586,14 +1692,20 @@ void MainWindow::mouseMoveEvent(QMouseEvent *eventMove) // first mouse click has
             if (ui->pushButton_label_create->isChecked()) { // direct draw pixel for new label
                 if ((mouseButton == Qt::LeftButton) & (pos.x >= 0) & (pos.x < image.cols)
                         & (pos.y >= 0) & (pos.y < image.rows)) { // left mouse button pixel = white
-                    mask.at<Vec3b>(pos.y, pos.x) = Vec3b(255, 255, 255); // white pixel
-                    labels_mask.at<int>(pos.y, pos.x) = GetCurrentLabelNumber(); // label mask pixel
+                    //mask.at<Vec3b>(pos.y, pos.x) = Vec3b(255, 255, 255); // white pixel
+                    //labels_mask.at<int>(pos.y, pos.x) = GetCurrentLabelNumber(); // label mask pixel
+                    Vec3b draw_color = DrawColor();
+                    circle(mask, pos, ui->horizontalSlider_draw_size->value(), draw_color, -1, LINE_4);
+                    //circle(labels_mask, pos, ui->horizontalSlider_draw_size->value(), GetCurrentLabelNumber(), -1, LINE_4);
                 }
                 else if ((mouseButton == Qt::RightButton) & (pos.x >= 0) & (pos.x < image.cols)
-                         & (pos.y >= 0) & (pos.y < image.rows)
-                         & (mask.at<Vec3b>(pos.y, pos.x) == Vec3b(255,255,255))) { // left mouse button pixel unset
-                    mask.at<Vec3b>(pos.y, pos.x) = create_cell_mask_save.at<Vec3b>(pos.y, pos.x); // return to pixel from undo mask
-                    labels_mask.at<int>(pos.y, pos.x) = create_cell_labels_save.at<int>(pos.y, pos.x); // return to pixel from undo labels
+                         & (pos.y >= 0) & (pos.y < image.rows)) { // right mouse button pixel unset
+                    Mat1b mask_tmp = Mat::zeros(image.rows, image.cols, CV_8UC1);
+                    circle(mask_tmp, pos, ui->horizontalSlider_draw_size->value(), 255, -1, LINE_4);
+                    create_cell_mask_save.copyTo(mask, mask_tmp);
+                    //create_cell_labels_save.copyTo(labels_mask, mask_tmp);
+                    //mask.at<Vec3b>(pos.y, pos.x) = create_cell_mask_save.at<Vec3b>(pos.y, pos.x); // return to pixel from undo mask
+                    //labels_mask.at<int>(pos.y, pos.x) = create_cell_labels_save.at<int>(pos.y, pos.x); // return to pixel from undo labels
                 }
 
                 pos_save = pos; // the pixel can be the origin of a new line

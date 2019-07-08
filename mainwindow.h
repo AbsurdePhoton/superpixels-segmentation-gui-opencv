@@ -4,7 +4,7 @@
 #
 #    by AbsurdePhoton - www.absurdephoton.fr
 #
-#                v2.1 - 2019/05/12
+#                v2.3 - 2019/07/08
 #
 #-------------------------------------------------*/
 
@@ -23,13 +23,6 @@
 #include <QFileDialog>
 #include <QButtonGroup>
 #include <QListWidgetItem>
-
-#include <ImageMagick-7/Magick++.h>
-
-using namespace cv;
-using namespace cv::ximgproc;
-using namespace std;
-using namespace Magick;
 
 namespace Ui {
 class MainWindow;
@@ -68,6 +61,9 @@ private slots:
     void on_pushButton_label_hide_clicked(); // set label color to 0 => transparent
     void on_pushButton_label_create_clicked(); // special mode where a new cell can be drawn
     void on_pushButton_label_join_clicked(); // join two or more labels
+    void on_pushButton_draw_clear_clicked();
+    void on_pushButton_draw_grabcut_clicked();
+    cv::Vec3b DrawColor();
 
     //// image export
     void on_pushButton_psd_clicked(); // export to PSD Photoshop image
@@ -168,9 +164,9 @@ private:
 
     //// superpixels
 
-    Ptr<SuperpixelSLIC> slic; // SLIC Segmentation pointer
-    Ptr<SuperpixelLSC> lsc; // LSC Segmentation pointer
-    Ptr<SuperpixelSEEDS> seeds; // SEEDS Segmentation pointer
+    cv::Ptr<cv::ximgproc::SuperpixelSLIC> slic; // SLIC Segmentation pointer
+    cv::Ptr<cv::ximgproc::SuperpixelLSC> lsc; // LSC Segmentation pointer
+    cv::Ptr<cv::ximgproc::SuperpixelSEEDS> seeds; // SEEDS Segmentation pointer
 
     //// masks & display
 
@@ -183,12 +179,12 @@ private:
             mask, undo_mask, // painted cells
             grid, // grid mask
             selection, // selection mask
-            create_cell_labels_save, create_cell_mask_save, mask_line_save; // used by cell paint
+            /*create_cell_labels_save,*/ create_cell_mask_save, mask_line_save; // used by cell paint
 
     cv::Mat disp_color; // Processed image display with mask and grid
     cv::Rect viewport; // part of the segmentation image to display
 
-    Vec3b color, gridColor; // current colors used
+    cv::Vec3b color, gridColor; // current colors used
 
     //// files
 
