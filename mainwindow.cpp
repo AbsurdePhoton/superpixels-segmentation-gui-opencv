@@ -69,7 +69,7 @@ MainWindow::MainWindow(QWidget *parent) :
     basedirinifile += "/dir.ini";
     cv::FileStorage fs(basedirinifile, FileStorage::READ); // open dir ini file
     if (fs.isOpened()) {
-        fs["BaseDir"] >> basedir; // load labels
+        fs["BaseDir"] >> basedir; // load base dir
     }
         else basedir = "/home/"; // base path and file
     basefile = "";
@@ -263,21 +263,16 @@ void MainWindow::on_pushButton_label_join_clicked() // join 2 or more labels, re
     ShowSegmentation(); // show result
 }
 
-void MainWindow::on_pushButton_label_create_clicked() // special mode to modify the cells (superpixels)
+void MainWindow::on_pushButton_label_draw_clicked() // special mode to modify the cells (superpixels)
 {
     if (!computed) { // if image not computed yet get out
         QMessageBox::warning(this, "No cells found",
                                  "Not now!\n\nBefore anything else, compute the segmentation or load a previous session");
-        ui->pushButton_label_create->setChecked(false); // get out of the special mode
+        ui->pushButton_label_draw->setChecked(false); // get out of the special mode
         return;
     }
 
-    if (ui->pushButton_label_create->isChecked()) { // initialize cell creation
-        QListWidgetItem *item = AddNewLabel("New cell"); // add a new label to contain the result
-
-        ui->listWidget_labels->setCurrentItem(item); // select this new label
-        ShowCurrentColor(255, 255, 255); // set its color to white, the drawing color for a new cell
-
+    if (ui->pushButton_label_draw->isChecked()) { // initialize cell update
         ui->label_segmentation->setCursor(Qt::CrossCursor); // cursor change to show this is a special mode
 
         ui->frame_pick_colors->setVisible(false); // disable all tabs/elements to keep the user in the special mode
@@ -295,13 +290,18 @@ void MainWindow::on_pushButton_label_create_clicked() // special mode to modify 
         ui->Tabs->setTabEnabled(1, false);
         ui->listWidget_labels->setEnabled(false);
         ui->checkBox_mask->setChecked(true);
+        ui->pushButton_draw_grabcut_iteration->setVisible(false);
+        ui->checkBox_selection->setChecked(false);
 
-        //labels_mask.copyTo(create_cell_labels_save); // save the labels mask for the special mode
-        mask.copyTo(create_cell_mask_save); // as well as the mask
+        mask.copyTo(draw_cell_mask_save); // save all the masks
+        labels_mask.copyTo(draw_cell_labels_mask_save);
+        labels.copyTo(draw_cell_labels_save);
+        grid.copyTo(draw_cell_grid_save);
+
         pos_save = cv::Point(-1, -1); // no first line point defined
     }
     else { // special mode ended by clicking again the button
-        int create = QMessageBox::question(this, "Create new cell", "Are you sure you want to create this cell from the white mask?\nIf not, the mask will be deleted", QMessageBox::Yes|QMessageBox::No); // really create the cell ?
+        int draw = QMessageBox::question(this, "Update cells", "Are you sure you want to update the cells from the white mask?\nIf not, the mask will be deleted", QMessageBox::Yes|QMessageBox::No); // really update the cells ?
 
         double min, max;
         minMaxIdx(labels, &min, &max); // find the highest superpixel number
@@ -310,7 +310,7 @@ void MainWindow::on_pushButton_label_create_clicked() // special mode to modify 
         Mat1b white_mask;
         inRange(mask, Vec3b(255, 255, 255), Vec3b(255, 255, 255), white_mask); // extract white color from mask
 
-        if ((cv::sum(white_mask) != Scalar(0,0,0)) & (create == QMessageBox::Yes)) { // create the cell
+        if ((cv::sum(white_mask) != Scalar(0,0,0)) & (draw == QMessageBox::Yes)) { // update the cells
             vector<vector<cv::Point>> contours;
             vector<Vec4i> hierarchy;
 
@@ -319,34 +319,23 @@ void MainWindow::on_pushButton_label_create_clicked() // special mode to modify 
             grid.setTo(0, white_mask); // erase cell in grid mask
             drawContours(grid, contours, -1, gridColor, 1, 8, hierarchy ); // draw contour of new cell in grid
 
-            //create_cell_labels_save.copyTo(labels_mask);
-            create_cell_mask_save.copyTo(mask); // restore mask
+            draw_cell_mask_save.copyTo(mask); // restore mask
             labels.setTo(maxLabel, white_mask); // set new superpixel value in labels
-            labels_mask.setTo(GetCurrentLabelNumber(), white_mask); // set new label value in labels mask
-            mask.setTo(Vec3b(192, 0, 192), white_mask); // update mask
-
-            ShowSegmentation(); // show the result
-            ShowCurrentColor(192, 0, 192); // set new label color to purple (I like purple)
-
-            SaveUndo();
+            labels_mask.setTo(GetCurrentLabelNumber(), white_mask); // set current label value in labels mask
+            mask.setTo(color, white_mask); // update mask with current label color
         }
-        else // don't create the cell !
+        else // don't update the cells !
         {
-            if ((cv::sum(white_mask) == Scalar(0,0,0)) & (create == QMessageBox::Yes)) QMessageBox::warning(this, "Not creating a cell",
-                                                                           "The mask was empty, cell not created");
+            if ((cv::sum(white_mask) == Scalar(0,0,0)) & (draw == QMessageBox::Yes))
+                QMessageBox::warning(this, "Not updating the cells",
+                                     "The mask was empty, cells not updated");
 
-            QListWidgetItem *item = ui->listWidget_labels->currentItem(); // find new label
-            int row = ui->listWidget_labels->currentRow(); // get its row in the list
-            ui->listWidget_labels->removeItemWidget(item); // delete the item
-            ui->listWidget_labels->takeItem(row); // delete label from list
-
-            //create_cell_labels_save.copyTo(labels_mask); // no more undo masks
-            create_cell_mask_save.copyTo(mask);
+            draw_cell_mask_save.copyTo(mask); // restore original mask
 
             ShowSegmentation(); // show view back to previous state
         }
 
-        SaveUndo(); // no undo possible
+        //SaveUndo(); // save current state
 
         ui->label_segmentation->setCursor(Qt::PointingHandCursor); // cursor back to normal
 
@@ -364,65 +353,94 @@ void MainWindow::on_pushButton_label_create_clicked() // special mode to modify 
         ui->Tabs->setTabEnabled(0, true);
         ui->Tabs->setTabEnabled(1, true);
         ui->listWidget_labels->setEnabled(true);
+        ui->checkBox_selection->setChecked(true);
+
+        ShowCurrentColor(color[2], color[1], color[0]); // redraw label
     }
 }
 
-void MainWindow::on_pushButton_draw_clear_clicked()
+void MainWindow::on_pushButton_draw_clear_clicked() // clear the cell drawing mask
 {
-    SaveUndo();
+    SaveUndo(); // save current state
 
-    //create_cell_labels_save.copyTo(labels_mask); // no more undo masks
-    create_cell_mask_save.copyTo(mask);
+    draw_cell_mask_save.copyTo(mask); // Restore current mask
 
     ShowSegmentation(); // show view back to previous state
 }
 
-void MainWindow::on_pushButton_draw_grabcut_clicked()
+void MainWindow::on_pushButton_draw_grabcut_clicked() // use GrabCut in cell drawing mode
 {
-    Mat result, background, foreground;
+    SaveUndo(); // save current state
 
-    result = Mat::zeros(image.rows, image.cols, CV_8UC1);
-    result = GC_PR_BGD; // Initialize GrabCut with 'maybe Background'
+    QApplication::setOverrideCursor(Qt::WaitCursor); // wait cursor
 
-    Mat1b mask_tmp = Mat::zeros(image.rows, image.cols, CV_8UC1);
-    cv::inRange(mask, Vec3b(255,255,255), Vec3b(255,255,255), mask_tmp);
-    result.setTo(GC_FGD, mask_tmp); // White = foreground
-    cv::inRange(mask, Vec3b(0,255,0), Vec3b(0,255,0), mask_tmp);
-    result.setTo(GC_FGD, mask_tmp); // Green = foreground
-    cv::inRange(mask, Vec3b(0,0,255), Vec3b(0,0,255), mask_tmp);
-    result.setTo(GC_BGD, mask_tmp); // Red = background
-    cv::inRange(mask, Vec3b(255,0,0), Vec3b(255,0,0), mask_tmp);
-    result.setTo(GC_PR_FGD, mask_tmp); // Blue = maybe foreground
+    grabcut_mask = Mat::zeros(image.rows, image.cols, CV_8UC1);
+    grabcut_mask = GC_BGD; // init GrabCut with 'maybe Background'
+    grabcut_foreground.release(); // clear grabcut internal masks
+    grabcut_background.release();
+
+    Mat1b mask_tmp = Mat::zeros(image.rows, image.cols, CV_8UC1); // to find white, red or blue pixels
+
+    cv::inRange(mask, Vec3b(255,255,255), Vec3b(255,255,255), mask_tmp); // find white
+    grabcut_mask.setTo(GC_FGD, mask_tmp); // white = foreground
+    cv::inRange(mask, Vec3b(0,0,255), Vec3b(0,0,255), mask_tmp); // find red
+    grabcut_mask.setTo(GC_BGD, mask_tmp); // red = background
+    cv::inRange(mask, Vec3b(255,0,0), Vec3b(255,0,0), mask_tmp); // find blue
+    grabcut_mask.setTo(GC_PR_FGD, mask_tmp); // blue = maybe foreground
 
     cv::grabCut(image,    // input image
-                result,   // segmentation result
-                cv::Rect(0,0,image.cols,image.rows),// rectangle containing foreground
-                background,foreground, // models
-                1,        // number of iterations
-                cv::GC_INIT_WITH_MASK); // use mask (not rectangle)
+                grabcut_mask,   // segmentation result
+                cv::Rect(0,0,image.cols,image.rows), // rectangle containing foreground, not used here
+                grabcut_background, grabcut_foreground, // internal for GrabCut
+                1,        // number of iterations = 1
+                cv::GC_INIT_WITH_MASK); // init with mask (not rectangle)
 
-    //create_cell_labels_save.copyTo(labels_mask); // no more undo masks
-    create_cell_mask_save.copyTo(mask);
+    draw_cell_mask_save.copyTo(mask); // restore mask
 
-    cv::inRange(result, GC_FGD, GC_FGD, mask_tmp);
-    mask.setTo(Vec3b(255,255,255), mask_tmp); // Foreground = white
-    //labels_mask.setTo(maxLabel, mask_tmp);
-    cv::inRange(result, GC_PR_FGD, GC_PR_FGD, mask_tmp);
-    mask.setTo(Vec3b(255,0,0), mask_tmp); // Maybe = blue
+    cv::inRange(grabcut_mask, GC_FGD, GC_FGD, mask_tmp); // get 'sure' foreground pixels
+    mask.setTo(Vec3b(255,255,255), mask_tmp); // set foreground = white in mask
+    cv::inRange(grabcut_mask, GC_PR_FGD, GC_PR_FGD, mask_tmp); // get 'maybe' foreground pixels
+    mask.setTo(Vec3b(255,0,0), mask_tmp); // set maybe = blue in mask
 
-    SaveUndo();
+    QApplication::restoreOverrideCursor(); // Restore cursor
 
-    ShowSegmentation(); // show view back to previous state
+    ui->pushButton_draw_grabcut_iteration->setVisible(true); // show the new iteration button
+
+    ShowSegmentation(); // show GrabCut result
 }
 
-Vec3b MainWindow::DrawColor()
+void MainWindow::on_pushButton_draw_grabcut_iteration_clicked() // repeat GrabCut in cell drawing mode
+{
+    Mat1b mask_tmp; // temp mask
+
+    QApplication::setOverrideCursor(Qt::WaitCursor); // wait cursor
+
+    cv::grabCut(image,    // input image
+                grabcut_mask,   // segmentation result
+                cv::Rect(0,0,image.cols,image.rows), // rectangle containing foreground, not used here
+                grabcut_background, grabcut_foreground, // internal for GrabCut
+                1,        // number of iterations = 1
+                cv::GC_EVAL); // resume algorithm
+
+    draw_cell_mask_save.copyTo(mask); // restore mask
+
+    cv::inRange(grabcut_mask, GC_FGD, GC_FGD, mask_tmp); // get 'sure' foreground pixels
+    mask.setTo(Vec3b(255,255,255), mask_tmp); // set foreground = white in mask
+    cv::inRange(grabcut_mask, GC_PR_FGD, GC_PR_FGD, mask_tmp); // get 'maybe' foreground pixels
+    mask.setTo(Vec3b(255,0,0), mask_tmp); // set maybe = blue in mask
+
+    QApplication::restoreOverrideCursor(); // Restore cursor
+
+    ShowSegmentation(); // show GrabCut result
+}
+
+Vec3b MainWindow::DrawColor() // return drawing color in cell drawing mode
 {
     Vec3b draw_color;
 
-    if (ui->radioButton_draw_mask->isChecked()) draw_color = Vec3b(255, 255, 255);
-    if (ui->radioButton_draw_keep->isChecked()) draw_color = Vec3b(0, 255, 0);
-    if (ui->radioButton_draw_reject->isChecked()) draw_color = Vec3b(0, 0, 255);
-    if (ui->radioButton_draw_maybe->isChecked()) draw_color = Vec3b(255, 0, 0);
+    if (ui->radioButton_draw_mask->isChecked()) draw_color = Vec3b(255, 255, 255); // white = keep
+    if (ui->radioButton_draw_reject->isChecked()) draw_color = Vec3b(0, 0, 255); // red = reject
+    if (ui->radioButton_draw_maybe->isChecked()) draw_color = Vec3b(255, 0, 0); // blue = maybe
 
     return draw_color;
 }
@@ -431,8 +449,8 @@ Vec3b MainWindow::DrawColor()
 
 void MainWindow::SaveDirBaseFile()
 {
-    cv::FileStorage fs(basedirinifile, cv::FileStorage::WRITE); // open labels file for writing
-    fs << "BaseDir" << basedir; // write labels count
+    cv::FileStorage fs(basedirinifile, cv::FileStorage::WRITE); // open dir ini file for writing
+    fs << "BaseDir" << basedir; // write folder name
     fs.release(); // close file
 }
 
@@ -1020,6 +1038,11 @@ void MainWindow::on_checkBox_grid_clicked() // Refresh image : grid on/off
     ShowSegmentation(); // update display
 }
 
+void MainWindow::on_checkBox_selection_clicked() // Refresh image : selection on/off
+{
+    ShowSegmentation(); // update display
+}
+
 void MainWindow::on_checkBox_holes_clicked() // Refresh image : holes on/off
 {
     ShowSegmentation(); // update display
@@ -1149,7 +1172,13 @@ void MainWindow::ShowZoomValue() // display zoom percentage in ui
 void MainWindow::SaveUndo()
 {
     mask.copyTo(undo_mask); // mask
-    labels_mask.copyTo(undo_labels); // labels
+    if (!ui->pushButton_label_draw->isChecked()) {
+        labels_mask.copyTo(undo_labels); // save labels mask
+        draw_cell_mask_save.release(); // release draw saves
+        draw_cell_labels_mask_save.release();
+        draw_cell_labels_save.release();
+        draw_cell_grid_save.release();
+    }
 }
 
 void MainWindow::on_button_undo_clicked() // Undo last action
@@ -1161,10 +1190,23 @@ void MainWindow::on_button_undo_clicked() // Undo last action
     }
 
     undo_mask.copyTo(mask); // get back !
-    undo_labels.copyTo(labels_mask); // get back !
 
-    if (ui->pushButton_label_create->isChecked()) // is new label currently created ?
+    if (!ui->pushButton_label_draw->isChecked()) { //if not in draw cell mode
+        if (!draw_cell_labels_save.empty()) { // but if something was drawn before
+            draw_cell_mask_save.copyTo(mask); // restore saved masks
+            draw_cell_labels_mask_save.copyTo(labels_mask);
+            draw_cell_labels_save.copyTo(labels);
+            draw_cell_grid_save.copyTo(grid);
+            selection = 0;
+            ShowCurrentColor(color[2], color[1], color[0]); // redraw label
+        }
+        else {
+            undo_labels.copyTo(labels_mask); // normal case : also save labels_mask
+        }
+    }
+    else { // is label currently drawn ?
         mask.copyTo(mask_line_save); // for draw cell mode
+    }
 
     ShowSegmentation(); // update display
 }
@@ -1444,11 +1486,11 @@ void MainWindow::keyReleaseEvent(QKeyEvent *keyEvent) // draw cell mode and move
     if (!computed) return;// no labels = get out
     if (ui->Tabs->currentIndex() != 2) return; // Not on labels tab
 
-    if ((keyEvent->key() == Qt::Key_X) & (ui->pushButton_label_create->isChecked())) { // add cell mode ?
+    if ((keyEvent->key() == Qt::Key_X) & (ui->pushButton_label_draw->isChecked())) { // add cell mode line
         if (pos_save == cv::Point(-1, -1)) // first point not set ?
             return;
 
-        if (keyEvent->isAutoRepeat()) { // if <x> still pressed
+        if (keyEvent->isAutoRepeat()) { // if <X> still pressed
             mask_line_save.copyTo(mask); // erase line
 
             ShowSegmentation(); // show result
@@ -1461,13 +1503,17 @@ void MainWindow::keyReleaseEvent(QKeyEvent *keyEvent) // draw cell mode and move
             SaveUndo(); // for undo
 
             Vec3b draw_color = DrawColor();
-            cv::line(mask, pos_save, pos, draw_color, ui->horizontalSlider_draw_size->value(), LINE_4); // line drawn in mask
-            //cv::line(labels_mask, pos_save, pos, GetCurrentLabelNumber(), ui->horizontalSlider_draw_size->value(), LINE_4); // line drawn in labels mask
+            cv::line(mask, pos_save, pos, draw_color, ui->horizontalSlider_draw_size->value() + 1, LINE_4); // line drawn in mask
 
             mask.copyTo(mask_line_save); // save result for next line
             pos_save = pos; // the last pixel is the new line origin
 
         }
+    }
+    else if ((keyEvent->key() == Qt::Key_C) & (ui->pushButton_label_draw->isChecked())) { // add cell mode circle
+            mask_line_save.copyTo(mask); // restore mask
+
+            ShowSegmentation(); // show result
     }
     else if (keyEvent->key() == Qt::Key_H) { // show holes mode ?
         if (keyEvent->isAutoRepeat()) { // if <H> still pressed
@@ -1506,7 +1552,7 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent) //
     if (!computed) return;// no labels = get out
     if (ui->Tabs->currentIndex() != 2) return; // Not on labels tab
 
-    if ((keyEvent->key() == Qt::Key_X) & (ui->pushButton_label_create->isChecked())) { // draw cell mode ?
+    if ((keyEvent->key() == Qt::Key_X) & (ui->pushButton_label_draw->isChecked())) { // draw cell mode line
         if (pos_save == cv::Point(-1, -1)) // first point not set
             return;
 
@@ -1516,7 +1562,21 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent) //
         cv::Point pos = Viewport2Image(cv::Point(mouse_pos.x(), mouse_pos.y())); // convert position from viewport to image coordinates
 
         Vec3b draw_color = DrawColor();
-        cv::line(mask, pos_save, pos, draw_color, ui->horizontalSlider_draw_size->value(), LINE_4); // draw temp line
+        cv::line(mask, pos_save, pos, draw_color, ui->horizontalSlider_draw_size->value() + 1, LINE_4); // draw temp line
+
+        ShowSegmentation(); // show result
+    }
+    if ((keyEvent->key() == Qt::Key_C) & (ui->pushButton_label_draw->isChecked())) { // draw cell mode show circle
+        if (!keyEvent->isAutoRepeat()) mask.copyTo(mask_line_save); // first time <C> is pressed save mask
+
+        QPoint mouse_pos = ui->label_segmentation->mapFromGlobal(QCursor::pos()); // current mouse position
+        cv::Point pos = Viewport2Image(cv::Point(mouse_pos.x(), mouse_pos.y())); // convert position from viewport to image coordinates
+
+        Vec3b draw_color = DrawColor();
+        if (ui->horizontalSlider_draw_size->value() == 0)
+            mask.at<Vec3b>(pos.y, pos.x) = draw_color; // draw pixel in mask
+        else // circle
+            cv::circle(mask, pos, ui->horizontalSlider_draw_size->value() + 1, draw_color, 1, LINE_8); // draw temporary circle
 
         ShowSegmentation(); // show result
     }
@@ -1553,7 +1613,7 @@ void MainWindow::mousePressEvent(QMouseEvent *eventPress) // event triggered by 
         if ((computed) & (ui->Tabs->currentIndex() == 2)) { // mouse in labels tab ?
             if ((key_alt) & (mouseButton == Qt::LeftButton) & (pos.x >= 0) & (pos.x < image.cols)
                     & (pos.y >= 0) & (pos.y < image.rows)
-                    & (!ui->pushButton_label_create->isChecked())) { // <alt> pressed at the same time = label selection
+                    & (!ui->pushButton_label_draw->isChecked())) { // <alt> pressed at the same time = label selection
                 int value = labels_mask.at<int>(pos.y, pos.x); // get label mask value
                 if (value != 0) {
                     for (int i = 0; i < ui->listWidget_labels->count(); i++) { // find the clicked label
@@ -1571,22 +1631,21 @@ void MainWindow::mousePressEvent(QMouseEvent *eventPress) // event triggered by 
                     SaveUndo(); // save for undo
                     Vec3b draw_color;
                     draw_color = color;
-                    if (ui->pushButton_label_create->isChecked()) { // direct draw pixel for new label
+                    if (ui->pushButton_label_draw->isChecked()) { // direct draw pixel for new label
                         draw_color = DrawColor();
                     }
                     floodFill(mask, cv::Point(pos.x, pos.y), draw_color); // floodfill mask
-                    if (!ui->pushButton_label_create->isChecked()) floodFill(labels_mask, cv::Point(pos.x, pos.y), GetCurrentLabelNumber()); // floodfill labels mask
+                    if (!ui->pushButton_label_draw->isChecked()) floodFill(labels_mask, cv::Point(pos.x, pos.y), GetCurrentLabelNumber()); // floodfill labels mask
                 }
                 else if ((mouseButton == Qt::RightButton) & (pos.x >= 0) & (pos.x < image.cols)
                         & (pos.y >= 0) & (pos.y < image.rows)) { // floodfill with zeros = delete
                     SaveUndo(); // save for undo
-                    if (ui->pushButton_label_create->isChecked()) { // direct draw pixel for new label
+                    if (ui->pushButton_label_draw->isChecked()) { // direct draw pixel for new label
                         Mat1b mask_tmp = Mat::zeros(image.rows, image.cols, CV_8UC1);
                         floodFill(mask, cv::Point(pos.x, pos.y), Vec3b(1, 0, 0)); // floodfill mask
                         //mask_tmp = mask == Vec3b(255, 0, 0);
                         cv::inRange(mask, Vec3b(1,0,0), Vec3b(1,0,0), mask_tmp);
-                        create_cell_mask_save.copyTo(mask, mask_tmp);
-                        //create_cell_labels_save.copyTo(labels_mask, mask_tmp);
+                        draw_cell_mask_save.copyTo(mask, mask_tmp);
                     }
                     else {
                         floodFill(mask, cv::Point(pos.x, pos.y), 0); // floodfill mask
@@ -1596,24 +1655,26 @@ void MainWindow::mousePressEvent(QMouseEvent *eventPress) // event triggered by 
                 ShowSegmentation(); // show result
             }
             else {
-                if (ui->pushButton_label_create->isChecked()) { // direct draw pixel for new label
+                if (ui->pushButton_label_draw->isChecked()) { // direct draw pixel for new label
                     SaveUndo(); // for undo
                     if ((mouseButton == Qt::LeftButton) & (pos.x >= 0) & (pos.x < image.cols)
                             & (pos.y >= 0) & (pos.y < image.rows)) { // left mouse button = white pixel
                         //mask.at<Vec3b>(pos.y, pos.x) = Vec3b(255, 255, 255); // draw white pixel in mask
                         //labels_mask.at<int>(pos.y, pos.x) = GetCurrentLabelNumber(); // draw pixel in label mask pixel
                         Vec3b draw_color = DrawColor();
-                        circle(mask, pos, ui->horizontalSlider_draw_size->value(), draw_color, -1, LINE_4);
-                        //circle(labels_mask, pos, ui->horizontalSlider_draw_size->value(), GetCurrentLabelNumber(), -1, LINE_4);
+                        if (ui->horizontalSlider_draw_size->value() == 0)
+                            mask.at<Vec3b>(pos.y, pos.x) = draw_color; // draw pixel in mask
+                        else // circle
+                            circle(mask, pos, ui->horizontalSlider_draw_size->value() + 1, draw_color, -1, LINE_8);
                     }
                     else if ((mouseButton == Qt::RightButton) & (pos.x >= 0) & (pos.x < image.cols)
                             & (pos.y >= 0) & (pos.y < image.rows)) { // right mouse button = transparent/black pixel
                         Mat1b mask_tmp = Mat::zeros(image.rows, image.cols, CV_8UC1);
-                        circle(mask_tmp, pos, ui->horizontalSlider_draw_size->value(), 255, -1, LINE_4);
-                        create_cell_mask_save.copyTo(mask, mask_tmp);
-                        //create_cell_labels_save.copyTo(labels_mask, mask_tmp);
-                        //mask.at<Vec3b>(pos.y, pos.x) = create_cell_mask_save.at<Vec3b>(pos.y, pos.x); // return to pixel from undo mask
-                        //labels_mask.at<int>(pos.y, pos.x) = create_cell_labels_save.at<int>(pos.y, pos.x); // return to pixel from undo labels
+                        if (ui->horizontalSlider_draw_size->value() == 0)
+                            mask.at<Vec3b>(pos.y, pos.x) = Vec3b(255, 255, 255); // draw pixel in mask
+                        else // circle
+                            circle(mask_tmp, pos, ui->horizontalSlider_draw_size->value() + 1, Vec3b(255, 255, 255), -1, LINE_8);
+                        draw_cell_mask_save.copyTo(mask, mask_tmp);
                     }
 
                     pos_save = pos; // this pixel can be the origin of a new line
@@ -1689,23 +1750,25 @@ void MainWindow::mouseMoveEvent(QMouseEvent *eventMove) // first mouse click has
         else if ((computed) & (ui->Tabs->currentIndex() == 2)) { // mouse over tab 2 ?
             cv::Point pos = Viewport2Image(cv::Point(mouse_pos.x(), mouse_pos.y())); // convert position from viewport to image coordinates
 
-            if (ui->pushButton_label_create->isChecked()) { // direct draw pixel for new label
+            if (ui->pushButton_label_draw->isChecked()) { // direct draw pixel for new label
                 if ((mouseButton == Qt::LeftButton) & (pos.x >= 0) & (pos.x < image.cols)
                         & (pos.y >= 0) & (pos.y < image.rows)) { // left mouse button pixel = white
                     //mask.at<Vec3b>(pos.y, pos.x) = Vec3b(255, 255, 255); // white pixel
                     //labels_mask.at<int>(pos.y, pos.x) = GetCurrentLabelNumber(); // label mask pixel
                     Vec3b draw_color = DrawColor();
-                    circle(mask, pos, ui->horizontalSlider_draw_size->value(), draw_color, -1, LINE_4);
-                    //circle(labels_mask, pos, ui->horizontalSlider_draw_size->value(), GetCurrentLabelNumber(), -1, LINE_4);
+                    if (ui->horizontalSlider_draw_size->value() == 0)
+                        mask.at<Vec3b>(pos.y, pos.x) = draw_color; // draw pixel in mask
+                    else // circle
+                        circle(mask, pos, ui->horizontalSlider_draw_size->value() + 1, draw_color, -1, LINE_8);
                 }
                 else if ((mouseButton == Qt::RightButton) & (pos.x >= 0) & (pos.x < image.cols)
                          & (pos.y >= 0) & (pos.y < image.rows)) { // right mouse button pixel unset
                     Mat1b mask_tmp = Mat::zeros(image.rows, image.cols, CV_8UC1);
-                    circle(mask_tmp, pos, ui->horizontalSlider_draw_size->value(), 255, -1, LINE_4);
-                    create_cell_mask_save.copyTo(mask, mask_tmp);
-                    //create_cell_labels_save.copyTo(labels_mask, mask_tmp);
-                    //mask.at<Vec3b>(pos.y, pos.x) = create_cell_mask_save.at<Vec3b>(pos.y, pos.x); // return to pixel from undo mask
-                    //labels_mask.at<int>(pos.y, pos.x) = create_cell_labels_save.at<int>(pos.y, pos.x); // return to pixel from undo labels
+                    if (ui->horizontalSlider_draw_size->value() == 0)
+                        mask.at<Vec3b>(pos.y, pos.x) = Vec3b(255, 255, 255); // draw pixel in mask
+                    else // circle
+                        circle(mask_tmp, pos, ui->horizontalSlider_draw_size->value(), Vec3b(255, 255, 255), -1, LINE_8);
+                    draw_cell_mask_save.copyTo(mask, mask_tmp);
                 }
 
                 pos_save = pos; // the pixel can be the origin of a new line
@@ -1868,7 +1931,7 @@ void MainWindow::ShowSegmentation() // show image + mask + grid
         cv::addWeighted(disp_color, 1,
                         CopyFromImage(grid, viewport), double(ui->horizontalSlider_blend_grid->value()) / 100,
                         0, disp_color, -1);
-    if (!selection.empty()) {
+    if (ui->checkBox_selection->isChecked() & (!selection.empty())) {
         Mat selection_temp = CopyFromImage(selection, viewport);
         if (zoom <= 1) selection_temp = DilatePixels(selection_temp, int(1/zoom)); // dilation
             else selection_temp = DilatePixels(selection_temp, 3-zoom);
@@ -1951,7 +2014,7 @@ void MainWindow::on_button_apply_clicked() // Preprocess image : equalize normal
     if (equalize) image = EqualizeHistogram(image); // equalize
     if (normalize) cv::normalize(image, image, 1, 255, NORM_MINMAX, -1); // normalize
     if (color_balance) image = SimplestColorBalance(image, color_balance_percent); // color balance
-    if (gaussian_blur) cv::GaussianBlur(image, image, Size(3,3), 0, 0); // gaussian blue
+    if (gaussian_blur) cv::GaussianBlur(image, image, Size(3,3), 0, 0); // gaussian blur
     if (contours) { // contours
         Mat contours_mask;
         contours_mask = DrawColoredContours(image, double(contours_sigma) / 100, contours_aperture, contours_thickness); //compute contours
