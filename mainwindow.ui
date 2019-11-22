@@ -30,7 +30,7 @@
       <x>1250</x>
       <y>10</y>
       <width>111</width>
-      <height>281</height>
+      <height>331</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -335,7 +335,7 @@ QToolTip {
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>210</y>
+       <y>260</y>
        <width>91</width>
        <height>31</height>
       </rect>
@@ -393,7 +393,7 @@ QToolTip {
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>250</y>
+       <y>300</y>
        <width>91</width>
        <height>21</height>
       </rect>
@@ -415,6 +415,64 @@ QToolTip {
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="checkBox_selection">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>210</y>
+       <width>91</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Display (or not) the selection mask.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:checked {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+     </property>
+     <property name="text">
+      <string> Select</string>
+     </property>
+     <property name="icon">
+      <iconset resource="resources.qrc">
+       <normaloff>:/icons/hide.png</normaloff>
+       <normalon>:/icons/selection.png</normalon>:/icons/hide.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>24</width>
+       <height>24</height>
+      </size>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
      </property>
     </widget>
    </widget>
@@ -3755,7 +3813,7 @@ QToolTip {
        </size>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_label_create">
+     <widget class="QPushButton" name="pushButton_label_draw">
       <property name="geometry">
        <rect>
         <x>280</x>
@@ -3771,7 +3829,7 @@ QToolTip {
        <enum>Qt::NoFocus</enum>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Create new cell: useful when you want to extract a set of pixels from a group of cells.&lt;/p&gt;&lt;p&gt;When you click on this button, a new label is created.&lt;/p&gt;&lt;p&gt;You have to draw the new cell:&lt;/p&gt;&lt;p&gt;* the cursor is now a cross, and all the other tabs and unwanted buttons are hidden until you apply the changes&lt;/p&gt;&lt;p&gt;* the white color is used for the new cell&lt;/p&gt;&lt;p&gt;* click with the right and left mouse buttons to draw pixels: left for white, right for unset. You can maintain the click to draw several pixels in a free-style way&lt;/p&gt;&lt;p&gt;* the last pixel set can be the beginning of a line: press and hold the &amp;lt;space&amp;gt; keyboard button, then move the mouse until you have the perfect line. Release the &amp;lt;space&amp;gt; key, the line is drawn&lt;/p&gt;&lt;p&gt;* the extremity of a new line becomes the next line origin. Click elsewhere with the mouse to set a new origin&lt;/p&gt;&lt;p&gt;* you can fill a closed area with the left (white) or right (unset) mouse button while holding down the &amp;lt;CTRL&amp;gt; key&lt;/p&gt;&lt;p&gt;* you can cancel the last action with the UNDO button (be careful, possible only once) - it is recommended to save your session before attempting this function&lt;/p&gt;&lt;p&gt;* finish by clicking again on the &amp;quot;new cell&amp;quot; button to apply (or not) what you did. If you keep your changes, the purple color will be set to the new label, and the grid mask will be updated with the boundaries of the new cell. Rename the new cell if you want&lt;/p&gt;&lt;p&gt;* tip: only draw contigous areas, separate pixels will be considered pertaining to the same new cell!&lt;/p&gt;&lt;p&gt;* be careful, you can't cancel a new cell creation&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Draw mode: add pixels to a new cell and also assign them to the current label. Useful if you want to complete a label, or want to redraw cells from scratch in a new label.&lt;/p&gt;&lt;p&gt;In this mode, you can draw over pixels you want to add to the current label.&lt;/p&gt;&lt;p&gt;You have to draw over the pixels you want to add:&lt;/p&gt;&lt;p&gt;* the cursor is now a cross, and all the other tabs and unwanted buttons are hidden until you apply the changes&lt;/p&gt;&lt;p&gt;* the white color is used for drawing (mask)&lt;/p&gt;&lt;p&gt;* other colors can be used, but only when you want to use the GrabCut algorithm - its button is on the right side panel that appears when the draw mode is activated&lt;/p&gt;&lt;p&gt;* click with the right and left mouse buttons to draw pixels: left for white, right for unset. You can maintain the click to draw several pixels in a free-style way&lt;/p&gt;&lt;p&gt;* choose the drawing thickness on the right side panel that appeared - you can hold down the C key to see the drawing circle - you can use the mouse buttons while doing this&lt;/p&gt;&lt;p&gt;* the last set pixel can be the beginning of a line: press and hold the &amp;lt;X&amp;gt; key, then move the mouse. Release the &amp;lt;X&amp;gt; key, the line is drawn. The extremity of a new line becomes the next line origin. Click elsewhere with the mouse to set a new origin&lt;/p&gt;&lt;p&gt;* you can fill a closed area with the left (white) or right (unset) mouse button while holding down the &amp;lt;CTRL&amp;gt; key&lt;/p&gt;&lt;p&gt;* you can cancel the last action with the UNDO button (be careful, possible only once)&lt;/p&gt;&lt;p&gt;* finish by clicking again on the &amp;quot;draw mode&amp;quot; button to apply (or not) what you did. If you keep your changes, the pixels drawn in white will be added to a new cell, and also added to the current label, and the grid mask will be updated with the boundaries of what was drawn&lt;/p&gt;&lt;p&gt;* tip: try to only draw contigous areas, repeat the drawing process several times if needed&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">QPushButton {
@@ -3912,7 +3970,7 @@ QToolTip {
      <zorder>pushButton_label_hide</zorder>
      <zorder>pushButton_psd</zorder>
      <zorder>pushButton_tif</zorder>
-     <zorder>pushButton_label_create</zorder>
+     <zorder>pushButton_label_draw</zorder>
      <zorder>pushButton_label_join</zorder>
      <zorder>label_color</zorder>
      <zorder>label_8</zorder>
@@ -4372,7 +4430,7 @@ QToolTip {
     <property name="geometry">
      <rect>
       <x>1250</x>
-      <y>320</y>
+      <y>360</y>
       <width>111</width>
       <height>161</height>
      </rect>
@@ -4450,11 +4508,17 @@ QToolTip {
 	font-size: 14px;
 }</string>
      </property>
+     <property name="minimum">
+      <number>1</number>
+     </property>
      <property name="maximum">
       <number>20</number>
      </property>
+     <property name="pageStep">
+      <number>1</number>
+     </property>
      <property name="value">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -4467,7 +4531,7 @@ QToolTip {
      <property name="geometry">
       <rect>
        <x>25</x>
-       <y>42</y>
+       <y>54</y>
        <width>81</width>
        <height>22</height>
       </rect>
@@ -4491,36 +4555,11 @@ QToolTip {
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QRadioButton" name="radioButton_draw_keep">
-     <property name="geometry">
-      <rect>
-       <x>25</x>
-       <y>59</y>
-       <width>81</width>
-       <height>22</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use this color to draw the GrabCut &amp;quot;keep&amp;quot; zones&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QToolTip {
-    border:2px solid black;
-	padding:5px;
-	background-color:rgb(64,64,64);
-	color:white;
-	font-size: 14px;
-}</string>
-     </property>
-     <property name="text">
-      <string>Keep</string>
-     </property>
-    </widget>
     <widget class="QRadioButton" name="radioButton_draw_reject">
      <property name="geometry">
       <rect>
        <x>25</x>
-       <y>95</y>
+       <y>90</y>
        <width>81</width>
        <height>22</height>
       </rect>
@@ -4544,9 +4583,9 @@ QToolTip {
     <widget class="QPushButton" name="pushButton_draw_clear">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>6</x>
        <y>120</y>
-       <width>41</width>
+       <width>31</width>
        <height>34</height>
       </rect>
      </property>
@@ -4598,9 +4637,9 @@ QToolTip {
     <widget class="QPushButton" name="pushButton_draw_grabcut">
      <property name="geometry">
       <rect>
-       <x>60</x>
+       <x>40</x>
        <y>120</y>
-       <width>41</width>
+       <width>31</width>
        <height>34</height>
       </rect>
      </property>
@@ -4611,7 +4650,7 @@ QToolTip {
       <enum>Qt::NoFocus</enum>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;While creating a new cell, you can use the GrabCut algorithm to select a zone.&lt;/p&gt;&lt;p&gt;GrabCut needs these colors to work:&lt;/p&gt;&lt;p&gt;- white and green: what you want to &amp;quot;keep&amp;quot;&lt;/p&gt;&lt;p&gt;- red: what you want to &amp;quot;reject&amp;quot;&lt;/p&gt;&lt;p&gt;- blue: let the algorithm decide - &amp;quot;maybe&amp;quot;&lt;/p&gt;&lt;p&gt;- what was not drawn will be set to &amp;quot;reject&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;To draw:&lt;/p&gt;&lt;p&gt;- choose which color you want to use&lt;/p&gt;&lt;p&gt;- choose the thickness (0 to 20 pixels)&lt;/p&gt;&lt;p&gt;- left mouse button: draw&lt;/p&gt;&lt;p&gt;- right mouse button: erase&lt;/p&gt;&lt;p&gt;- CTRL key + mouse button: floodfill to draw or erase&lt;/p&gt;&lt;p&gt;- maintain X key to draw a line from the last drawn dot - release the key to set it&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;When you finish creating the cell, only the white drawings will be accounted for.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use the GrabCut algorithm.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;While creating a new cell, you can use the GrabCut algorithm to select a zone.&lt;/p&gt;&lt;p&gt;GrabCut needs these colors to work:&lt;/p&gt;&lt;p&gt;- white: what you want to &amp;quot;keep&amp;quot;&lt;/p&gt;&lt;p&gt;- red: what you want to &amp;quot;reject&amp;quot;&lt;/p&gt;&lt;p&gt;- blue: let the algorithm decide - &amp;quot;maybe&amp;quot;&lt;/p&gt;&lt;p&gt;- what was not drawn will be set to &amp;quot;reject&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;To draw:&lt;/p&gt;&lt;p&gt;- choose which &amp;quot;color&amp;quot; you want to use (mask, reject, maybe)&lt;/p&gt;&lt;p&gt;- choose the thickness (0 to 20 pixels)&lt;/p&gt;&lt;p&gt;- left mouse button: draw&lt;/p&gt;&lt;p&gt;- right mouse button: erase&lt;/p&gt;&lt;p&gt;- CTRL key + mouse button: floodfill to draw or erase&lt;/p&gt;&lt;p&gt;- hold down X key to draw a line from the last drawn dot - release the key to set it&lt;/p&gt;&lt;p&gt;- hold down C key to see the drawing circle - you can use the mouse buttons while doing this &lt;/p&gt;&lt;p&gt;&lt;br/&gt;When you are finished creating the cell, only the white drawings will be accounted for.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">QPushButton {
@@ -4653,7 +4692,7 @@ QToolTip {
      <property name="geometry">
       <rect>
        <x>25</x>
-       <y>77</y>
+       <y>72</y>
        <width>81</width>
        <height>22</height>
       </rect>
@@ -4703,6 +4742,60 @@ QToolTip {
      </property>
      <property name="scaledContents">
       <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_draw_grabcut_iteration">
+     <property name="geometry">
+      <rect>
+       <x>76</x>
+       <y>120</y>
+       <width>31</width>
+       <height>34</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Refine the previous GrabCut execution.&lt;/p&gt;&lt;p&gt;If you complete the drawing, don't use this button again: use the GrabCut button one more time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:checked {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="resources.qrc">
+       <normaloff>:/icons/cut-plus.png</normaloff>:/icons/cut-plus.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>24</width>
+       <height>24</height>
+      </size>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
      </property>
     </widget>
    </widget>
