@@ -1670,10 +1670,11 @@ void MainWindow::mousePressEvent(QMouseEvent *eventPress) // event triggered by 
                     else if ((mouseButton == Qt::RightButton) & (pos.x >= 0) & (pos.x < image.cols)
                             & (pos.y >= 0) & (pos.y < image.rows)) { // right mouse button = transparent/black pixel
                         Mat1b mask_tmp = Mat::zeros(image.rows, image.cols, CV_8UC1);
-                        if (ui->horizontalSlider_draw_size->value() == 0)
-                            mask.at<Vec3b>(pos.y, pos.x) = Vec3b(255, 255, 255); // draw pixel in mask
+                        if (ui->horizontalSlider_draw_size->value() == 0) {
+                            mask_tmp.at<uchar>(pos.y, pos.x) = 255; // draw pixel in mask
+                        }
                         else // circle
-                            circle(mask_tmp, pos, ui->horizontalSlider_draw_size->value() + 1, Vec3b(255, 255, 255), -1, LINE_8);
+                            circle(mask_tmp, pos, ui->horizontalSlider_draw_size->value() + 1, 255, -1, LINE_8);
                         draw_cell_mask_save.copyTo(mask, mask_tmp);
                     }
 
@@ -1764,10 +1765,11 @@ void MainWindow::mouseMoveEvent(QMouseEvent *eventMove) // first mouse click has
                 else if ((mouseButton == Qt::RightButton) & (pos.x >= 0) & (pos.x < image.cols)
                          & (pos.y >= 0) & (pos.y < image.rows)) { // right mouse button pixel unset
                     Mat1b mask_tmp = Mat::zeros(image.rows, image.cols, CV_8UC1);
-                    if (ui->horizontalSlider_draw_size->value() == 0)
-                        mask.at<Vec3b>(pos.y, pos.x) = Vec3b(255, 255, 255); // draw pixel in mask
+                    if (ui->horizontalSlider_draw_size->value() == 0) {
+                        mask_tmp.at<uchar>(pos.y, pos.x) = 255; // draw pixel in mask
+                    }
                     else // circle
-                        circle(mask_tmp, pos, ui->horizontalSlider_draw_size->value(), Vec3b(255, 255, 255), -1, LINE_8);
+                        circle(mask_tmp, pos, ui->horizontalSlider_draw_size->value(), 255, -1, LINE_8);
                     draw_cell_mask_save.copyTo(mask, mask_tmp);
                 }
 
