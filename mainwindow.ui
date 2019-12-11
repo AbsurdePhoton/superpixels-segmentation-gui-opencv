@@ -494,7 +494,7 @@ QToolTip {
     <property name="lineWidth">
      <number>2</number>
     </property>
-    <widget class="QLabel" name="label_14">
+    <widget class="QLabel" name="label_image_icon">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -551,7 +551,7 @@ QToolTip {
       <string>0</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_13">
+    <widget class="QLabel" name="label_px">
      <property name="geometry">
       <rect>
        <x>147</x>
@@ -564,7 +564,7 @@ QToolTip {
       <string>px</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_12">
+    <widget class="QLabel" name="label_X">
      <property name="geometry">
       <rect>
        <x>77</x>
@@ -610,7 +610,7 @@ QToolTip {
     <property name="geometry">
      <rect>
       <x>360</x>
-      <y>710</y>
+      <y>720</y>
       <width>871</width>
       <height>14</height>
      </rect>
@@ -625,7 +625,7 @@ QToolTip {
       <x>1231</x>
       <y>30</y>
       <width>16</width>
-      <height>681</height>
+      <height>691</height>
      </rect>
     </property>
     <property name="orientation">
@@ -636,9 +636,9 @@ QToolTip {
     <property name="geometry">
      <rect>
       <x>370</x>
-      <y>32</y>
+      <y>31</y>
       <width>861</width>
-      <height>679</height>
+      <height>686</height>
      </rect>
     </property>
     <property name="cursor">
@@ -876,7 +876,7 @@ QToolTip {
       <property name="lineWidth">
        <number>2</number>
       </property>
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="label_PSNR">
        <property name="geometry">
         <rect>
          <x>20</x>
@@ -1537,7 +1537,7 @@ QToolTip {
       <property name="lineWidth">
        <number>2</number>
       </property>
-      <widget class="QLabel" name="label_11">
+      <widget class="QLabel" name="label_cells">
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -1577,7 +1577,7 @@ QToolTip {
         <number>6</number>
        </property>
       </widget>
-      <widget class="QLabel" name="label_7">
+      <widget class="QLabel" name="label_cells_text">
        <property name="geometry">
         <rect>
          <x>102</x>
@@ -3920,7 +3920,7 @@ QToolTip {
        </size>
       </property>
      </widget>
-     <widget class="QLabel" name="label_8">
+     <widget class="QLabel" name="label_color_icon">
       <property name="geometry">
        <rect>
         <x>0</x>
@@ -3973,16 +3973,16 @@ QToolTip {
      <zorder>pushButton_label_draw</zorder>
      <zorder>pushButton_label_join</zorder>
      <zorder>label_color</zorder>
-     <zorder>label_8</zorder>
+     <zorder>label_color_icon</zorder>
     </widget>
    </widget>
    <widget class="QLabel" name="label_thumbnail">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>450</y>
+      <y>454</y>
       <width>351</width>
-      <height>261</height>
+      <height>281</height>
      </rect>
     </property>
     <property name="maximumSize">
@@ -4022,7 +4022,7 @@ QToolTip {
       <x>10</x>
       <y>735</y>
       <width>351</width>
-      <height>51</height>
+      <height>71</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -4031,13 +4031,13 @@ QToolTip {
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QLabel" name="label_16">
+    <widget class="QLabel" name="label_logo">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>4</y>
-       <width>21</width>
-       <height>21</height>
+       <y>16</y>
+       <width>32</width>
+       <height>32</height>
       </rect>
      </property>
      <property name="toolTip">
@@ -4053,11 +4053,11 @@ QToolTip {
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLabel" name="label_18">
+    <widget class="QLabel" name="label_version">
      <property name="geometry">
       <rect>
-       <x>3</x>
-       <y>29</y>
+       <x>44</x>
+       <y>27</y>
        <width>31</width>
        <height>20</height>
       </rect>
@@ -4087,13 +4087,13 @@ QToolTip {
       <number>-1</number>
      </property>
     </widget>
-    <widget class="QLabel" name="label_15">
+    <widget class="QLabel" name="label_about">
      <property name="geometry">
       <rect>
-       <x>36</x>
-       <y>0</y>
-       <width>311</width>
-       <height>51</height>
+       <x>0</x>
+       <y>7</y>
+       <width>351</width>
+       <height>71</height>
       </rect>
      </property>
      <property name="cursor">
@@ -4109,7 +4109,7 @@ QToolTip {
       <number>3</number>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Superpixels segmentation with OpenCV&lt;/span&gt;&lt;BR&gt;by &lt;span style=&quot; color:#d89d1a;&quot;&gt;AbsurdePhoton - &lt;/span&gt;&lt;a href=&quot;https::/www.absurdephoton.fr&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;www.absurdephoton.fr&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Superpixels segmentation&lt;BR&gt;with OpenCV&lt;/span&gt;&lt;br/&gt;by &lt;span style=&quot; color:#d89d1a;&quot;&gt;AbsurdePhoton - &lt;/span&gt;&lt;a href=&quot;https://www.absurdephoton.fr&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;www.absurdephoton.fr&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -4118,9 +4118,9 @@ QToolTip {
       <bool>true</bool>
      </property>
     </widget>
-    <zorder>label_15</zorder>
-    <zorder>label_18</zorder>
-    <zorder>label_16</zorder>
+    <zorder>label_about</zorder>
+    <zorder>label_version</zorder>
+    <zorder>label_logo</zorder>
    </widget>
    <widget class="QFrame" name="frame_zoom">
     <property name="geometry">
@@ -4381,7 +4381,7 @@ QToolTip {
     <property name="geometry">
      <rect>
       <x>1260</x>
-      <y>380</y>
+      <y>400</y>
       <width>91</width>
       <height>61</height>
      </rect>
@@ -4509,7 +4509,7 @@ QToolTip {
 }</string>
      </property>
      <property name="minimum">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="maximum">
       <number>20</number>
@@ -4518,7 +4518,7 @@ QToolTip {
       <number>1</number>
      </property>
      <property name="value">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -4713,7 +4713,7 @@ QToolTip {
       <string>&amp;Maybe</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_2">
+    <widget class="QLabel" name="label_draw_size_icon">
      <property name="geometry">
       <rect>
        <x>22</x>
@@ -4799,7 +4799,6 @@ QToolTip {
      </property>
     </widget>
    </widget>
-   <zorder>button_quit</zorder>
    <zorder>frame_draw</zorder>
    <zorder>frame_zoom</zorder>
    <zorder>label_segmentation</zorder>
@@ -4811,6 +4810,7 @@ QToolTip {
    <zorder>verticalScrollBar_segmentation</zorder>
    <zorder>label_thumbnail</zorder>
    <zorder>frame_about</zorder>
+   <zorder>button_quit</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
