@@ -10,12 +10,14 @@
   <file>./icons/config.png</file>
   <file>./icons/contours.png</file>
   <file>./icons/cut.png</file>
+  <file>./icons/cut-plus.png</file>
   <file>./icons/denoise.png</file>
   <file>./icons/delete.png</file>
   <file>./icons/double-step.png</file>
   <file>./icons/edit.png</file>
   <file>./icons/equalize.png</file>
   <file>./icons/grid.png</file>
+  <file>./icons/help.png</file>
   <file>./icons/hide.png</file>
   <file>./icons/holes.png</file>
   <file>./icons/image.png</file>
@@ -29,6 +31,7 @@
   <file>./icons/photoshop.png</file>
   <file>./icons/quit.png</file>
   <file>./icons/save.png</file>
+  <file>./icons/selection.png</file>
   <file>./icons/session-load.png</file>
   <file>./icons/session-save.png</file>
   <file>./icons/thick.png</file>

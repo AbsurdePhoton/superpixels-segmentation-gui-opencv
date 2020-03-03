@@ -16,6 +16,7 @@
 #include <QScrollBar>
 #include <QCursor>
 #include <QColorDialog>
+#include <QWhatsThis>
 
 //#include <opencv2/ximgproc.hpp>
 
@@ -89,6 +90,11 @@ void MainWindow::on_button_quit_clicked()
         return;
 
     QCoreApplication::quit();
+}
+
+void MainWindow::on_button_whats_this_clicked() // What's this function
+{
+    QWhatsThis::enterWhatsThisMode();
 }
 
 void MainWindow::on_Tabs_currentChanged(int) // when a tab is clicked
@@ -544,7 +550,8 @@ void MainWindow::SavePSDorTIF(std::string type) // save image + layers to PSD or
 
 void MainWindow::on_button_image_clicked() // Load main image
 {
-    QString filename = QFileDialog::getOpenFileName(this, "Select picture file", QString::fromStdString(basedir), "Images (*.jpg *.JPG *.jpeg *.JPEG *.jp2 *.JP2 *.png *.PNG *.tif *.TIF *.tiff *.TIFF *.bmp *.BMP)"); // image filename
+    QString filename = QFileDialog::getOpenFileName(this, "Select picture file", QString::fromStdString(basedir),
+                                                    tr("Images (*.jpg *.jpeg *.jp2 *.png *.tif *.tiff)")); // image filename
     if (filename.isNull() || filename.isEmpty()) // cancel ?
         return;
 
@@ -630,7 +637,7 @@ void MainWindow::on_button_save_session_clicked() // save session files
         return;
     }
 
-    QString filename = QFileDialog::getSaveFileName(this, "Save session to XML file...", "./" + QString::fromStdString(basedir + basefile + "-segmentation-data.xml"), "*.xml *.XML"); // filename
+    QString filename = QFileDialog::getSaveFileName(this, "Save session to XML file...", "./" + QString::fromStdString(basedir + basefile + "-segmentation-data.xml"), tr("XML (*.xml)")); // filename
 
     if (filename.isNull() || filename.isEmpty()) // cancel ?
         return;
@@ -716,7 +723,7 @@ void MainWindow::on_button_load_session_clicked() // load previous session
     //if (image.empty()) // image mandatory
     //        return;
 
-    QString filename = QFileDialog::getOpenFileName(this, "Load session from XML file...", QString::fromStdString(basedir), "*.xml *.XML");
+    QString filename = QFileDialog::getOpenFileName(this, "Load session from XML file...", QString::fromStdString(basedir), tr("XML (*.xml)"));
 
     if (filename.isNull() || filename.isEmpty()) // cancel ?
         return;
@@ -863,7 +870,7 @@ void MainWindow::on_button_load_session_clicked() // load previous session
 
 void MainWindow::on_button_save_conf_clicked() // save configuration
 {
-    QString filename = QFileDialog::getSaveFileName(this, "Save configuration to XML file...", "./" + QString::fromStdString(basedir + basefile + "-segmentation-conf.xml"));
+    QString filename = QFileDialog::getSaveFileName(this, "Save configuration to XML file...", "./" + QString::fromStdString(basedir + basefile + "-segmentation-conf.xml"), tr("XML (*.xml)"));
     if (filename.isNull() || filename.isEmpty()) // cancel ?
         return;
 
@@ -940,7 +947,7 @@ void MainWindow::on_button_save_conf_clicked() // save configuration
 
 void MainWindow::on_button_load_conf_clicked() // load configuration
 {
-    QString filename = QFileDialog::getOpenFileName(this, "Select XML configuration file", QString::fromStdString(basedir + basefile + "-segmentation-conf.xml"), "XML parameters (*.xml *.XML)"); // filename
+    QString filename = QFileDialog::getOpenFileName(this, "Select XML configuration file", QString::fromStdString(basedir + basefile + "-segmentation-conf.xml"), tr("XML (*.xml)")); // filename
     if (filename.isNull()) // cancel ?
         return;
 
@@ -1464,23 +1471,15 @@ void MainWindow::on_pushButton_color_laurel_clicked() // Laurel
     ShowCurrentColor(color[2], color[1], color[0]);
 }
 
-///////////////////  Key events  //////////////////////
+///////////////////  Keyboard events  //////////////////////
 
 void MainWindow::keyReleaseEvent(QKeyEvent *keyEvent) // draw cell mode and move view + show holes
 {
     if (!loaded) return;// no image = get out
 
     if (keyEvent->key() == Qt::Key_Space) { // spacebar = move the view
-        QPoint mouse_pos = QCursor::pos(); // current mouse position
-
-        int decX = mouse_pos.x() - mouse_origin.x(); // distance from the first click
-        int decY = mouse_pos.y() - mouse_origin.y();
-
-        SetViewportXY(viewport.x - double(decX) / zoom, viewport.y - double(decY) / zoom); // update viewport
-
-        ShowSegmentation(); // display result
-
-        QApplication::restoreOverrideCursor(); // Restore cursor
+        if (!keyEvent->isAutoRepeat())
+            QApplication::restoreOverrideCursor(); // Restore cursor
     }
 
     if (!computed) return;// no labels = get out
@@ -1544,9 +1543,25 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent) //
     if (!loaded) return;// no image = get out
 
     if (keyEvent->key() == Qt::Key_Space) { // spacebar = move the view
-        mouse_origin = QCursor::pos(); // current mouse position
+        if (!keyEvent->isAutoRepeat()) {
+            mouse_origin = QCursor::pos(); // current mouse position
+            QApplication::setOverrideCursor(Qt::SizeAllCursor); // Move cursor
+        }
+        else {
+            QPoint mouse_pos = QCursor::pos(); // current mouse position
 
-        QApplication::setOverrideCursor(Qt::SizeAllCursor); // Move cursor
+            int decX = mouse_pos.x() - mouse_origin.x(); // distance from the first click
+            int decY = mouse_pos.y() - mouse_origin.y();
+
+            if ((decX == 0) & (decY == 0))
+                return;
+
+            SetViewportXY(viewport.x - double(decX) / zoom, viewport.y - double(decY) / zoom); // update viewport
+
+            ShowSegmentation(); // display result
+
+            mouse_origin = mouse_pos;
+        }
     }
 
     if (!computed) return;// no labels = get out

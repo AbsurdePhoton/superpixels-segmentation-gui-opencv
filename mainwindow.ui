@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1366</width>
-    <height>789</height>
+    <width>1916</width>
+    <height>1076</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -27,14 +27,17 @@
    <widget class="QFrame" name="frame_view_parameters">
     <property name="geometry">
      <rect>
-      <x>1250</x>
-      <y>10</y>
+      <x>375</x>
+      <y>28</y>
       <width>111</width>
       <height>331</height>
      </rect>
     </property>
+    <property name="whatsThis">
+     <string>Use this panel to show/hide layers, and adjust them</string>
+    </property>
     <property name="frameShape">
-     <enum>QFrame::Panel</enum>
+     <enum>QFrame::StyledPanel</enum>
     </property>
     <property name="frameShadow">
      <enum>QFrame::Sunken</enum>
@@ -58,6 +61,9 @@
       <enum>Qt::ClickFocus</enum>
      </property>
      <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Transparency of the mask.&lt;/p&gt;&lt;p&gt;Lower values = more transparent&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="maximum">
@@ -89,6 +95,9 @@
       <enum>Qt::NoFocus</enum>
      </property>
      <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Display (or not) the image&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="styleSheet">
@@ -147,6 +156,9 @@ QToolTip {
       <enum>Qt::NoFocus</enum>
      </property>
      <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Display (or not) the segmentation mask.&lt;/p&gt;&lt;p&gt;Change the blend factor to set the transparency&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="styleSheet">
@@ -205,6 +217,9 @@ QToolTip {
       <enum>Qt::NoFocus</enum>
      </property>
      <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Display (or not) the superpixels boundaries.&lt;/p&gt;&lt;p&gt;The blend factor does not affect this mask, but you can change the grid color with the control just below.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="styleSheet">
@@ -263,6 +278,9 @@ QToolTip {
       <enum>Qt::NoFocus</enum>
      </property>
      <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Change the grid mask color to your liking&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="currentIndex">
@@ -285,6 +303,9 @@ QToolTip {
       <enum>Qt::ClickFocus</enum>
      </property>
      <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Transparency of the image.&lt;/p&gt;&lt;p&gt;Lower values = more transparent&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="maximum">
@@ -316,6 +337,9 @@ QToolTip {
       <enum>Qt::ClickFocus</enum>
      </property>
      <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Transparency of the grid.&lt;/p&gt;&lt;p&gt;Lower values = more transparent&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="maximum">
@@ -347,6 +371,9 @@ QToolTip {
       <enum>Qt::NoFocus</enum>
      </property>
      <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Display (or not) the pixels not pertaining to any label.&lt;/p&gt;&lt;p&gt;When activated, the number of unassigned pixels is displayed. You are finished when the count is 0&lt;/p&gt;&lt;p&gt;These &amp;quot;holes&amp;quot; in the mask appear in white when this option is set.&lt;/p&gt;&lt;p&gt;This option can make inconsistancies appear between the superpixels and the current labels, especially after having created a new label.&lt;/p&gt;&lt;p&gt;Hold the &amp;lt;H&amp;gt; key for several seconds to see a flashing indication of holes in the mask. It facilitates the lost pixels hunt&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="styleSheet">
@@ -399,10 +426,13 @@ QToolTip {
       </rect>
      </property>
      <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of unset pixels, which appear as white pixels when the Holes button is activated.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="frameShape">
-      <enum>QFrame::Panel</enum>
+      <enum>QFrame::StyledPanel</enum>
      </property>
      <property name="frameShadow">
       <enum>QFrame::Sunken</enum>
@@ -433,6 +463,9 @@ QToolTip {
       <enum>Qt::NoFocus</enum>
      </property>
      <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Display (or not) the selection mask.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="styleSheet">
@@ -479,14 +512,17 @@ QToolTip {
    <widget class="QFrame" name="frame_image_resolution">
     <property name="geometry">
      <rect>
-      <x>376</x>
-      <y>6</y>
+      <x>505</x>
+      <y>3</y>
       <width>171</width>
       <height>21</height>
      </rect>
     </property>
+    <property name="whatsThis">
+     <string>Image size in pixels</string>
+    </property>
     <property name="frameShape">
-     <enum>QFrame::Panel</enum>
+     <enum>QFrame::StyledPanel</enum>
     </property>
     <property name="frameShadow">
      <enum>QFrame::Sunken</enum>
@@ -504,7 +540,10 @@ QToolTip {
       </rect>
      </property>
      <property name="toolTip">
-      <string>Image size</string>
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string>Image size in pixels</string>
      </property>
      <property name="text">
       <string/>
@@ -526,6 +565,9 @@ QToolTip {
       </rect>
      </property>
      <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
       <string>Image width</string>
      </property>
      <property name="text">
@@ -545,6 +587,9 @@ QToolTip {
       </rect>
      </property>
      <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
       <string>Image height</string>
      </property>
      <property name="text">
@@ -560,6 +605,9 @@ QToolTip {
        <height>21</height>
       </rect>
      </property>
+     <property name="whatsThis">
+      <string>Image size in pixels</string>
+     </property>
      <property name="text">
       <string>px</string>
      </property>
@@ -573,6 +621,9 @@ QToolTip {
        <height>21</height>
       </rect>
      </property>
+     <property name="whatsThis">
+      <string>Image size in pixels</string>
+     </property>
      <property name="text">
       <string>x</string>
      </property>
@@ -581,17 +632,20 @@ QToolTip {
    <widget class="QLabel" name="label_filename">
     <property name="geometry">
      <rect>
-      <x>556</x>
-      <y>6</y>
-      <width>671</width>
+      <x>685</x>
+      <y>3</y>
+      <width>1206</width>
       <height>21</height>
      </rect>
     </property>
     <property name="toolTip">
+     <string/>
+    </property>
+    <property name="whatsThis">
      <string>Image file name</string>
     </property>
     <property name="frameShape">
-     <enum>QFrame::Panel</enum>
+     <enum>QFrame::StyledPanel</enum>
     </property>
     <property name="frameShadow">
      <enum>QFrame::Sunken</enum>
@@ -609,11 +663,14 @@ QToolTip {
    <widget class="QScrollBar" name="horizontalScrollBar_segmentation">
     <property name="geometry">
      <rect>
-      <x>360</x>
-      <y>720</y>
-      <width>871</width>
-      <height>14</height>
+      <x>489</x>
+      <y>1014</y>
+      <width>1411</width>
+      <height>20</height>
      </rect>
+    </property>
+    <property name="whatsThis">
+     <string>Navigate</string>
     </property>
     <property name="orientation">
      <enum>Qt::Horizontal</enum>
@@ -622,11 +679,14 @@ QToolTip {
    <widget class="QScrollBar" name="verticalScrollBar_segmentation">
     <property name="geometry">
      <rect>
-      <x>1231</x>
-      <y>30</y>
-      <width>16</width>
-      <height>691</height>
+      <x>1900</x>
+      <y>27</y>
+      <width>20</width>
+      <height>991</height>
      </rect>
+    </property>
+    <property name="whatsThis">
+     <string>Navigate</string>
     </property>
     <property name="orientation">
      <enum>Qt::Vertical</enum>
@@ -635,10 +695,10 @@ QToolTip {
    <widget class="QLabel" name="label_segmentation">
     <property name="geometry">
      <rect>
-      <x>370</x>
-      <y>31</y>
-      <width>861</width>
-      <height>686</height>
+      <x>499</x>
+      <y>28</y>
+      <width>1396</width>
+      <height>981</height>
      </rect>
     </property>
     <property name="cursor">
@@ -647,8 +707,11 @@ QToolTip {
     <property name="mouseTracking">
      <bool>false</bool>
     </property>
+    <property name="whatsThis">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The main area of this software: the segmentation viewport.&lt;/p&gt;&lt;p&gt;This is where you assign areas and draw custom labels&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
     <property name="frameShape">
-     <enum>QFrame::Panel</enum>
+     <enum>QFrame::StyledPanel</enum>
     </property>
     <property name="frameShadow">
      <enum>QFrame::Sunken</enum>
@@ -675,6 +738,9 @@ QToolTip {
     <property name="focusPolicy">
      <enum>Qt::NoFocus</enum>
     </property>
+    <property name="whatsThis">
+     <string/>
+    </property>
     <property name="currentIndex">
      <number>2</number>
     </property>
@@ -686,6 +752,9 @@ QToolTip {
     </property>
     <widget class="QWidget" name="tab_image">
      <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tab Image:&lt;/p&gt;&lt;p&gt;Before anything else, load an image&lt;/p&gt;&lt;p&gt;You can then apply effects and filters on this image: tick the elements and set the parameters for each, then click on APPLY.&lt;/p&gt;&lt;p&gt;The effects are always applied on the ORIGINAL image, not the current one.&lt;/p&gt;&lt;p&gt;If you want to revert to the original image, click ORIGINAL&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <attribute name="icon">
@@ -712,6 +781,9 @@ QToolTip {
        <enum>Qt::NoFocus</enum>
       </property>
       <property name="toolTip">
+       <string/>
+      </property>
+      <property name="whatsThis">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the image to process.&lt;/p&gt;&lt;p&gt;It also resets the previously defined mask, grid and labels&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="styleSheet">
@@ -769,6 +841,9 @@ QToolTip {
        <enum>Qt::NoFocus</enum>
       </property>
       <property name="toolTip">
+       <string/>
+      </property>
+      <property name="whatsThis">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Compute the segmentation.&lt;/p&gt;&lt;p&gt;After computation, use the &amp;quot;labels&amp;quot; tab to edit the labels&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="styleSheet">
@@ -822,6 +897,9 @@ QToolTip {
        <enum>Qt::NoFocus</enum>
       </property>
       <property name="toolTip">
+       <string/>
+      </property>
+      <property name="whatsThis">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Undo last action.&lt;/p&gt;&lt;p&gt;Caution, it will only work once!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="styleSheet">
@@ -867,8 +945,11 @@ QToolTip {
         <height>189</height>
        </rect>
       </property>
+      <property name="whatsThis">
+       <string>Use this panel to remove noise from the image</string>
+      </property>
       <property name="frameShape">
-       <enum>QFrame::Panel</enum>
+       <enum>QFrame::StyledPanel</enum>
       </property>
       <property name="frameShadow">
        <enum>QFrame::Sunken</enum>
@@ -884,6 +965,9 @@ QToolTip {
          <width>41</width>
          <height>17</height>
         </rect>
+       </property>
+       <property name="whatsThis">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;PSNR: when you apply the effect, PSNR (Peak Signal to Noise Ratio) represents the noise difference between the original and the denoised image.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The higher value the better, over 40dB is usally good enough for superpixels algorithms&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>PSNR:</string>
@@ -902,6 +986,9 @@ QToolTip {
         <enum>Qt::ClickFocus</enum>
        </property>
        <property name="toolTip">
+        <string/>
+       </property>
+       <property name="whatsThis">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Noise is mostly found in dark areas with digital cameras, especially with high ISO values (over 800).&lt;/p&gt;&lt;p&gt;Bright areas are also affected, but in this case the noise is less perceptible by humans.&lt;/p&gt;&lt;p&gt;Try higher values of luminance to clean the image of unwanted brighter or darker pixels&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="minimum">
@@ -932,6 +1019,9 @@ QToolTip {
          <height>17</height>
         </rect>
        </property>
+       <property name="whatsThis">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Chrominance: noise in this case consists in color variations, for example orange and yellow spots in a red colored area.&lt;/p&gt;&lt;p&gt;Superpixel algorithms are less affected by chrominance than luminance&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="text">
         <string>Chrominance</string>
        </property>
@@ -946,6 +1036,9 @@ QToolTip {
         </rect>
        </property>
        <property name="toolTip">
+        <string/>
+       </property>
+       <property name="whatsThis">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Chrominance: noise in this case consists in color variations, for example orange and yellow spots in a red colored area.&lt;/p&gt;&lt;p&gt;Superpixel algorithms are less affected by chrominance than luminance&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="minimum">
@@ -977,10 +1070,13 @@ QToolTip {
         </rect>
        </property>
        <property name="toolTip">
+        <string/>
+       </property>
+       <property name="whatsThis">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;PSNR: when you apply the effect, PSNR (Peak Signal to Noise Ratio) represents the noise difference between the original and the denoised image.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The higher value the better, over 40dB is usally good enough for superpixels algorithms&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="frameShape">
-        <enum>QFrame::Box</enum>
+        <enum>QFrame::StyledPanel</enum>
        </property>
        <property name="frameShadow">
         <enum>QFrame::Sunken</enum>
@@ -1005,6 +1101,9 @@ QToolTip {
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="toolTip">
+        <string/>
+       </property>
+       <property name="whatsThis">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Denoising - noise in images often interfere with the superpixels algorithms, the result is often indented in this case&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
@@ -1034,6 +1133,9 @@ QToolTip {
          <height>17</height>
         </rect>
        </property>
+       <property name="whatsThis">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Noise is mostly found in dark areas with digital cameras, especially with high ISO values (over 800).&lt;/p&gt;&lt;p&gt;Bright areas are also affected, but in this case the noise is less perceptible by humans.&lt;/p&gt;&lt;p&gt;Try higher values of luminance to clean the image of unwanted brighter or darker pixels&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="text">
         <string>Luminance</string>
        </property>
@@ -1046,6 +1148,9 @@ QToolTip {
          <width>31</width>
          <height>17</height>
         </rect>
+       </property>
+       <property name="whatsThis">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Noise is mostly found in dark areas with digital cameras, especially with high ISO values (over 800).&lt;/p&gt;&lt;p&gt;Bright areas are also affected, but in this case the noise is less perceptible by humans.&lt;/p&gt;&lt;p&gt;Try higher values of luminance to clean the image of unwanted brighter or darker pixels&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>3</string>
@@ -1062,6 +1167,9 @@ QToolTip {
          <width>31</width>
          <height>17</height>
         </rect>
+       </property>
+       <property name="whatsThis">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Chrominance: noise in this case consists in color variations, for example orange and yellow spots in a red colored area.&lt;/p&gt;&lt;p&gt;Superpixel algorithms are less affected by chrominance than luminance&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>3</string>
@@ -1080,8 +1188,11 @@ QToolTip {
         <height>71</height>
        </rect>
       </property>
+      <property name="whatsThis">
+       <string>Use this panel to draw contours on the image</string>
+      </property>
       <property name="frameShape">
-       <enum>QFrame::Panel</enum>
+       <enum>QFrame::StyledPanel</enum>
       </property>
       <property name="frameShadow">
        <enum>QFrame::Sunken</enum>
@@ -1102,6 +1213,9 @@ QToolTip {
         <enum>Qt::ClickFocus</enum>
        </property>
        <property name="toolTip">
+        <string/>
+       </property>
+       <property name="whatsThis">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Contours Thickness: n pixels wide lines are drawn over the image&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="alignment">
@@ -1130,6 +1244,9 @@ QToolTip {
         <enum>Qt::ClickFocus</enum>
        </property>
        <property name="toolTip">
+        <string/>
+       </property>
+       <property name="whatsThis">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Contours Aperture: aperture size for the Sobel operator.&lt;/p&gt;&lt;p&gt;In most cases you should leave it to 3 (minimum value)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <item>
@@ -1161,6 +1278,9 @@ QToolTip {
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="toolTip">
+        <string/>
+       </property>
+       <property name="whatsThis">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Apply an edge detector to the image before processing. It draws colored lines over the image, and so can help the superpixels algorithms defining the cells.&lt;/p&gt;&lt;p&gt;Results are often improved by a Gaussian blur first.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;* Sigma: threshold for the hysteresis procedure&lt;/p&gt;&lt;p&gt;* Aperture: aperture size for the Sobel operator&lt;/p&gt;&lt;p&gt;* Thickness: value in pixels, for the resulting lines drawn over the image &lt;br/&gt;&lt;/p&gt;&lt;p&gt;The present alogorithm is &lt;span style=&quot; font-style:italic;&quot;&gt;Canny Edge detector&lt;/span&gt;, it was developed by John F. Canny in 1986. Also known to many as the &lt;span style=&quot; font-style:italic;&quot;&gt;optimal detector&lt;/span&gt;, Canny algorithm aims to satisfy three main criteria:&lt;/p&gt;&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Low error rate:&lt;/span&gt; meaning a good detection of only existent edges&lt;/li&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Good localization:&lt;/span&gt; the distance between edge pixels detected and real edge pixels have to be minimized.&lt;/li&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Minimal response:&lt;/span&gt; only one detector response per edge&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
@@ -1194,6 +1314,9 @@ QToolTip {
         <enum>Qt::ClickFocus</enum>
        </property>
        <property name="toolTip">
+        <string/>
+       </property>
+       <property name="whatsThis">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Contours sigma (in percents): value between min and max of the threshold of hysteresis procedure&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="alignment">
@@ -1219,8 +1342,11 @@ QToolTip {
         <height>189</height>
        </rect>
       </property>
+      <property name="whatsThis">
+       <string>Several filters are available here</string>
+      </property>
       <property name="frameShape">
-       <enum>QFrame::Panel</enum>
+       <enum>QFrame::StyledPanel</enum>
       </property>
       <property name="frameShadow">
        <enum>QFrame::Sunken</enum>
@@ -1241,6 +1367,9 @@ QToolTip {
         <enum>Qt::ClickFocus</enum>
        </property>
        <property name="toolTip">
+        <string/>
+       </property>
+       <property name="whatsThis">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Color balance percent: max variation in percents&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="alignment">
@@ -1269,6 +1398,9 @@ QToolTip {
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="toolTip">
+        <string/>
+       </property>
+       <property name="whatsThis">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Normalize the image histogram before processing.&lt;/p&gt;&lt;p&gt;Image normalization changes the range of pixel intensity values, by stretching the histogram to the maximum values.&lt;/p&gt;&lt;p&gt;It is recommended for grayscale images, or color images with a limited number of colors&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
@@ -1302,6 +1434,9 @@ QToolTip {
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="toolTip">
+        <string/>
+       </property>
+       <property name="whatsThis">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Color balance the image before processing.&lt;/p&gt;&lt;p&gt;Color balance (also called &amp;quot;white balance&amp;quot;) is the global adjustment of the intensities of the colors (typically red, green, and blue primary colors).&lt;/p&gt;&lt;p&gt;An important goal of this adjustment is to render specific colors – particularly neutral colors – correctly&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
@@ -1335,6 +1470,9 @@ QToolTip {
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="toolTip">
+        <string/>
+       </property>
+       <property name="whatsThis">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Apply a gaussian blur to the image before processing often improves the results by lowering noise&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
@@ -1368,6 +1506,9 @@ QToolTip {
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="toolTip">
+        <string/>
+       </property>
+       <property name="whatsThis">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equalize histogram of the image before processing: increases the global contrast of the image before processing.&lt;/p&gt;&lt;p&gt;It can improve many images, especially when the usable data is represented by close contrast values. Through this adjustment, the intensities can be better distributed on the histogram: this allows for areas of lower local contrast to gain a higher contrast. Histogram equalization accomplishes this by effectively spreading out the most frequent intensity values&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
@@ -1405,6 +1546,9 @@ QToolTip {
        <enum>Qt::NoFocus</enum>
       </property>
       <property name="toolTip">
+       <string/>
+      </property>
+      <property name="whatsThis">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load a previously saved session: image, mask, grid and labels (cells)&lt;/p&gt;&lt;p&gt;Useful if you want to finish a previous work, but it won't work until you have loaded the original image first.&lt;/p&gt;&lt;p&gt;Tip: you don't have to save the parameters to continue working with the cells.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="styleSheet">
@@ -1453,6 +1597,9 @@ QToolTip {
      <zorder>button_load_session</zorder>
     </widget>
     <widget class="QWidget" name="tab_segmentation">
+     <property name="whatsThis">
+      <string>This is where you apply a segmentation</string>
+     </property>
      <attribute name="icon">
       <iconset>
        <normalon>:/icons/compute.png</normalon>
@@ -1482,6 +1629,9 @@ QToolTip {
        <enum>Qt::NoFocus</enum>
       </property>
       <property name="toolTip">
+       <string/>
+      </property>
+      <property name="whatsThis">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Compute the segmentation.&lt;/p&gt;&lt;p&gt;After computation, use the &amp;quot;Labels&amp;quot; tab to edit the mask&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="styleSheet">
@@ -1528,8 +1678,11 @@ QToolTip {
         <height>31</height>
        </rect>
       </property>
+      <property name="whatsThis">
+       <string>Number of cells in the computed segmentation</string>
+      </property>
       <property name="frameShape">
-       <enum>QFrame::Panel</enum>
+       <enum>QFrame::StyledPanel</enum>
       </property>
       <property name="frameShadow">
        <enum>QFrame::Sunken</enum>
@@ -1545,6 +1698,9 @@ QToolTip {
          <width>21</width>
          <height>21</height>
         </rect>
+       </property>
+       <property name="whatsThis">
+        <string>Number of cells in the computed segmentation</string>
        </property>
        <property name="text">
         <string/>
@@ -1566,6 +1722,9 @@ QToolTip {
         </rect>
        </property>
        <property name="toolTip">
+        <string/>
+       </property>
+       <property name="whatsThis">
         <string>Number of cells in the computed segmentation</string>
        </property>
        <property name="styleSheet">
@@ -1585,6 +1744,9 @@ QToolTip {
          <width>41</width>
          <height>17</height>
         </rect>
+       </property>
+       <property name="whatsThis">
+        <string>Number of cells in the computed segmentation</string>
        </property>
        <property name="text">
         <string>cells</string>
@@ -1607,6 +1769,9 @@ QToolTip {
        <enum>Qt::ClickFocus</enum>
       </property>
       <property name="toolTip">
+       <string/>
+      </property>
+      <property name="whatsThis">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose the algorithm variant to use: &lt;/p&gt;&lt;p&gt;* SLIC (Simple Linear Iterative Clustering) clusters pixels using pixel channels and image plane space to efficiently generate compact, nearly uniform superpixels&lt;/p&gt;&lt;p&gt;* SLICO (Zero parameter SLIC) optimizes SLIC, using adaptive compactness factor&lt;/p&gt;&lt;p&gt;* MSLIC (Manifold SLIC) optimizes SLIC using manifold methods resulting in more content-sensitive superpixels&lt;/p&gt;&lt;p&gt;* LSC (Linear Spectral Clustering) produces compact and uniform superpixels with low computational costs, and keeps global images properties&lt;/p&gt;&lt;p&gt;* SEEDS (Superpixels Extracted via Energy-Driven Sampling) uses an efficient hill-climbing algorithm to optimize the superpixels' energy function that is based on color histograms and a boundary term, producing smooth boundaries&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="styleSheet">
@@ -1659,6 +1824,9 @@ QToolTip {
         <height>17</height>
        </rect>
       </property>
+      <property name="whatsThis">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose the algorithm variant to use: &lt;/p&gt;&lt;p&gt;* SLIC (Simple Linear Iterative Clustering) clusters pixels using pixel channels and image plane space to efficiently generate compact, nearly uniform superpixels&lt;/p&gt;&lt;p&gt;* SLICO (Zero parameter SLIC) optimizes SLIC, using adaptive compactness factor&lt;/p&gt;&lt;p&gt;* MSLIC (Manifold SLIC) optimizes SLIC using manifold methods resulting in more content-sensitive superpixels&lt;/p&gt;&lt;p&gt;* LSC (Linear Spectral Clustering) produces compact and uniform superpixels with low computational costs, and keeps global images properties&lt;/p&gt;&lt;p&gt;* SEEDS (Superpixels Extracted via Energy-Driven Sampling) uses an efficient hill-climbing algorithm to optimize the superpixels' energy function that is based on color histograms and a boundary term, producing smooth boundaries&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
       <property name="styleSheet">
        <string notr="true"/>
       </property>
@@ -1678,8 +1846,11 @@ QToolTip {
         <height>193</height>
        </rect>
       </property>
+      <property name="whatsThis">
+       <string>Parameters of current algorithm</string>
+      </property>
       <property name="frameShape">
-       <enum>QFrame::Panel</enum>
+       <enum>QFrame::StyledPanel</enum>
       </property>
       <property name="frameShadow">
        <enum>QFrame::Sunken</enum>
@@ -1695,6 +1866,9 @@ QToolTip {
          <width>81</width>
          <height>20</height>
         </rect>
+       </property>
+       <property name="whatsThis">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Average superpixel size measured in pixels&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>Region size</string>
@@ -1719,6 +1893,9 @@ QToolTip {
         <enum>Qt::ClickFocus</enum>
        </property>
        <property name="toolTip">
+        <string/>
+       </property>
+       <property name="whatsThis">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Higher number improves the result: the algorithms starts from a grid of superpixels and then refines the boundaries by proposing updates of edges boundaries&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="minimum">
@@ -1753,6 +1930,9 @@ QToolTip {
         <enum>Qt::ClickFocus</enum>
        </property>
        <property name="toolTip">
+        <string/>
+       </property>
+       <property name="whatsThis">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Average superpixel size measured in pixels&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="minimum">
@@ -1787,6 +1967,9 @@ QToolTip {
         <enum>Qt::ClickFocus</enum>
        </property>
        <property name="toolTip">
+        <string/>
+       </property>
+       <property name="whatsThis">
         <string>Enforcement of superpixel smoothness factor of superpixel</string>
        </property>
        <property name="minimum">
@@ -1814,6 +1997,9 @@ QToolTip {
          <height>20</height>
         </rect>
        </property>
+       <property name="whatsThis">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum element size in percents that should be absorbed into a bigger superpixel.&lt;/p&gt;&lt;p&gt;The function merges components that are too small, assigning the previously found adjacent label to this component&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="text">
         <string>Min size</string>
        </property>
@@ -1829,6 +2015,9 @@ QToolTip {
          <width>81</width>
          <height>20</height>
         </rect>
+       </property>
+       <property name="whatsThis">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Higher number improves the result: the algorithms starts from a grid of superpixels and then refines the boundaries by proposing updates of edges boundaries&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>Iterations</string>
@@ -1850,6 +2039,9 @@ QToolTip {
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="toolTip">
+        <string/>
+       </property>
+       <property name="whatsThis">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum element size in percents that should be absorbed into a bigger superpixel.&lt;/p&gt;&lt;p&gt;The function merges components that are too small, assigning the previously found adjacent label to this component&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="minimum">
@@ -1877,6 +2069,9 @@ QToolTip {
          <height>20</height>
         </rect>
        </property>
+       <property name="whatsThis">
+        <string>Enforcement of superpixel smoothness factor of superpixel</string>
+       </property>
        <property name="text">
         <string>30</string>
        </property>
@@ -1892,6 +2087,9 @@ QToolTip {
          <width>31</width>
          <height>20</height>
         </rect>
+       </property>
+       <property name="whatsThis">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Average superpixel size measured in pixels&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>30</string>
@@ -1909,6 +2107,9 @@ QToolTip {
          <height>20</height>
         </rect>
        </property>
+       <property name="whatsThis">
+        <string>Enforcement of superpixel smoothness factor of superpixel</string>
+       </property>
        <property name="text">
         <string>Ruler</string>
        </property>
@@ -1925,6 +2126,9 @@ QToolTip {
          <height>17</height>
         </rect>
        </property>
+       <property name="whatsThis">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum element size in percents that should be absorbed into a bigger superpixel.&lt;/p&gt;&lt;p&gt;The function merges components that are too small, assigning the previously found adjacent label to this component&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="text">
         <string>%</string>
        </property>
@@ -1937,6 +2141,9 @@ QToolTip {
          <width>31</width>
          <height>20</height>
         </rect>
+       </property>
+       <property name="whatsThis">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum element size in percents that should be absorbed into a bigger superpixel.&lt;/p&gt;&lt;p&gt;The function merges components that are too small, assigning the previously found adjacent label to this component&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>25</string>
@@ -1953,6 +2160,9 @@ QToolTip {
          <width>31</width>
          <height>20</height>
         </rect>
+       </property>
+       <property name="whatsThis">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Higher number improves the result: the algorithms starts from a grid of superpixels and then refines the boundaries by proposing updates of edges boundaries&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>10</string>
@@ -1971,6 +2181,9 @@ QToolTip {
         </rect>
        </property>
        <property name="toolTip">
+        <string/>
+       </property>
+       <property name="whatsThis">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enforcement of superpixel compactness factor&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="decimals">
@@ -1995,6 +2208,9 @@ QToolTip {
          <height>20</height>
         </rect>
        </property>
+       <property name="whatsThis">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enforcement of superpixel compactness factor&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="text">
         <string>Ratio</string>
        </property>
@@ -2011,6 +2227,9 @@ QToolTip {
          <height>20</height>
         </rect>
        </property>
+       <property name="whatsThis">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of histogram bins&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="text">
         <string>5</string>
        </property>
@@ -2026,6 +2245,9 @@ QToolTip {
          <width>81</width>
          <height>20</height>
         </rect>
+       </property>
+       <property name="whatsThis">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable 3x3 shape smoothing term if &amp;gt;0.&lt;/p&gt;&lt;p&gt;A larger value leads to smoother shapes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>Prior</string>
@@ -2050,6 +2272,9 @@ QToolTip {
         <enum>Qt::ClickFocus</enum>
        </property>
        <property name="toolTip">
+        <string/>
+       </property>
+       <property name="whatsThis">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable 3x3 shape smoothing term if &amp;gt;0.&lt;/p&gt;&lt;p&gt;A larger value leads to smoother shapes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="minimum">
@@ -2080,6 +2305,9 @@ QToolTip {
          <height>20</height>
         </rect>
        </property>
+       <property name="whatsThis">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of block levels. The more levels, the more accurate is the segmentation, but needs more memory and CPU time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="text">
         <string>4</string>
        </property>
@@ -2095,6 +2323,9 @@ QToolTip {
          <width>31</width>
          <height>20</height>
         </rect>
+       </property>
+       <property name="whatsThis">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable 3x3 shape smoothing term if &amp;gt;0.&lt;/p&gt;&lt;p&gt;A larger value leads to smoother shapes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>2</string>
@@ -2119,6 +2350,9 @@ QToolTip {
         <enum>Qt::ClickFocus</enum>
        </property>
        <property name="toolTip">
+        <string/>
+       </property>
+       <property name="whatsThis">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of block levels. The more levels, the more accurate is the segmentation, but needs more memory and CPU time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="minimum">
@@ -2146,6 +2380,9 @@ QToolTip {
          <height>20</height>
         </rect>
        </property>
+       <property name="whatsThis">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Desired number of superpixels. Note that the actual number may be smaller due to restrictions (depending on the image size and num_levels)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="text">
         <string>Superpixels</string>
        </property>
@@ -2161,6 +2398,9 @@ QToolTip {
          <width>31</width>
          <height>20</height>
         </rect>
+       </property>
+       <property name="whatsThis">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Desired number of superpixels. Note that the actual number may be smaller due to restrictions (depending on the image size and num_levels)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>1000</string>
@@ -2185,6 +2425,9 @@ QToolTip {
         <enum>Qt::ClickFocus</enum>
        </property>
        <property name="toolTip">
+        <string/>
+       </property>
+       <property name="whatsThis">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Desired number of superpixels. Note that the actual number may be smaller due to restrictions (depending on the image size and num_levels)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="minimum">
@@ -2215,6 +2458,9 @@ QToolTip {
          <height>20</height>
         </rect>
        </property>
+       <property name="whatsThis">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of block levels. The more levels, the more accurate is the segmentation, but needs more memory and CPU time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="text">
         <string>Levels</string>
        </property>
@@ -2230,6 +2476,9 @@ QToolTip {
          <width>81</width>
          <height>20</height>
         </rect>
+       </property>
+       <property name="whatsThis">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of histogram bins&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>Histograms</string>
@@ -2254,6 +2503,9 @@ QToolTip {
         <enum>Qt::ClickFocus</enum>
        </property>
        <property name="toolTip">
+        <string/>
+       </property>
+       <property name="whatsThis">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of histogram bins&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="minimum">
@@ -2285,6 +2537,9 @@ QToolTip {
         <enum>Qt::ClickFocus</enum>
        </property>
        <property name="toolTip">
+        <string/>
+       </property>
+       <property name="whatsThis">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If set, iterate each block level twice for higher accuracy&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
@@ -2349,6 +2604,9 @@ QToolTip {
        <enum>Qt::NoFocus</enum>
       </property>
       <property name="toolTip">
+       <string/>
+      </property>
+      <property name="whatsThis">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save parameters to a XML file&lt;/p&gt;&lt;p&gt;&lt;br/&gt;It saves the parameters from the Image and Segmentation tabs&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="styleSheet">
@@ -2401,6 +2659,9 @@ QToolTip {
        <enum>Qt::NoFocus</enum>
       </property>
       <property name="toolTip">
+       <string/>
+      </property>
+      <property name="whatsThis">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Retrieve parameters from a previously saved XML file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="styleSheet">
@@ -2450,6 +2711,9 @@ QToolTip {
        <enum>Qt::ClickFocus</enum>
       </property>
       <property name="toolTip">
+       <string/>
+      </property>
+      <property name="whatsThis">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ticked: the computed grid is thicker, otherwise the border of the cells is only one pixel wide&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="text">
@@ -2482,6 +2746,9 @@ QToolTip {
        <enum>Qt::ClickFocus</enum>
       </property>
       <property name="toolTip">
+       <string/>
+      </property>
+      <property name="whatsThis">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Convert the image to LAB colors space: often improves the results.&lt;/p&gt;&lt;p&gt;If not set, HSV color space will be used instead&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="text">
@@ -2503,6 +2770,9 @@ QToolTip {
      </widget>
     </widget>
     <widget class="QWidget" name="tab_labels">
+     <property name="whatsThis">
+      <string>Manage labels</string>
+     </property>
      <attribute name="icon">
       <iconset>
        <normalon>:/icons/label.png</normalon>
@@ -2511,58 +2781,6 @@ QToolTip {
      <attribute name="title">
       <string>Labels</string>
      </attribute>
-     <widget class="QPushButton" name="button_save_session">
-      <property name="geometry">
-       <rect>
-        <x>3</x>
-        <y>350</y>
-        <width>141</width>
-        <height>51</height>
-       </rect>
-      </property>
-      <property name="cursor">
-       <cursorShape>PointingHandCursor</cursorShape>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the current session: image, mask, grid and labels (cells).&lt;/p&gt;&lt;p&gt;The parameters won't be saved, do this separately.&lt;/p&gt;&lt;p&gt;Useful if you want to finish a work later: retrieving a session will allow you to continue where you left it, without recomputing.&lt;/p&gt;&lt;p&gt;Image, mask, grid are saved to PNG image format.&lt;/p&gt;&lt;p&gt;Labels and parameters are saved in openCV XML/YAML format&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton {
-	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
-	border-radius: 10px;
-	border: 2px outset #8f8f91;
-	color rgb(0,0,0);
-}
-QPushButton:pressed {
-	border: 2px inset #8f8f91;
-}
-QToolTip {
-    border:2px solid black;
-	padding:5px;
-	background-color:rgb(64,64,64);
-	color:white;
-	font-size: 14px;
-}</string>
-      </property>
-      <property name="text">
-       <string>Save session</string>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normalon>:/icons/session-save.png</normalon>
-       </iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>32</width>
-        <height>32</height>
-       </size>
-      </property>
-     </widget>
      <widget class="QPushButton" name="button_undo">
       <property name="geometry">
        <rect>
@@ -2579,6 +2797,9 @@ QToolTip {
        <enum>Qt::NoFocus</enum>
       </property>
       <property name="toolTip">
+       <string/>
+      </property>
+      <property name="whatsThis">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Undo last action, even in &amp;quot;new cell&amp;quot; mode.&lt;/p&gt;&lt;p&gt;Caution, it will only work once!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="styleSheet">
@@ -2626,6 +2847,9 @@ QToolTip {
        </rect>
       </property>
       <property name="toolTip">
+       <string/>
+      </property>
+      <property name="whatsThis">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The labels are listed here, in alphabetical order.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;You can select several labels by holding down the &amp;lt;CTRL&amp;gt; key, then clicking with the mouse&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="styleSheet">
@@ -2666,11 +2890,14 @@ QListWidget::item::selected {
         <x>8</x>
         <y>81</y>
         <width>131</width>
-        <height>216</height>
+        <height>321</height>
        </rect>
       </property>
+      <property name="whatsThis">
+       <string>Label color picker</string>
+      </property>
       <property name="frameShape">
-       <enum>QFrame::Panel</enum>
+       <enum>QFrame::StyledPanel</enum>
       </property>
       <property name="frameShadow">
        <enum>QFrame::Sunken</enum>
@@ -2681,10 +2908,10 @@ QListWidget::item::selected {
       <widget class="QPushButton" name="pushButton_color_red">
        <property name="geometry">
         <rect>
-         <x>82</x>
-         <y>79</y>
-         <width>28</width>
-         <height>26</height>
+         <x>87</x>
+         <y>110</y>
+         <width>36</width>
+         <height>36</height>
         </rect>
        </property>
        <property name="cursor">
@@ -2693,7 +2920,7 @@ QListWidget::item::selected {
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
        </property>
-       <property name="toolTip">
+       <property name="whatsThis">
         <string>Color to use for the cells</string>
        </property>
        <property name="styleSheet">
@@ -2727,10 +2954,10 @@ QToolTip {
       <widget class="QPushButton" name="pushButton_color_brown">
        <property name="geometry">
         <rect>
-         <x>82</x>
-         <y>105</y>
-         <width>28</width>
-         <height>26</height>
+         <x>87</x>
+         <y>150</y>
+         <width>36</width>
+         <height>36</height>
         </rect>
        </property>
        <property name="cursor">
@@ -2739,7 +2966,7 @@ QToolTip {
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
        </property>
-       <property name="toolTip">
+       <property name="whatsThis">
         <string>Color to use for the cells</string>
        </property>
        <property name="styleSheet">
@@ -2773,10 +3000,10 @@ QToolTip {
       <widget class="QPushButton" name="pushButton_color_orange">
        <property name="geometry">
         <rect>
-         <x>18</x>
-         <y>79</y>
-         <width>28</width>
-         <height>26</height>
+         <x>7</x>
+         <y>110</y>
+         <width>36</width>
+         <height>36</height>
         </rect>
        </property>
        <property name="cursor">
@@ -2785,7 +3012,7 @@ QToolTip {
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
        </property>
-       <property name="toolTip">
+       <property name="whatsThis">
         <string>Color to use for the cells</string>
        </property>
        <property name="styleSheet">
@@ -2819,10 +3046,10 @@ QToolTip {
       <widget class="QPushButton" name="pushButton_color_yellow">
        <property name="geometry">
         <rect>
-         <x>18</x>
-         <y>53</y>
-         <width>28</width>
-         <height>26</height>
+         <x>7</x>
+         <y>70</y>
+         <width>36</width>
+         <height>36</height>
         </rect>
        </property>
        <property name="cursor">
@@ -2831,7 +3058,7 @@ QToolTip {
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
        </property>
-       <property name="toolTip">
+       <property name="whatsThis">
         <string>Color to use for the cells</string>
        </property>
        <property name="styleSheet">
@@ -2866,9 +3093,9 @@ QToolTip {
        <property name="geometry">
         <rect>
          <x>34</x>
-         <y>8</y>
+         <y>10</y>
          <width>61</width>
-         <height>38</height>
+         <height>51</height>
         </rect>
        </property>
        <property name="cursor">
@@ -2878,6 +3105,9 @@ QToolTip {
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="toolTip">
+        <string/>
+       </property>
+       <property name="whatsThis">
         <string>Color to use for the cells</string>
        </property>
        <property name="styleSheet">
@@ -2917,10 +3147,10 @@ QToolTip {
       <widget class="QPushButton" name="pushButton_color_green">
        <property name="geometry">
         <rect>
-         <x>82</x>
-         <y>53</y>
-         <width>28</width>
-         <height>26</height>
+         <x>87</x>
+         <y>70</y>
+         <width>36</width>
+         <height>36</height>
         </rect>
        </property>
        <property name="cursor">
@@ -2929,7 +3159,7 @@ QToolTip {
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
        </property>
-       <property name="toolTip">
+       <property name="whatsThis">
         <string>Color to use for the cells</string>
        </property>
        <property name="styleSheet">
@@ -2963,10 +3193,10 @@ QToolTip {
       <widget class="QPushButton" name="pushButton_color_olive">
        <property name="geometry">
         <rect>
-         <x>18</x>
-         <y>183</y>
-         <width>28</width>
-         <height>26</height>
+         <x>7</x>
+         <y>270</y>
+         <width>36</width>
+         <height>36</height>
         </rect>
        </property>
        <property name="cursor">
@@ -2975,7 +3205,7 @@ QToolTip {
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
        </property>
-       <property name="toolTip">
+       <property name="whatsThis">
         <string>Color to use for the cells</string>
        </property>
        <property name="styleSheet">
@@ -3009,10 +3239,10 @@ QToolTip {
       <widget class="QPushButton" name="pushButton_color_cyan">
        <property name="geometry">
         <rect>
-         <x>18</x>
-         <y>131</y>
-         <width>28</width>
-         <height>26</height>
+         <x>7</x>
+         <y>190</y>
+         <width>36</width>
+         <height>36</height>
         </rect>
        </property>
        <property name="cursor">
@@ -3021,7 +3251,7 @@ QToolTip {
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
        </property>
-       <property name="toolTip">
+       <property name="whatsThis">
         <string>Color to use for the cells</string>
        </property>
        <property name="styleSheet">
@@ -3055,10 +3285,10 @@ QToolTip {
       <widget class="QPushButton" name="pushButton_color_emerald">
        <property name="geometry">
         <rect>
-         <x>50</x>
-         <y>183</y>
-         <width>28</width>
-         <height>26</height>
+         <x>47</x>
+         <y>270</y>
+         <width>36</width>
+         <height>36</height>
         </rect>
        </property>
        <property name="cursor">
@@ -3067,7 +3297,7 @@ QToolTip {
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
        </property>
-       <property name="toolTip">
+       <property name="whatsThis">
         <string>Color to use for the cells</string>
        </property>
        <property name="styleSheet">
@@ -3101,10 +3331,10 @@ QToolTip {
       <widget class="QPushButton" name="pushButton_color_blue">
        <property name="geometry">
         <rect>
-         <x>82</x>
-         <y>131</y>
-         <width>28</width>
-         <height>26</height>
+         <x>87</x>
+         <y>190</y>
+         <width>36</width>
+         <height>36</height>
         </rect>
        </property>
        <property name="cursor">
@@ -3113,7 +3343,7 @@ QToolTip {
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
        </property>
-       <property name="toolTip">
+       <property name="whatsThis">
         <string>Color to use for the cells</string>
        </property>
        <property name="styleSheet">
@@ -3147,10 +3377,10 @@ QToolTip {
       <widget class="QPushButton" name="pushButton_color_navy">
        <property name="geometry">
         <rect>
-         <x>82</x>
-         <y>157</y>
-         <width>28</width>
-         <height>26</height>
+         <x>87</x>
+         <y>230</y>
+         <width>36</width>
+         <height>36</height>
         </rect>
        </property>
        <property name="cursor">
@@ -3159,7 +3389,7 @@ QToolTip {
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
        </property>
-       <property name="toolTip">
+       <property name="whatsThis">
         <string>Color to use for the cells</string>
        </property>
        <property name="styleSheet">
@@ -3193,10 +3423,10 @@ QToolTip {
       <widget class="QPushButton" name="pushButton_color_magenta">
        <property name="geometry">
         <rect>
-         <x>18</x>
-         <y>105</y>
-         <width>28</width>
-         <height>26</height>
+         <x>7</x>
+         <y>150</y>
+         <width>36</width>
+         <height>36</height>
         </rect>
        </property>
        <property name="cursor">
@@ -3205,7 +3435,7 @@ QToolTip {
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
        </property>
-       <property name="toolTip">
+       <property name="whatsThis">
         <string>Color to use for the cells</string>
        </property>
        <property name="styleSheet">
@@ -3239,10 +3469,10 @@ QToolTip {
       <widget class="QPushButton" name="pushButton_color_purple">
        <property name="geometry">
         <rect>
-         <x>50</x>
-         <y>157</y>
-         <width>28</width>
-         <height>26</height>
+         <x>47</x>
+         <y>230</y>
+         <width>36</width>
+         <height>36</height>
         </rect>
        </property>
        <property name="cursor">
@@ -3251,7 +3481,7 @@ QToolTip {
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
        </property>
-       <property name="toolTip">
+       <property name="whatsThis">
         <string>Color to use for the cells</string>
        </property>
        <property name="styleSheet">
@@ -3285,10 +3515,10 @@ QToolTip {
       <widget class="QPushButton" name="pushButton_color_lime">
        <property name="geometry">
         <rect>
-         <x>50</x>
-         <y>53</y>
-         <width>28</width>
-         <height>26</height>
+         <x>47</x>
+         <y>70</y>
+         <width>36</width>
+         <height>36</height>
         </rect>
        </property>
        <property name="cursor">
@@ -3297,7 +3527,7 @@ QToolTip {
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
        </property>
-       <property name="toolTip">
+       <property name="whatsThis">
         <string>Color to use for the cells</string>
        </property>
        <property name="styleSheet">
@@ -3331,10 +3561,10 @@ QToolTip {
       <widget class="QPushButton" name="pushButton_color_laurel">
        <property name="geometry">
         <rect>
-         <x>82</x>
-         <y>183</y>
-         <width>28</width>
-         <height>26</height>
+         <x>87</x>
+         <y>270</y>
+         <width>36</width>
+         <height>36</height>
         </rect>
        </property>
        <property name="cursor">
@@ -3343,7 +3573,7 @@ QToolTip {
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
        </property>
-       <property name="toolTip">
+       <property name="whatsThis">
         <string>Color to use for the cells</string>
        </property>
        <property name="styleSheet">
@@ -3377,10 +3607,10 @@ QToolTip {
       <widget class="QPushButton" name="pushButton_color_malibu">
        <property name="geometry">
         <rect>
-         <x>18</x>
-         <y>157</y>
-         <width>28</width>
-         <height>26</height>
+         <x>7</x>
+         <y>230</y>
+         <width>36</width>
+         <height>36</height>
         </rect>
        </property>
        <property name="cursor">
@@ -3389,7 +3619,7 @@ QToolTip {
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
        </property>
-       <property name="toolTip">
+       <property name="whatsThis">
         <string>Color to use for the cells</string>
        </property>
        <property name="styleSheet">
@@ -3423,10 +3653,10 @@ QToolTip {
       <widget class="QPushButton" name="pushButton_color_violet">
        <property name="geometry">
         <rect>
-         <x>50</x>
-         <y>105</y>
-         <width>28</width>
-         <height>26</height>
+         <x>47</x>
+         <y>150</y>
+         <width>36</width>
+         <height>36</height>
         </rect>
        </property>
        <property name="cursor">
@@ -3435,7 +3665,7 @@ QToolTip {
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
        </property>
-       <property name="toolTip">
+       <property name="whatsThis">
         <string>Color to use for the cells</string>
        </property>
        <property name="styleSheet">
@@ -3469,10 +3699,10 @@ QToolTip {
       <widget class="QPushButton" name="pushButton_color_rose">
        <property name="geometry">
         <rect>
-         <x>50</x>
-         <y>79</y>
-         <width>28</width>
-         <height>26</height>
+         <x>47</x>
+         <y>110</y>
+         <width>36</width>
+         <height>36</height>
         </rect>
        </property>
        <property name="cursor">
@@ -3481,7 +3711,7 @@ QToolTip {
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
        </property>
-       <property name="toolTip">
+       <property name="whatsThis">
         <string>Color to use for the cells</string>
        </property>
        <property name="styleSheet">
@@ -3515,10 +3745,10 @@ QToolTip {
       <widget class="QPushButton" name="pushButton_color_azure">
        <property name="geometry">
         <rect>
-         <x>50</x>
-         <y>131</y>
-         <width>28</width>
-         <height>26</height>
+         <x>47</x>
+         <y>190</y>
+         <width>36</width>
+         <height>36</height>
         </rect>
        </property>
        <property name="cursor">
@@ -3527,7 +3757,7 @@ QToolTip {
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
        </property>
-       <property name="toolTip">
+       <property name="whatsThis">
         <string>Color to use for the cells</string>
        </property>
        <property name="styleSheet">
@@ -3575,6 +3805,9 @@ QToolTip {
        <enum>Qt::NoFocus</enum>
       </property>
       <property name="toolTip">
+       <string/>
+      </property>
+      <property name="whatsThis">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delete the selected label and all its colored cells in the mask.&lt;/p&gt;&lt;p&gt;If several labels are highlighted, the last selected will be considered&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="styleSheet">
@@ -3627,6 +3860,9 @@ QToolTip {
        <enum>Qt::NoFocus</enum>
       </property>
       <property name="toolTip">
+       <string/>
+      </property>
+      <property name="whatsThis">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add a new label with a default color.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Don't forget to rename the new label (double-click on it), and to set a new color&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="styleSheet">
@@ -3679,6 +3915,9 @@ QToolTip {
        <enum>Qt::NoFocus</enum>
       </property>
       <property name="toolTip">
+       <string/>
+      </property>
+      <property name="whatsThis">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hide the selected label.&lt;/p&gt;&lt;p&gt;Even if the cells become transparent in the mask, you can have them back by selecting a new color.&lt;/p&gt;&lt;p&gt;If several labels are highlighted, the last selected will be considered&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="styleSheet">
@@ -3715,104 +3954,6 @@ QToolTip {
        </size>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_psd">
-      <property name="geometry">
-       <rect>
-        <x>28</x>
-        <y>303</y>
-        <width>41</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save to a single Photoshop image (.psd) the processed image as &amp;quot;background&amp;quot;, and the labels masks as transparent &amp;quot;layers&amp;quot;. &lt;/p&gt;&lt;p&gt;    * Each layer is named using the label name&lt;/p&gt;&lt;p&gt;    * To edit a layer in Photoshop, you have to &amp;quot;unlock&amp;quot; it first&lt;/p&gt;&lt;p&gt;    * The saved PSD image is not compatible with Photoshop 7 and under, but is entirely compatible with The Gimp &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton {
-	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
-	border-radius: 10px;
-	border: 2px outset #8f8f91;
-	color rgb(0,0,0);
-}
-QPushButton:pressed {
-	border: 2px inset #8f8f91;
-}
-QToolTip {
-    border:2px solid black;
-	padding:5px;
-	background-color:rgb(64,64,64);
-	color:white;
-	font-size: 14px;
-}</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normalon>:/icons/photoshop.png</normalon>
-       </iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>32</width>
-        <height>32</height>
-       </size>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_tif">
-      <property name="geometry">
-       <rect>
-        <x>78</x>
-        <y>303</y>
-        <width>41</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save to a single Tiff image (.tif) the processed image and the labels masks as &amp;quot;pages&amp;quot;. &lt;/p&gt;&lt;p&gt;    * If you try to open the saved Tiff image with Photoshop (and most image tools), only the processed image will appear. Only a few image tools are able to read a multi-page Tiff image (e.g. XnViewMP)&lt;/p&gt;&lt;p&gt;    * Lyckily, an open-source solution exists: open the image file in &amp;quot;The Gimp&amp;quot;, select all pages as layers. Unfortunaltely, you will lose the labels names, the Tiff format does'nt enable this function&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton {
-	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
-	border-radius: 10px;
-	border: 2px outset #8f8f91;
-	color rgb(0,0,0);
-}
-QPushButton:pressed {
-	border: 2px inset #8f8f91;
-}
-QToolTip {
-    border:2px solid black;
-	padding:5px;
-	background-color:rgb(64,64,64);
-	color:white;
-	font-size: 14px;
-}</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normalon>:/icons/tiff.png</normalon>
-       </iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>32</width>
-        <height>32</height>
-       </size>
-      </property>
-     </widget>
      <widget class="QPushButton" name="pushButton_label_draw">
       <property name="geometry">
        <rect>
@@ -3829,6 +3970,9 @@ QToolTip {
        <enum>Qt::NoFocus</enum>
       </property>
       <property name="toolTip">
+       <string/>
+      </property>
+      <property name="whatsThis">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Draw mode: add pixels to a new cell and also assign them to the current label. Useful if you want to complete a label, or want to redraw cells from scratch in a new label.&lt;/p&gt;&lt;p&gt;In this mode, you can draw over pixels you want to add to the current label.&lt;/p&gt;&lt;p&gt;You have to draw over the pixels you want to add:&lt;/p&gt;&lt;p&gt;* the cursor is now a cross, and all the other tabs and unwanted buttons are hidden until you apply the changes&lt;/p&gt;&lt;p&gt;* the white color is used for drawing (mask)&lt;/p&gt;&lt;p&gt;* other colors can be used, but only when you want to use the GrabCut algorithm - its button is on the right side panel that appears when the draw mode is activated&lt;/p&gt;&lt;p&gt;* click with the right and left mouse buttons to draw pixels: left for white, right for unset. You can maintain the click to draw several pixels in a free-style way&lt;/p&gt;&lt;p&gt;* choose the drawing thickness on the right side panel that appeared - you can hold down the C key to see the drawing circle - you can use the mouse buttons while doing this&lt;/p&gt;&lt;p&gt;* the last set pixel can be the beginning of a line: press and hold the &amp;lt;X&amp;gt; key, then move the mouse. Release the &amp;lt;X&amp;gt; key, the line is drawn. The extremity of a new line becomes the next line origin. Click elsewhere with the mouse to set a new origin&lt;/p&gt;&lt;p&gt;* you can fill a closed area with the left (white) or right (unset) mouse button while holding down the &amp;lt;CTRL&amp;gt; key&lt;/p&gt;&lt;p&gt;* you can cancel the last action with the UNDO button (be careful, possible only once)&lt;/p&gt;&lt;p&gt;* finish by clicking again on the &amp;quot;draw mode&amp;quot; button to apply (or not) what you did. If you keep your changes, the pixels drawn in white will be added to a new cell, and also added to the current label, and the grid mask will be updated with the boundaries of what was drawn&lt;/p&gt;&lt;p&gt;* tip: try to only draw contigous areas, repeat the drawing process several times if needed&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="styleSheet">
@@ -3884,6 +4028,9 @@ QToolTip {
        <enum>Qt::NoFocus</enum>
       </property>
       <property name="toolTip">
+       <string/>
+      </property>
+      <property name="whatsThis">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Join several labels.&lt;/p&gt;&lt;p&gt;Select the labels using the &amp;lt;CTRL&amp;gt; key, then press this button.&lt;/p&gt;&lt;p&gt;One of the selected labels becomes the new merged label. Its name will contain the orginal name + &amp;quot; (joined) &amp;quot;.&lt;/p&gt;&lt;p&gt;All the cells of the selected labels will get the merged label's color.&lt;/p&gt;&lt;p&gt;You can then rename thie joined label (double-click on it), and set a new color if you want.&lt;/p&gt;&lt;p&gt;Useful when you have defined a new cell, and want to integrate it to another label&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="styleSheet">
@@ -3929,6 +4076,9 @@ QToolTip {
         <height>31</height>
        </rect>
       </property>
+      <property name="whatsThis">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Current label and used color to colorize the segmentation cells.&lt;/p&gt;&lt;p&gt;Click on the image:&lt;/p&gt;&lt;p&gt;* Left mouse button: set the cell color&lt;/p&gt;&lt;p&gt;* Right mouse button: delete (set to transparent)&lt;/p&gt;&lt;p&gt;* Drag the mouse while holding the mouse buttons to colorize several cells&lt;/p&gt;&lt;p&gt;* Use &amp;lt;CTRL&amp;gt; key + mouse click (left = color, right= delete) to fill a closed area. Be careful, one pixel missing and you have to use the Undo function! The fill is also stopped by already defined labels&lt;/p&gt;&lt;p&gt;* Use &amp;lt;ALT&amp;gt; key + left mouse button to select a label (or use the list on the left)&lt;/p&gt;&lt;p&gt;* Hold the middle button of the mouse or &amp;lt;SPACE&amp;gt; bar then move the mouse to navigate in the image when it is zoomed in&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
       <property name="text">
        <string/>
       </property>
@@ -3949,6 +4099,9 @@ QToolTip {
        </rect>
       </property>
       <property name="toolTip">
+       <string/>
+      </property>
+      <property name="whatsThis">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Current label and used color to colorize the segmentation cells.&lt;/p&gt;&lt;p&gt;Click on the image:&lt;/p&gt;&lt;p&gt;* Left mouse button: set the cell color&lt;/p&gt;&lt;p&gt;* Right mouse button: delete (set to transparent)&lt;/p&gt;&lt;p&gt;* Drag the mouse while holding the mouse buttons to colorize several cells&lt;/p&gt;&lt;p&gt;* Use &amp;lt;CTRL&amp;gt; key + mouse click (left = color, right= delete) to fill a closed area. Be careful, one pixel missing and you have to use the Undo function! The fill is also stopped by already defined labels&lt;/p&gt;&lt;p&gt;* Use &amp;lt;ALT&amp;gt; key + left mouse button to select a label (or use the list on the left)&lt;/p&gt;&lt;p&gt;* Hold the middle button of the mouse or &amp;lt;SPACE&amp;gt; bar then move the mouse to navigate in the image when it is zoomed in&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="styleSheet">
@@ -3961,15 +4114,12 @@ QToolTip {
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
-     <zorder>button_save_session</zorder>
      <zorder>button_undo</zorder>
      <zorder>listWidget_labels</zorder>
      <zorder>frame_pick_colors</zorder>
      <zorder>pushButton_label_delete</zorder>
      <zorder>pushButton_label_add</zorder>
      <zorder>pushButton_label_hide</zorder>
-     <zorder>pushButton_psd</zorder>
-     <zorder>pushButton_tif</zorder>
      <zorder>pushButton_label_draw</zorder>
      <zorder>pushButton_label_join</zorder>
      <zorder>label_color</zorder>
@@ -3982,7 +4132,7 @@ QToolTip {
       <x>10</x>
       <y>454</y>
       <width>351</width>
-      <height>281</height>
+      <height>351</height>
      </rect>
     </property>
     <property name="maximumSize">
@@ -3998,10 +4148,13 @@ QToolTip {
      <bool>true</bool>
     </property>
     <property name="toolTip">
+     <string/>
+    </property>
+    <property name="whatsThis">
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Image to process.&lt;/p&gt;&lt;p&gt;Click on it to set the viewport's center&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="frameShape">
-     <enum>QFrame::Panel</enum>
+     <enum>QFrame::StyledPanel</enum>
     </property>
     <property name="frameShadow">
      <enum>QFrame::Sunken</enum>
@@ -4020,7 +4173,7 @@ QToolTip {
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>735</y>
+      <y>967</y>
       <width>351</width>
       <height>71</height>
      </rect>
@@ -4040,7 +4193,7 @@ QToolTip {
        <height>32</height>
       </rect>
      </property>
-     <property name="toolTip">
+     <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;AbsurdePhoton, amateur photographer.&lt;/p&gt;&lt;p&gt;www.absurdephoton.fr&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
@@ -4063,10 +4216,13 @@ QToolTip {
       </rect>
      </property>
      <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;* v0: launch&lt;/p&gt;&lt;p&gt;* v1: added contours + several improvements&lt;/p&gt;&lt;p&gt;* v2: tabbed workflow + labels management + PSD and TIFF export + create cells&lt;/p&gt;&lt;p&gt;* v2.1: several bugs fixed&lt;/p&gt;&lt;p&gt;* v2.2: adapted to OpenCV v4.1&lt;/p&gt;&lt;p&gt;* v2.3: added GrabCut algorithm for new cell creation&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="frameShape">
-      <enum>QFrame::Box</enum>
+      <enum>QFrame::StyledPanel</enum>
      </property>
      <property name="frameShadow">
       <enum>QFrame::Sunken</enum>
@@ -4099,8 +4255,11 @@ QToolTip {
      <property name="cursor">
       <cursorShape>ArrowCursor</cursorShape>
      </property>
+     <property name="whatsThis">
+      <string>Information about this software</string>
+     </property>
      <property name="frameShape">
-      <enum>QFrame::Box</enum>
+      <enum>QFrame::StyledPanel</enum>
      </property>
      <property name="frameShadow">
       <enum>QFrame::Sunken</enum>
@@ -4125,14 +4284,17 @@ QToolTip {
    <widget class="QFrame" name="frame_zoom">
     <property name="geometry">
      <rect>
-      <x>1253</x>
-      <y>540</y>
+      <x>378</x>
+      <y>624</y>
       <width>106</width>
       <height>181</height>
      </rect>
     </property>
+    <property name="whatsThis">
+     <string>This panel controls the zoom level of the image</string>
+    </property>
     <property name="frameShape">
-     <enum>QFrame::Panel</enum>
+     <enum>QFrame::StyledPanel</enum>
     </property>
     <property name="frameShadow">
      <enum>QFrame::Sunken</enum>
@@ -4156,6 +4318,9 @@ QToolTip {
       <enum>Qt::NoFocus</enum>
      </property>
      <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
       <string>Zoom in</string>
      </property>
      <property name="styleSheet">
@@ -4208,6 +4373,9 @@ QToolTip {
       <enum>Qt::NoFocus</enum>
      </property>
      <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
       <string>1:1 zoom level</string>
      </property>
      <property name="styleSheet">
@@ -4260,6 +4428,9 @@ QToolTip {
       <enum>Qt::NoFocus</enum>
      </property>
      <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
       <string>Zoom out</string>
      </property>
      <property name="styleSheet">
@@ -4312,6 +4483,9 @@ QToolTip {
       <enum>Qt::NoFocus</enum>
      </property>
      <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
       <string>Fit the image to the viewport</string>
      </property>
      <property name="styleSheet">
@@ -4358,13 +4532,16 @@ QToolTip {
       </rect>
      </property>
      <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
       <string>Zoom level</string>
      </property>
      <property name="styleSheet">
       <string notr="true">background-color:rgb(64,64,64);border: 1px solid white;color:rgb(255,255,255);</string>
      </property>
      <property name="frameShape">
-      <enum>QFrame::Box</enum>
+      <enum>QFrame::StyledPanel</enum>
      </property>
      <property name="frameShadow">
       <enum>QFrame::Sunken</enum>
@@ -4380,17 +4557,27 @@ QToolTip {
    <widget class="QPushButton" name="button_quit">
     <property name="geometry">
      <rect>
-      <x>1260</x>
-      <y>400</y>
-      <width>91</width>
-      <height>61</height>
+      <x>50</x>
+      <y>840</y>
+      <width>151</width>
+      <height>91</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="cursor">
      <cursorShape>PointingHandCursor</cursorShape>
     </property>
     <property name="focusPolicy">
      <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="whatsThis">
+     <string>This button has &quot;Quit&quot; on it, try it!</string>
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton {
@@ -4412,7 +4599,7 @@ QToolTip {
 }</string>
     </property>
     <property name="text">
-     <string>QUIT</string>
+     <string> QUIT</string>
     </property>
     <property name="icon">
      <iconset>
@@ -4429,14 +4616,17 @@ QToolTip {
    <widget class="QFrame" name="frame_draw">
     <property name="geometry">
      <rect>
-      <x>1250</x>
-      <y>360</y>
+      <x>375</x>
+      <y>410</y>
       <width>111</width>
       <height>161</height>
      </rect>
     </property>
+    <property name="whatsThis">
+     <string>This panel only appears when you draw a custom label area</string>
+    </property>
     <property name="frameShape">
-     <enum>QFrame::Panel</enum>
+     <enum>QFrame::StyledPanel</enum>
     </property>
     <property name="frameShadow">
      <enum>QFrame::Sunken</enum>
@@ -4454,7 +4644,10 @@ QToolTip {
       </rect>
      </property>
      <property name="toolTip">
-      <string>Drawing thickness</string>
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Drawing thickness&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">QToolTip {
@@ -4466,7 +4659,7 @@ QToolTip {
 }</string>
      </property>
      <property name="frameShape">
-      <enum>QFrame::Panel</enum>
+      <enum>QFrame::StyledPanel</enum>
      </property>
      <property name="frameShadow">
       <enum>QFrame::Sunken</enum>
@@ -4497,6 +4690,9 @@ QToolTip {
       <enum>Qt::ClickFocus</enum>
      </property>
      <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Drawing thickness&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="styleSheet">
@@ -4537,6 +4733,9 @@ QToolTip {
       </rect>
      </property>
      <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use this color to draw the new cell&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="styleSheet">
@@ -4565,6 +4764,9 @@ QToolTip {
       </rect>
      </property>
      <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use this color to draw the GrabCut &amp;quot;reject&amp;quot; zones&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="styleSheet">
@@ -4596,6 +4798,9 @@ QToolTip {
       <enum>Qt::NoFocus</enum>
      </property>
      <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clear all you have drawn&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="styleSheet">
@@ -4650,7 +4855,10 @@ QToolTip {
       <enum>Qt::NoFocus</enum>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use the GrabCut algorithm.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;While creating a new cell, you can use the GrabCut algorithm to select a zone.&lt;/p&gt;&lt;p&gt;GrabCut needs these colors to work:&lt;/p&gt;&lt;p&gt;- white: what you want to &amp;quot;keep&amp;quot;&lt;/p&gt;&lt;p&gt;- red: what you want to &amp;quot;reject&amp;quot;&lt;/p&gt;&lt;p&gt;- blue: let the algorithm decide - &amp;quot;maybe&amp;quot;&lt;/p&gt;&lt;p&gt;- what was not drawn will be set to &amp;quot;reject&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;To draw:&lt;/p&gt;&lt;p&gt;- choose which &amp;quot;color&amp;quot; you want to use (mask, reject, maybe)&lt;/p&gt;&lt;p&gt;- choose the thickness (0 to 20 pixels)&lt;/p&gt;&lt;p&gt;- left mouse button: draw&lt;/p&gt;&lt;p&gt;- right mouse button: erase&lt;/p&gt;&lt;p&gt;- CTRL key + mouse button: floodfill to draw or erase&lt;/p&gt;&lt;p&gt;- hold down X key to draw a line from the last drawn dot - release the key to set it&lt;/p&gt;&lt;p&gt;- hold down C key to see the drawing circle - you can use the mouse buttons while doing this &lt;/p&gt;&lt;p&gt;&lt;br/&gt;When you are finished creating the cell, only the white drawings will be accounted for.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Apply the GrabCut algorithm with this button.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;While creating a new cell, you can use the GrabCut algorithm to select a zone.&lt;/p&gt;&lt;p&gt;GrabCut needs these colors to work:&lt;/p&gt;&lt;p&gt;- white: what you want to &amp;quot;keep&amp;quot;&lt;/p&gt;&lt;p&gt;- red: what you want to &amp;quot;reject&amp;quot;&lt;/p&gt;&lt;p&gt;- blue: let the algorithm decide - &amp;quot;maybe&amp;quot;&lt;/p&gt;&lt;p&gt;- what was not drawn will be set to &amp;quot;reject&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;To draw:&lt;/p&gt;&lt;p&gt;- choose which &amp;quot;color&amp;quot; you want to use (mask, reject, maybe)&lt;/p&gt;&lt;p&gt;- choose the thickness (0 to 20 pixels)&lt;/p&gt;&lt;p&gt;- left mouse button: draw&lt;/p&gt;&lt;p&gt;- right mouse button: erase&lt;/p&gt;&lt;p&gt;- CTRL key + mouse button: floodfill to draw or erase&lt;/p&gt;&lt;p&gt;- hold down X key to draw a line from the last drawn dot - release the key to set it&lt;/p&gt;&lt;p&gt;- hold down C key to see the drawing circle - you can use the mouse buttons while doing this &lt;/p&gt;&lt;p&gt;&lt;br/&gt;When you are finished creating the cell, only the white drawings will be accounted for.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">QPushButton {
@@ -4698,6 +4906,9 @@ QToolTip {
       </rect>
      </property>
      <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use this color to draw the GrabCut &amp;quot;maybe&amp;quot; zones&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="styleSheet">
@@ -4723,7 +4934,10 @@ QToolTip {
       </rect>
      </property>
      <property name="toolTip">
-      <string>Drawing thickness</string>
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Drawing thickness&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">QToolTip {
@@ -4760,6 +4974,9 @@ QToolTip {
       <enum>Qt::NoFocus</enum>
      </property>
      <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Refine the previous GrabCut execution.&lt;/p&gt;&lt;p&gt;If you complete the drawing, don't use this button again: use the GrabCut button one more time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="styleSheet">
@@ -4799,6 +5016,231 @@ QToolTip {
      </property>
     </widget>
    </widget>
+   <widget class="QPushButton" name="button_save_session">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>894</y>
+      <width>141</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="toolTip">
+     <string/>
+    </property>
+    <property name="whatsThis">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the current session: image, mask, grid and labels (cells).&lt;/p&gt;&lt;p&gt;The parameters won't be saved, do this separately.&lt;/p&gt;&lt;p&gt;Useful if you want to finish a work later: retrieving a session will allow you to continue where you left it, without recomputing.&lt;/p&gt;&lt;p&gt;Image, mask, grid are saved to PNG image format.&lt;/p&gt;&lt;p&gt;Labels and parameters are saved in openCV XML/YAML format&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+    </property>
+    <property name="text">
+     <string>Save session</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normalon>:/icons/session-save.png</normalon>
+     </iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>32</width>
+      <height>32</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_psd">
+    <property name="geometry">
+     <rect>
+      <x>255</x>
+      <y>824</y>
+      <width>91</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="toolTip">
+     <string/>
+    </property>
+    <property name="whatsThis">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save to a single Photoshop image (.psd) the processed image as &amp;quot;background&amp;quot;, and the labels masks as transparent &amp;quot;layers&amp;quot;. &lt;/p&gt;&lt;p&gt;    * Each layer is named using the label name&lt;/p&gt;&lt;p&gt;    * To edit a layer in Photoshop, you have to &amp;quot;unlock&amp;quot; it first&lt;/p&gt;&lt;p&gt;    * The saved PSD image is not compatible with Photoshop 7 and under, but is entirely compatible with The Gimp &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normalon>:/icons/photoshop.png</normalon>
+     </iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>32</width>
+      <height>32</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_tif">
+    <property name="geometry">
+     <rect>
+      <x>355</x>
+      <y>824</y>
+      <width>91</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="toolTip">
+     <string/>
+    </property>
+    <property name="whatsThis">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save to a single Tiff image (.tif) the processed image and the labels masks as &amp;quot;pages&amp;quot;. &lt;/p&gt;&lt;p&gt;    * If you try to open the saved Tiff image with Photoshop (and most image tools), only the processed image will appear. Only a few image tools are able to read a multi-page Tiff image (e.g. XnViewMP)&lt;/p&gt;&lt;p&gt;    * Lyckily, an open-source solution exists: open the image file in &amp;quot;The Gimp&amp;quot;, select all pages as layers. Unfortunaltely, you will lose the labels names, the Tiff format does'nt enable this function&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:pressed {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normalon>:/icons/tiff.png</normalon>
+     </iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>32</width>
+      <height>32</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="button_whats_this">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>986</y>
+      <width>40</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="toolTip">
+     <string/>
+    </property>
+    <property name="whatsThis">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You just clicked on it, this is the &amp;quot;What's this&amp;quot; mode.&lt;/p&gt;&lt;p&gt;Use this button to get help about any item by clicking once again on it (the cursor changes when help is available).&lt;/p&gt;&lt;p&gt;Click on an empty area or press &amp;lt;ESC&amp;gt; to leave the &amp;quot;What's this&amp;quot; mode&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 1 #E0E0E0);
+	border-radius: 10px;
+	border: 2px outset #8f8f91;
+	color rgb(0,0,0);
+}
+QPushButton:checked {
+	border: 2px inset #8f8f91;
+}
+QToolTip {
+    border:2px solid black;
+	padding:5px;
+	background-color:rgb(64,64,64);
+	color:white;
+	font-size: 14px;
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="resources.qrc">
+      <normaloff>:/icons/help.png</normaloff>:/icons/help.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>32</width>
+      <height>32</height>
+     </size>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
+    </property>
+    <property name="checked">
+     <bool>false</bool>
+    </property>
+   </widget>
    <zorder>frame_draw</zorder>
    <zorder>frame_zoom</zorder>
    <zorder>label_segmentation</zorder>
@@ -4811,6 +5253,10 @@ QToolTip {
    <zorder>label_thumbnail</zorder>
    <zorder>frame_about</zorder>
    <zorder>button_quit</zorder>
+   <zorder>button_save_session</zorder>
+   <zorder>pushButton_psd</zorder>
+   <zorder>pushButton_tif</zorder>
+   <zorder>button_whats_this</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

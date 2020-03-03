@@ -40,8 +40,9 @@ public slots:
 
 private slots:
 
-    //// UI
+    //// GUI
     void InitializeValues(); // well named !
+    void on_button_whats_this_clicked(); // What's this function
 
     //// quit
     void on_button_quit_clicked();
@@ -59,11 +60,12 @@ private slots:
     void on_listWidget_labels_itemChanged(QListWidgetItem *currentItem); // show current label name used
     void on_pushButton_label_add_clicked(); // add one default label
     void on_pushButton_label_hide_clicked(); // set label color to 0 => transparent
-    void on_pushButton_label_create_clicked(); // special mode where a new cell can be drawn
+    void on_pushButton_label_draw_clicked(); // special mode where a new cell can be drawn
     void on_pushButton_label_join_clicked(); // join two or more labels
-    void on_pushButton_draw_clear_clicked();
-    void on_pushButton_draw_grabcut_clicked();
-    cv::Vec3b DrawColor();
+    void on_pushButton_draw_clear_clicked(); // clear the cell drawing mask
+    void on_pushButton_draw_grabcut_clicked(); // use GrabCut in cell drawing mode
+    void on_pushButton_draw_grabcut_iteration_clicked(); // repeat GrabCut in cell drawing mode
+    cv::Vec3b DrawColor(); // return drawing color in cell drawing mode
 
     //// image export
     void on_pushButton_psd_clicked(); // export to PSD Photoshop image
@@ -88,6 +90,7 @@ private slots:
     void on_checkBox_mask_clicked(); // toggle mask view
     void on_checkBox_image_clicked(); // toggle image view
     void on_checkBox_grid_clicked(); // toggle grid view
+    void on_checkBox_selection_clicked(); // toggle selection view
     void on_checkBox_holes_clicked(); // toggle holes view
 
     void on_horizontalSlider_blend_image_valueChanged(); // image transparency
@@ -179,7 +182,8 @@ private:
             mask, undo_mask, // painted cells
             grid, // grid mask
             selection, // selection mask
-            /*create_cell_labels_save,*/ create_cell_mask_save, mask_line_save; // used by cell paint
+            draw_cell_mask_save, draw_cell_labels_mask_save, draw_cell_labels_save, draw_cell_grid_save, mask_line_save, // used by cell paint
+            grabcut_mask, grabcut_background, grabcut_foreground; // for GrabCut
 
     cv::Mat disp_color; // Processed image display with mask and grid
     cv::Rect viewport; // part of the segmentation image to display
